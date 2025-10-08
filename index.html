@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark"> <!-- **CRITICAL CHANGE: Added class="dark" here** -->
+<html lang="en" class="dark"> 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,25 +11,38 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <!-- Load Babel for JSX transformation -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Load Lucide Icons for professional look -->
+    <script type="module">
+      import * as Lucide from "https://unpkg.com/lucide@latest";
+      window.Lucide = Lucide;
+    </script>
     
     <style>
         /* Custom font for better UI */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         
-        /* Tailwind configuration for Dark Mode */
         html.dark body {
-            background-color: #111827; /* Darker background for dark mode */
+            background-color: #0d1117; /* Very Dark Background */
         }
         
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f3f4f6; /* Light gray background (fallback) */
+            background-color: #f3f4f6; 
         }
-        /* CRITICAL FIX: Ensure the root element takes the full available width */
         #root {
             width: 100%;
+        }
+        /* Custom Progress Bar Style */
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            transition: width 0.5s ease-in-out;
+        }
+        /* Custom Button Hover Effect */
+        .cmd-btn:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Add stronger shadow on hover */
         }
     </style>
 </head>
@@ -43,15 +56,23 @@
         // --- CONFIGURATION CONSTANTS (Matching Arduino Logic) ---
         const BLUETOOTH_SERVICE_UUID = '0000ffe0-0000-1000-8000-00805f9b34fb'; 
         const BLUETOOTH_CHARACTERISTIC_UUID = '0000ffe1-0000-1000-8000-00805f9b34fb';
+        const DAILY_GOAL_MINUTES = 60; // Set a default daily goal
+
+        // Custom Lucide Icon Component
+        const Icon = ({ name, size = 24, className = "" }) => {
+            const LucideIcon = window.Lucide?.[name];
+            if (!LucideIcon) return null;
+            return <LucideIcon size={size} className={className} />;
+        };
 
         // Mappings for the study states sent by Arduino
         const STATUS_ICONS = {
-            STUDYING: { icon: '💡', color: 'text-green-400', label: 'Focused Studying' },
-            DISTRACTED: { icon: '🚨', color: 'text-red-400', label: 'Distracted! Refocus' },
-            IDLE: { icon: '☕', color: 'text-yellow-400', label: 'Idle / Break Time' },
-            OBSERVING: { icon: '🔎', color: 'text-blue-400', label: 'System Observing' },
-            STOPPED: { icon: '🛑', color: 'text-gray-500', label: 'Stopped / Ready' },
-            DEFAULT: { icon: '🔌', color: 'text-gray-600', label: 'Disconnected' }
+            STUDYING: { icon: 'Zap', color: 'text-green-400', label: 'Focused Studying' },
+            DISTRACTED: { icon: 'AlertTriangle', color: 'text-red-400', label: 'Distracted! Refocus' },
+            IDLE: { icon: 'Coffee', color: 'text-yellow-400', label: 'Idle / Break Time' },
+            OBSERVING: { icon: 'Search', color: 'text-blue-400', label: 'System Observing' },
+            STOPPED: { icon: 'Octagon', color: 'text-gray-500', label: 'Stopped / Ready' },
+            DEFAULT: { icon: 'PlugOff', color: 'text-gray-600', label: 'Disconnected' }
         };
 
         // --- Custom Modal Component (Instead of alert/confirm) ---
@@ -59,7 +80,7 @@
             if (!isOpen) return null;
             return (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm">
-                    <div className="bg-gray-900 p-6 rounded-xl shadow-2xl w-11/12 max-w-sm transform transition-all duration-300 scale-100 border border-gray-700">
+                    <div className="bg-gray-800 p-6 rounded-xl shadow-2xl w-11/12 max-w-sm transform transition-all duration-300 scale-100 border border-gray-700">
                         <h3 className="text-xl font-bold mb-3 text-white">{title}</h3>
                         <p className="text-sm text-gray-400 mb-6">{message}</p>
                         <div className="flex justify-end space-x-3">
@@ -83,13 +104,12 @@
             );
         };
 
-        // --- Utility Functions for Bluetooth Communication ---
+        // --- Utility Functions for Bluetooth Communication (Same as before) ---
         const connectBluetooth = async () => {
             if (!navigator.bluetooth) {
                 throw new Error("Bluetooth is not supported in this browser. Use Chrome/Edge on Desktop/Android.");
             }
             try {
-                // Request the device using the service UUID
                 const device = await navigator.bluetooth.requestDevice({
                     filters: [{ services: [BLUETOOTH_SERVICE_UUID] }],
                 });
@@ -99,7 +119,6 @@
                 return { device, server, characteristic };
             } catch (error) {
                 console.error("Bluetooth Connection Error:", error);
-                // Throw specific error messages based on common failures
                 if (error.message.includes("User cancelled")) {
                     throw new Error("সংযোগ বাতিল করা হয়েছে। দয়া করে আবার চেষ্টা করুন।");
                 }
@@ -110,7 +129,6 @@
         const sendCommand = async (characteristic, command) => {
             if (!characteristic) return console.error("Bluetooth Characteristic not available.");
             try {
-                // Commands are sent as ASCII strings followed by a newline character
                 const value = new TextEncoder().encode(`${command}\n`); 
                 await characteristic.writeValue(value);
                 console.log("Command sent:", command);
@@ -120,7 +138,6 @@
         };
 
         const parseStatus = (data) => {
-            // Expected format: STATUS|state=STUDYING|minutesToday=45|points=15|silentMode=1
             const text = new TextDecoder().decode(data).trim();
             if (!text.startsWith("STATUS|")) return null;
 
@@ -151,7 +168,6 @@
             const [isModalOpen, setIsModalOpen] = useState(false);
             const [modalContent, setModalContent] = useState({});
 
-            // Handler for Bluetooth Connection
             const handleConnect = useCallback(async () => {
                 setBluetoothStatus('Connecting...');
                 try {
@@ -159,7 +175,6 @@
                     setBtCharacteristic(result.characteristic);
                     setBluetoothStatus('Connected');
                     
-                    // 1. Start listening for data from Arduino
                     result.characteristic.startNotifications();
                     result.characteristic.addEventListener('characteristicvaluechanged', (event) => {
                         const data = event.target.value;
@@ -170,15 +185,12 @@
                         }
                     });
 
-                    // 2. Handle unexpected disconnection
                     result.server.device.addEventListener('gattserverdisconnected', () => {
                         setBluetoothStatus('Disconnected');
                         setBtCharacteristic(null);
                         setStatusData({ state: 'DEFAULT', minutesToday: 0, points: 0, silentMode: false, raw: "সংযোগ বিচ্ছিন্ন হয়েছে।" });
-                        console.log("Device disconnected.");
                     });
 
-                    // 3. Request initial status
                     sendCommand(result.characteristic, "status");
 
                 } catch (error) {
@@ -187,14 +199,13 @@
                         title: "সংযোগ ব্যর্থ (Connection Failed)", 
                         message: error.message.includes("Bluetooth") 
                             ? "এই ব্রাউজারে ব্লুটুথ সমর্থিত নয় (Android/Chrome ব্যবহার করুন)।" 
-                            : error.message, // Display the specific connection error
+                            : error.message, 
                         onClose: () => setIsModalOpen(false) 
                     });
                     setIsModalOpen(true);
                 }
             }, []);
 
-            // Handler for sending commands (Silent, Motivation, Reset)
             const handleSendCommand = useCallback((cmd) => {
                 if (bluetoothStatus !== 'Connected' || !btCharacteristic) {
                     setModalContent({ 
@@ -207,14 +218,12 @@
                 }
                 
                 if (cmd === 'reset') {
-                    // Show confirmation modal for reset command
                     setModalContent({ 
                         title: "রিসেট নিশ্চিত করুন (Confirm Reset)", 
                         message: "আপনি কি আজকের স্টাডি ডেটা এবং পয়েন্ট রিসেট করতে চান? এই প্রক্রিয়াটি অপরিবর্তনীয়।", 
                         onConfirm: () => {
                             sendCommand(btCharacteristic, "reset");
                             setIsModalOpen(false);
-                            // Optimistically update UI after confirming reset
                             setStatusData(prev => ({ ...prev, minutesToday: 0, points: 0 }));
                         },
                         onClose: () => setIsModalOpen(false)
@@ -223,17 +232,14 @@
                     return;
                 }
                 
-                // Send command for 'silent', 'motivation', and 'status'
                 sendCommand(btCharacteristic, cmd);
                 
-                // Optimistically update silent mode UI immediately
                 if (cmd === 'silent') {
                     setStatusData(prev => ({ ...prev, silentMode: !prev.silentMode })); 
                 }
                 
             }, [bluetoothStatus, btCharacteristic]);
 
-            // Display Calculations
             const currentStatus = useMemo(() => STATUS_ICONS[statusData.state] || STATUS_ICONS.DEFAULT, [statusData.state]);
 
             const formatMinutes = (totalMinutes) => {
@@ -241,12 +247,16 @@
                 const minutes = totalMinutes % 60;
                 return `${hours}h ${minutes}m`;
             };
+            
+            // Calculate progress for the goal
+            const progressPercentage = Math.min(100, (statusData.minutesToday / DAILY_GOAL_MINUTES) * 100);
+
 
             // UI Components (Cards and Buttons)
             const StatCard = ({ title, value, icon, iconColor = 'text-blue-400' }) => (
-                <div className="bg-gray-800 p-4 rounded-xl shadow-lg flex items-center space-x-4 transition duration-300 hover:shadow-xl border-t-4 border-gray-700">
+                <div className="bg-gray-800 p-4 rounded-xl shadow-lg flex items-center space-x-4 transition duration-300 hover:shadow-xl border border-gray-700">
                     <div className={`p-3 rounded-full ${iconColor} bg-opacity-20`}>
-                        <span className="text-2xl">{icon}</span>
+                        <Icon name={icon} size={28} className={iconColor} />
                     </div>
                     <div>
                         <p className="text-xs font-medium text-gray-400 uppercase">{title}</p>
@@ -259,9 +269,9 @@
                 <button
                     onClick={onClick}
                     disabled={disabled}
-                    className={`flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl shadow-lg transition duration-150 ${bgColor} text-white font-semibold transform hover:scale-[1.05] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed h-24`}
+                    className={`cmd-btn flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl shadow-md transition duration-200 ${bgColor} text-white font-semibold transform hover:scale-[1.03] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed h-24`}
                 >
-                    <span className="text-3xl mb-1">{icon}</span>
+                    <Icon name={icon} size={32} className="mb-1" />
                     <span className="text-xs font-medium text-center">{label}</span>
                 </button>
             );
@@ -271,7 +281,7 @@
                 <div className="app-container w-full mx-auto max-w-screen-md font-sans p-4 sm:p-6 dark:bg-gray-900">
                     
                     <header className="mb-6">
-                        <h1 className="text-3xl font-extrabold text-white mb-2 text-shadow">
+                        <h1 className="text-3xl font-extrabold text-white mb-1">
                             SSFA Guardian
                         </h1>
                         <p className="text-sm text-gray-400">
@@ -280,7 +290,7 @@
                     </header>
 
                     {/* Connection Status Card */}
-                    <div className="mb-6 bg-gray-800 p-4 rounded-xl shadow-lg border-b-4 border-blue-500">
+                    <div className="mb-6 bg-gray-800 p-4 rounded-xl shadow-xl border border-gray-700">
                         <div className="flex justify-between items-center">
                             <div className="flex items-center space-x-3">
                                 <span className={`h-3 w-3 rounded-full ${bluetoothStatus === 'Connected' ? 'bg-green-500 animate-pulse' : bluetoothStatus === 'Connecting...' ? 'bg-yellow-500' : 'bg-red-500'}`}></span>
@@ -301,24 +311,46 @@
                     {/* Live Status and Stats */}
                     <div className="bg-gray-800 p-6 rounded-xl shadow-2xl mb-6 border border-gray-700">
                         <div className="flex items-center space-x-4 mb-4">
-                            <span className={`text-5xl ${currentStatus.color}`}>{currentStatus.icon}</span>
+                            <Icon name={currentStatus.icon} size={48} className={`text-4xl ${currentStatus.color}`} />
                             <div>
                                 <p className="text-xs text-gray-400 uppercase">বর্তমান স্ট্যাটাস</p>
                                 <p className={`text-2xl font-extrabold ${currentStatus.color}`}>{currentStatus.label}</p>
                             </div>
                         </div>
+                        
                         <hr className="border-gray-700 my-4" />
+                        
+                        {/* Daily Goal Progress Bar */}
+                        <div className="mb-6">
+                            <div className="flex justify-between items-center text-sm mb-1">
+                                <p className="font-medium text-white">দৈনিক লক্ষ্যের দিকে ফোকাস</p>
+                                <p className="text-gray-400">{Math.round(progressPercentage)}% সম্পন্ন ({formatMinutes(statusData.minutesToday)} / {DAILY_GOAL_MINUTES}m)</p>
+                            </div>
+                            <div className="bg-gray-700 rounded-lg progress-bar">
+                                <div 
+                                    className={`progress-bar bg-pink-500 ${progressPercentage === 100 ? 'bg-green-500' : 'bg-pink-500'}`}
+                                    style={{ width: `${progressPercentage}%` }}
+                                ></div>
+                            </div>
+                            {progressPercentage >= 100 && (
+                                <p className="text-xs text-green-400 mt-2 font-semibold flex items-center">
+                                    <Icon name="CheckCircle" size={16} className="mr-1" />
+                                    আজকের ফোকাস লক্ষ্য অর্জন করা হয়েছে!
+                                </p>
+                            )}
+                        </div>
+
                         <div className="grid grid-cols-2 gap-4">
                             <StatCard 
-                                title="আজকের স্টাডি টাইম" 
+                                title="মোট স্টাডি টাইম" 
                                 value={formatMinutes(statusData.minutesToday)} 
-                                icon="⏰"
+                                icon="Clock"
                                 iconColor="text-pink-400"
                             />
                             <StatCard 
                                 title="ফোকাস পয়েন্ট" 
                                 value={statusData.points} 
-                                icon="⭐️"
+                                icon="Star"
                                 iconColor="text-yellow-400"
                             />
                         </div>
@@ -330,30 +362,30 @@
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <CommandButton
                             label={statusData.silentMode ? 'সাউন্ড চালু করুন' : 'সাইলেন্ট মোড'}
-                            icon={statusData.silentMode ? '🔊' : '🔇'}
+                            icon={statusData.silentMode ? 'Volume2' : 'VolumeX'}
                             onClick={() => handleSendCommand('silent')}
-                            bgColor={statusData.silentMode ? 'bg-indigo-600' : 'bg-gray-600'}
+                            bgColor={statusData.silentMode ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-600 hover:bg-gray-700'}
                             disabled={bluetoothStatus !== 'Connected'}
                         />
                         <CommandButton
                             label="মোটিভেশন পাঠান"
-                            icon="📣"
+                            icon="Sparkles"
                             onClick={() => handleSendCommand('motivation')}
-                            bgColor="bg-green-600"
+                            bgColor="bg-green-600 hover:bg-green-700"
                             disabled={bluetoothStatus !== 'Connected'}
                         />
                         <CommandButton
                             label="ডেটা রিসেট"
-                            icon="🔄"
+                            icon="RefreshCw"
                             onClick={() => handleSendCommand('reset')}
-                            bgColor="bg-red-600"
+                            bgColor="bg-red-600 hover:bg-red-700"
                             disabled={bluetoothStatus !== 'Connected'}
                         />
                             <CommandButton
                             label="স্ট্যাটাস রিফ্রেশ"
-                            icon="🔁"
+                            icon="RotateCw"
                             onClick={() => handleSendCommand('status')}
-                            bgColor="bg-blue-600"
+                            bgColor="bg-blue-600 hover:bg-blue-700"
                             disabled={bluetoothStatus !== 'Connected'}
                         />
                     </div>
@@ -380,4 +412,5 @@
     </script>
 </body>
 </html>
+
 
