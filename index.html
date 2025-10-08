@@ -3,19 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSFMA ইন্টারফেস বান্ডল (রিপোর্ট ও অ্যাপ ডেমো)</title>
+    <title>SSFMA ইন্টারফেস বান্ডল V3</title>
     
-    <!-- Combined Logo Favicon (Book + Focus + Star) - This is the logo you requested. -->
+    <!-- Combined Logo Favicon -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3C!-- Base (Book) --%3E%3Cpath d='M2 6V20C2 21.1046 2.89543 22 4 22H20C21.1046 22 22 21.1046 22 20V6C22 4.89543 21.1046 4 20 4H4C2.89543 4 2 4.89543 2 6Z' fill='%236EE7B7' opacity='0.7'/%3E%3C!-- Focus Ring (Magnifier) --%3E%3Ccircle cx='12' cy='12' r='4.5' stroke='%233B82F6' stroke-width='1.5'/%3E%3Cpath d='M15 15L18 18' stroke='%233B82F6' stroke-width='1.5' stroke-linecap='round'/%3E%3C!-- Success Star (Top) --%3E%3Cpath d='M12 7L13.8861 10.8861L18 12L13.8861 13.8861L12 18L10.1139 13.8861L6 12L10.1139 10.1139L12 7Z' fill='%23FBBF24' stroke='%23FBBF24' stroke-width='0.5'/%3E%3C/svg%3E" type="image/svg+xml">
     
-    <!-- Chosen Palette: Soothing Sage -->
-    <!-- Application Structure Plan: Combined Report Dashboard and Guardian App Mockup in one file, accessible via tabs. This allows the user to view the static report data (Dashboard) and the interactive live app simulation (Guardian App) without navigating away. -->
-    <!-- Visualization & Content Choices: The core Interactive Report structure is maintained. A new top-level tab is added to switch between the "Report Dashboard" and the "Guardian App Mockup" (which uses the previously generated Bluetooth app UI with simulated data). -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-
+    <!-- Tailwind CSS and Chart.js -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Firebase Imports for Real-time Data (Firestore) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, getDoc, collection, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // Log level set to Debug to assist with debugging
+        setLogLevel('Debug');
+
+        // Global variables provided by the Canvas Environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let app, db, auth, userId;
+
+        // Initialize Firebase
+        if (Object.keys(firebaseConfig).length > 0 && firebaseConfig.projectId) {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            window.db = db; // Make DB globally accessible for app logic
+            window.auth = auth;
+            window.appId = appId;
+            
+            // Authentication setup
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    userId = user.uid;
+                } else {
+                    if (initialAuthToken) {
+                        try {
+                            await signInWithCustomToken(auth, initialAuthToken);
+                            userId = auth.currentUser.uid;
+                        } catch (error) {
+                            console.error("Custom token sign-in failed, falling back to anonymous:", error);
+                            await signInAnonymously(auth);
+                            userId = auth.currentUser.uid;
+                        }
+                    } else {
+                        await signInAnonymously(auth);
+                        userId = auth.currentUser.uid;
+                    }
+                }
+                window.userId = userId;
+                
+                // Signal that Firebase is ready and user is authenticated/identified
+                document.dispatchEvent(new CustomEvent('firebase-ready'));
+            });
+
+        } else {
+             console.error("Firebase configuration is missing or invalid. App will run in simulation mode only.");
+             document.dispatchEvent(new CustomEvent('firebase-ready'));
+        }
+    </script>
+    
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
@@ -23,6 +77,7 @@
             font-family: 'Hind Siliguri', sans-serif;
             background-color: #f4f4f0;
             color: #3e4444;
+            overflow-x: hidden; /* Prevents horizontal scroll on all devices */
         }
         .chart-container {
             position: relative;
@@ -62,6 +117,60 @@
         .tab-button {
              transition: all 0.2s;
         }
+        
+        /* Workflow Container: Horizontal Scroll on Small Screens */
+        .workflow-scroll-container {
+            display: flex; /* Ensures steps are inline */
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 10px 0; /* Add padding for visual space */
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+            justify-content: flex-start; /* Start from the left on mobile */
+        }
+        .workflow-scroll-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        .workflow-scroll-container .workflow-step {
+            flex: 0 0 160px; /* Fixed width for card on mobile */
+            margin-right: 12px; /* Space between cards */
+        }
+        .workflow-scroll-container .workflow-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin: 0 5px;
+        }
+
+        /* Default (Desktop) Layout for Workflow */
+        @media (min-width: 768px) {
+            .workflow-scroll-container {
+                overflow-x: hidden; /* Hide scrollbar on desktop */
+                justify-content: center; /* Center steps on desktop */
+                white-space: normal;
+            }
+             .workflow-scroll-container .workflow-step {
+                flex: 1 1 18%; /* Distribute space evenly on desktop */
+                max-width: 18%;
+                margin-right: 0; 
+            }
+        }
+
+        /* Mobile Specific: Horizontal Scroll for Command Buttons (Guardian App) */
+        .cmd-scroll-container {
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 10px; /* Space for scrollbar */
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+        }
+        .cmd-scroll-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        .cmd-scroll-container > * {
+            display: inline-block;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -93,7 +202,6 @@
 
         <!-- REPORT VIEW (Interactive Report Content) -->
         <div id="report-view" class="view-content">
-
             <!-- Sub Navigation for Report -->
             <nav id="report-nav" class="flex flex-wrap justify-center border-b border-gray-300 mb-8 space-x-2 md:space-x-4">
                 <a href="#dashboard" class="nav-link font-semibold p-2 active">ড্যাশবোর্ড</a>
@@ -109,33 +217,33 @@
                     <h2 class="text-3xl font-bold text-[#3a5a40]">লাইভ সিস্টেম স্ট্যাটাস (রিপোর্ট থেকে সিমুলেশন)</h2>
                     <p class="text-md text-gray-600 mt-2">এই ড্যাশবোর্ডটি SSFMA সিস্টেমের বর্তমান অবস্থার একটি সিমুলেটেড ভিউ প্রদান করে।</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
-                        <div class="bg-green-100 p-4 rounded-full"><span class="text-3xl">💡</span></div>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center space-x-3 sm:space-x-4">
+                        <div class="bg-green-100 p-3 rounded-full"><span class="text-2xl sm:text-3xl">💡</span></div>
                         <div>
-                            <p class="text-sm text-gray-500 font-medium">বর্তমান অবস্থা</p>
-                            <p id="current-status" class="text-2xl font-bold text-[#344e41]">স্টাডি চলছে</p>
+                            <p class="text-xs sm:text-sm text-gray-500 font-medium">বর্তমান অবস্থা</p>
+                            <p id="current-status" class="text-lg sm:text-2xl font-bold text-[#344e41]">স্টাডি চলছে</p>
                         </div>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
-                         <div class="bg-yellow-100 p-4 rounded-full"><span class="text-3xl">⭐</span></div>
+                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center space-x-3 sm:space-x-4">
+                         <div class="bg-yellow-100 p-3 rounded-full"><span class="text-2xl sm:text-3xl">⭐</span></div>
                         <div>
-                            <p class="text-sm text-gray-500 font-medium">আজকের ফোকাস পয়েন্ট</p>
-                            <p id="focus-points" class="text-2xl font-bold text-[#344e41]">১২৫</p>
+                            <p class="text-xs sm:text-sm text-gray-500 font-medium">আজকের ফোকাস পয়েন্ট</p>
+                            <p id="focus-points" class="text-lg sm:text-2xl font-bold text-[#344e41]">১২৫</p>
                         </div>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
-                         <div class="bg-blue-100 p-4 rounded-full"><span class="text-3xl">⏰</span></div>
+                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center space-x-3 sm:space-x-4">
+                         <div class="bg-blue-100 p-3 rounded-full"><span class="text-2xl sm:text-3xl">⏰</span></div>
                         <div>
-                            <p class="text-sm text-gray-500 font-medium">আজকের স্টাডি টাইম</p>
-                            <p id="study-time" class="text-2xl font-bold text-[#344e41]">২ ঘন্টা ৩৫ মিনিট</p>
+                            <p class="text-xs sm:text-sm text-gray-500 font-medium">আজকের স্টাডি টাইম</p>
+                            <p id="study-time" class="text-lg sm:text-2xl font-bold text-[#344e41]">২ ঘন্টা ৩৫ মিনিট</p>
                         </div>
                     </div>
-                     <div class="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4">
-                         <div class="bg-red-100 p-4 rounded-full"><span class="text-3xl">⚠️</span></div>
+                     <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center space-x-3 sm:space-x-4">
+                         <div class="bg-red-100 p-3 rounded-full"><span class="text-2xl sm:text-3xl">⚠️</span></div>
                         <div>
-                            <p class="text-sm text-gray-500 font-medium">ডিস্ট্র্যাকশন অ্যালার্ট</p>
-                            <p id="distraction-alerts" class="text-2xl font-bold text-[#344e41]">৩</p>
+                            <p class="text-xs sm:text-sm text-gray-500 font-medium">ডিস্ট্র্যাকশন অ্যালার্ট</p>
+                            <p id="distraction-alerts" class="text-lg sm:text-2xl font-bold text-[#344e41]">৩</p>
                         </div>
                     </div>
                 </div>
@@ -147,11 +255,11 @@
                     <h2 class="text-3xl font-bold text-[#3a5a40]">সিস্টেমের প্রধান ফিচারসমূহ</h2>
                     <p class="text-md text-gray-600 mt-2">SSFMA সিস্টেমের মূল ভিত্তি হলো এর স্মার্ট ফিচারগুলো। নিচের ট্যাবগুলোতে ক্লিক করে প্রতিটি ফিচার সম্পর্কে বিস্তারিত জানুন।</p>
                 </div>
-                <div class="border-b border-gray-200">
-                    <nav id="features-nav" class="-mb-px flex justify-center space-x-4 md:space-x-8" aria-label="Tabs">
-                        <button data-target="feature-detection" class="feature-tab nav-link whitespace-nowrap py-4 px-1 font-medium text-lg active">ডিসট্র্যাকশন শনাক্তকরণ</button>
-                        <button data-target="feature-motivation" class="feature-tab nav-link whitespace-nowrap py-4 px-1 font-medium text-lg">মোটিভেশন সিস্টেম</button>
-                        <button data-target="feature-system" class="feature-tab nav-link whitespace-nowrap py-4 px-1 font-medium text-lg">পরিবেশ ও সিস্টেম</button>
+                <div class="border-b border-gray-200 overflow-x-auto">
+                    <nav id="features-nav" class="-mb-px flex justify-start md:justify-center space-x-4 md:space-x-8" aria-label="Tabs">
+                        <button data-target="feature-detection" class="feature-tab nav-link whitespace-nowrap py-4 px-1 font-medium text-base md:text-lg active">ডিসট্র্যাকশন শনাক্তকরণ</button>
+                        <button data-target="feature-motivation" class="feature-tab nav-link whitespace-nowrap py-4 px-1 font-medium text-base md:text-lg">মোটিভেশন সিস্টেম</button>
+                        <button data-target="feature-system" class="feature-tab nav-link whitespace-nowrap py-4 px-1 font-medium text-base md:text-lg">পরিবেশ ও সিস্টেম</button>
                     </nav>
                 </div>
                 <div id="features-content" class="mt-8">
@@ -165,29 +273,33 @@
                     <h2 class="text-3xl font-bold text-[#3a5a40]">কার্যপ্রণালী (Workflow)</h2>
                     <p class="text-md text-gray-600 mt-2">সিস্টেমটি কীভাবে ধাপে ধাপে কাজ করে তা জানতে নিচের ধাপগুলোতে ক্লিক করুন।</p>
                 </div>
-                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 mb-6">
-                    <div id="workflow-step-1" class="workflow-step bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-full md:w-1/5 text-center">
+                <!-- Workflow steps optimized for mobile to be horizontal and scrollable -->
+                <div class="workflow-scroll-container">
+                    <div id="workflow-step-1" class="workflow-step bg-white p-4 rounded-lg shadow-md border-2 border-transparent text-center active">
                         <span class="text-4xl">🧑‍💻</span>
                         <h3 class="font-bold mt-2">ধাপ ১: উপস্থিতি</h3>
                     </div>
-                    <div class="text-4xl font-light arrow">→</div>
-                    <div id="workflow-step-2" class="workflow-step bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-full md:w-1/5 text-center">
+                    <div class="text-4xl font-light arrow workflow-arrow hidden md:flex">→</div>
+                    
+                    <div id="workflow-step-2" class="workflow-step bg-white p-4 rounded-lg shadow-md border-2 border-transparent text-center">
                         <span class="text-4xl">🧐</span>
                         <h3 class="font-bold mt-2">ধাপ ২: পর্যবেক্ষণ</h3>
                     </div>
-                     <div class="text-4xl font-light arrow">→</div>
-                    <div id="workflow-step-3" class="workflow-step bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-full md:w-1/5 text-center">
+                    <div class="text-4xl font-light arrow workflow-arrow hidden md:flex">→</div>
+                    
+                    <div id="workflow-step-3" class="workflow-step bg-white p-4 rounded-lg shadow-md border-2 border-transparent text-center">
                         <span class="text-4xl">⏳</span>
                         <h3 class="font-bold mt-2">ধাপ ৩: স্টাডি শুরু</h3>
                     </div>
-                    <div class="text-4xl font-light arrow">→</div>
-                     <div id="workflow-step-4" class="workflow-step bg-white p-4 rounded-lg shadow-md border-2 border-transparent w-full md:w-1/5 text-center">
+                    <div class="text-4xl font-light arrow workflow-arrow hidden md:flex">→</div>
+                    
+                     <div id="workflow-step-4" class="workflow-step bg-white p-4 rounded-lg shadow-md border-2 border-transparent text-center">
                         <span class="text-4xl">🚨</span>
                         <h3 class="font-bold mt-2">ধাপ ৪: মনিটরিং</h3>
                     </div>
                 </div>
-                <div id="workflow-details" class="bg-white p-6 rounded-lg shadow-inner min-h-[100px] text-center flex items-center justify-center">
-                    <p class="text-gray-700">একটি ধাপ নির্বাচন করুন।</p>
+                <div id="workflow-details" class="bg-white p-6 rounded-lg shadow-inner min-h-[100px] text-center flex items-center justify-center mt-6">
+                    <p class="text-gray-700">শিক্ষার্থী ডেস্কে বসলে IR এবং PIR সেন্সর তার উপস্থিতি ও প্রাথমিক নড়াচড়া শনাক্ত করে। সিস্টেম সক্রিয় হওয়ার জন্য প্রস্তুত হয়।</p>
                 </div>
             </section>
 
@@ -223,17 +335,19 @@
         <!-- GUARDIAN APP VIEW (Bluetooth Demo) -->
         <div id="app-view" class="view-content hidden">
             <h2 class="text-3xl font-bold text-[#3a5a40] text-center mb-8">📱 SSFMA Guardian App ডেমো</h2>
-            <p class="text-md text-gray-600 mt-2 text-center mb-8">এটি ব্লুটুথ গার্ডিয়ান অ্যাপের সিমুলেটেড ইউআই। এখানে "Arduino-এর সাথে সংযোগ" বাটনে ক্লিক করে আপনার ব্লুটুথ ডিভাইস কানেক্ট করার অভিজ্ঞতা নিতে পারেন।</p>
+            <!-- Display User ID for connection clarity -->
+            <p id="display-user-id" class="text-sm text-gray-600 mt-2 text-center mb-4">ইউজার আইডি: লোড হচ্ছে...</p>
+            <p class="text-md text-gray-600 mt-2 text-center mb-8">Firebase সেটআপ সম্পন্ন হয়েছে। নিচের UI এখন রিয়েল-টাইম ডেটা (যদি Arduino থেকে ডেটা আসে) বা সিমুলেশন মোডে চলবে।</p>
 
             <div id="app-root" class="w-full mx-auto max-w-screen-md">
-                <!-- React/Simulated UI goes here -->
+                <!-- App UI -->
                 <div class="bg-gray-900 p-6 rounded-xl shadow-2xl">
                     <header class="mb-6">
                         <h1 class="text-3xl font-extrabold text-white mb-1">
                             SSFMA Guardian App
                         </h1>
                         <p class="text-sm text-gray-400">
-                            রিমোট মনিটরিং ইন্টারফেস (Simulated Bluetooth)
+                            রিমোট মনিটরিং ইন্টারফেস (Firebase Enabled)
                         </p>
                     </header>
 
@@ -243,14 +357,15 @@
                             <div class="flex items-center space-x-3">
                                 <span id="bt-status-light" class="h-3 w-3 rounded-full bg-red-500"></span>
                                 <p class="text-sm font-semibold text-gray-300">
-                                    Bluetooth স্ট্যাটাস: <span id="bt-status-text" class="font-bold text-white">Disconnected</span>
+                                    Firebase স্ট্যাটাস: <span id="bt-status-text" class="font-bold text-white">Disconnected (Simulated)</span>
                                 </p>
                             </div>
                             <button
                                 id="app-connect-btn"
-                                class="px-4 py-2 text-xs font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition duration-150"
+                                class="px-4 py-2 text-xs font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition duration-150 disabled:bg-gray-500"
+                                disabled
                             >
-                                Arduino-এর সাথে সংযোগ
+                                ডেটা লোড হচ্ছে...
                             </button>
                         </div>
                     </div>
@@ -304,23 +419,23 @@
                         </div>
                     </div>
                     
-                    <!-- Remote Commands -->
+                    <!-- Remote Commands: Mobile Optimized Horizontal Scroll -->
                     <h2 class="text-xl font-bold text-white mb-4">রিমোট কমান্ডস</h2>
-
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        <button id="app-silent-btn" data-cmd="silent" class="cmd-btn flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl shadow-md transition duration-200 bg-gray-600 hover:bg-gray-700 text-white font-semibold h-24 disabled:opacity-40 disabled:cursor-not-allowed">
+                    <div class="cmd-scroll-container">
+                        <!-- Command buttons (H-scroll on mobile) -->
+                        <button id="app-silent-btn" data-cmd="silent" class="cmd-btn flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl shadow-md transition duration-200 bg-gray-600 hover:bg-gray-700 text-white font-semibold h-24 w-28 mx-1 disabled:opacity-40 disabled:cursor-not-allowed">
                              <i id="app-silent-icon" class="mb-1 text-3xl fa-solid fa-volume-off"></i>
                             <span id="app-silent-label" class="text-xs font-medium text-center">সাইলেন্ট মোড</span>
                         </button>
-                        <button data-cmd="motivation" class="cmd-btn flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl shadow-md transition duration-200 bg-green-600 hover:bg-green-700 text-white font-semibold h-24 disabled:opacity-40 disabled:cursor-not-allowed">
+                        <button data-cmd="motivation" class="cmd-btn flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl shadow-md transition duration-200 bg-green-600 hover:bg-green-700 text-white font-semibold h-24 w-28 mx-1 disabled:opacity-40 disabled:cursor-not-allowed">
                             <i class="mb-1 text-3xl fa-solid fa-bell-concierge"></i>
                             <span class="text-xs font-medium text-center">মোটিভেশন পাঠান</span>
                         </button>
-                        <button id="app-reset-btn" data-cmd="reset" class="cmd-btn flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl shadow-md transition duration-200 bg-red-600 hover:bg-red-700 text-white font-semibold h-24 disabled:opacity-40 disabled:cursor-not-allowed">
+                        <button id="app-reset-btn" data-cmd="reset" class="cmd-btn flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl shadow-md transition duration-200 bg-red-600 hover:bg-red-700 text-white font-semibold h-24 w-28 mx-1 disabled:opacity-40 disabled:cursor-not-allowed">
                             <i class="mb-1 text-3xl fa-solid fa-arrows-rotate"></i>
                             <span class="text-xs font-medium text-center">ডেটা রিসেট</span>
                         </button>
-                        <button data-cmd="status" class="cmd-btn flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl shadow-md transition duration-200 bg-blue-600 hover:bg-blue-700 text-white font-semibold h-24 disabled:opacity-40 disabled:cursor-not-allowed">
+                        <button data-cmd="status" class="cmd-btn flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl shadow-md transition duration-200 bg-blue-600 hover:bg-blue-700 text-white font-semibold h-24 w-28 mx-1 disabled:opacity-40 disabled:cursor-not-allowed">
                             <i class="mb-1 text-3xl fa-solid fa-arrows-rotate"></i>
                             <span class="text-xs font-medium text-center">স্ট্যাটাস রিফ্রেশ</span>
                         </button>
@@ -329,7 +444,7 @@
                      <!-- Debug/Info Section -->
                     <h2 class="text-xl font-bold text-white mt-8 mb-4">ডিবাগ লগ</h2>
                     <div class="bg-gray-800 p-4 rounded-xl text-xs overflow-x-auto text-gray-400 border border-gray-700">
-                        <pre id="app-debug-log" class="whitespace-pre-wrap break-words">সংযোগ বিচ্ছিন্ন হয়েছে।</pre>
+                        <pre id="app-debug-log" class="whitespace-pre-wrap break-words">Firebase লোড হওয়ার অপেক্ষায়...</pre>
                     </div>
 
                 </div>
@@ -403,12 +518,7 @@
                 }
             };
 
-            // --- REPORT VIEW (Interactive Report) Logic ---
-            const featuresNav = document.getElementById('features-nav');
-            const featuresContent = document.getElementById('features-content');
-            const workflowSteps = document.querySelectorAll('.workflow-step');
-            const workflowDetails = document.getElementById('workflow-details');
-            const hardwareGrid = document.getElementById('hardware-grid');
+            // --- Modal/UI Utility Functions ---
             const modal = document.getElementById('unified-modal');
             const modalBackdrop = document.getElementById('modal-backdrop');
             const modalContentEl = document.getElementById('modal-content');
@@ -452,6 +562,13 @@
             modalCloseBtn.addEventListener('click', closeModal);
             modalBackdrop.addEventListener('click', closeModal);
 
+            // --- REPORT VIEW Logic ---
+            const featuresNav = document.getElementById('features-nav');
+            const featuresContent = document.getElementById('features-content');
+            const workflowSteps = document.querySelectorAll('.workflow-step');
+            const workflowDetails = document.getElementById('workflow-details');
+            const hardwareGrid = document.getElementById('hardware-grid');
+            
 
             function showFeatureContent(targetId) {
                 const feature = ssfmaData.features[targetId];
@@ -482,6 +599,10 @@
                     workflowDetails.innerHTML = `<p class="text-gray-800 font-medium">${ssfmaData.workflow[step.id]}</p>`;
                 });
             });
+
+            // Set initial workflow details
+            workflowSteps[0].classList.add('active');
+            workflowDetails.innerHTML = `<p class="text-gray-800 font-medium">${ssfmaData.workflow['workflow-step-1']}</p>`;
 
             hardwareGrid.innerHTML = ssfmaData.hardware.map(item => `
                 <div data-id="${item.id}" class="hardware-card bg-white p-4 rounded-lg shadow-md text-center cursor-pointer transition transform hover:scale-105">
@@ -561,20 +682,28 @@
                 document.getElementById('show-minutes').classList.add('bg-white', 'text-gray-700');
             });
             
-            // --- GUARDIAN APP VIEW (Simulated Bluetooth) Logic ---
+            // --- GUARDIAN APP VIEW (Firebase + Simulation) Logic ---
             const STATUS_ICONS = {
-                STUDYING: { iconClass: 'fa-solid fa-lightbulb', color: 'text-green-400', label: 'Focused Studying' },
-                DISTRACTED: { iconClass: 'fa-solid fa-triangle-exclamation', color: 'text-red-400', label: 'Distracted! Refocus' },
-                IDLE: { iconClass: 'fa-solid fa-mug-hot', color: 'text-yellow-400', label: 'Idle / Break Time' },
-                OBSERVING: { iconClass: 'fa-solid fa-magnifying-glass', color: 'text-blue-400', label: 'System Observing' },
-                STOPPED: { iconClass: 'fa-solid fa-stop-circle', color: 'text-gray-500', label: 'Stopped / Ready' },
+                STUDYING: { iconClass: 'fa-solid fa-lightbulb', color: 'text-green-400', label: 'Focused Studying (মনোযোগী)' },
+                DISTRACTED: { iconClass: 'fa-solid fa-triangle-exclamation', color: 'text-red-400', label: 'Distracted! (বিচলিত)' },
+                IDLE: { iconClass: 'fa-solid fa-mug-hot', color: 'text-yellow-400', label: 'Idle / Break Time (বিরতি)' },
+                OBSERVING: { iconClass: 'fa-solid fa-magnifying-glass', color: 'text-blue-400', label: 'System Observing (পর্যবেক্ষণ)' },
+                STOPPED: { iconClass: 'fa-solid fa-stop-circle', color: 'text-gray-500', label: 'Stopped / Ready (বন্ধ)' },
                 DEFAULT: { iconClass: 'fa-solid fa-plug-circle-xmark', color: 'text-gray-600', label: 'Disconnected' }
             };
             const DAILY_GOAL_MINUTES = 60;
-            let appStatusData = { state: 'DEFAULT', minutesToday: 0, points: 0, silentMode: false };
+            
+            let appStatusData = { 
+                state: 'DEFAULT', 
+                minutesToday: 0, 
+                points: 0, 
+                silentMode: false,
+                lastUpdateTime: Date.now() 
+            };
+            
             let isConnected = false;
-            let logCount = 0;
             let intervalId = null; 
+            let dataListener = null;
 
             const btStatusLight = document.getElementById('bt-status-light');
             const btStatusText = document.getElementById('bt-status-text');
@@ -590,6 +719,9 @@
             const appSilentBtn = document.getElementById('app-silent-btn');
             const appSilentIcon = document.getElementById('app-silent-icon');
             const appSilentLabel = document.getElementById('app-silent-label');
+            const displayUserId = document.getElementById('display-user-id');
+            const cmdButtons = document.querySelectorAll('#app-view button[data-cmd]');
+
 
             const formatMinutes = (totalMinutes) => {
                 const hours = Math.floor(totalMinutes / 60);
@@ -597,10 +729,17 @@
                 return `${hours}h ${minutes}m`;
             };
 
+            const updateLog = (message) => {
+                const now = new Date().toLocaleTimeString('bn-BD');
+                appDebugLog.textContent = `[${now}] ${message}\n${appDebugLog.textContent}`;
+            };
+
             const updateAppUI = () => {
                 const current = STATUS_ICONS[appStatusData.state] || STATUS_ICONS.DEFAULT;
                 appCurrentIcon.className = `${current.iconClass} text-4xl w-12 h-12 flex items-center justify-center`;
+                appCurrentIcon.classList.remove('text-green-400', 'text-red-400', 'text-yellow-400', 'text-blue-400', 'text-gray-500', 'text-gray-600');
                 appCurrentIcon.classList.add(current.color);
+
                 appCurrentLabel.textContent = current.label;
                 appCurrentLabel.classList.remove('text-green-400', 'text-red-400', 'text-yellow-400', 'text-blue-400', 'text-gray-500', 'text-gray-600');
                 appCurrentLabel.classList.add(current.color);
@@ -622,106 +761,188 @@
                 appSilentBtn.classList.toggle('bg-gray-600', !appStatusData.silentMode);
                 appSilentBtn.classList.toggle('hover:bg-gray-700', !appStatusData.silentMode);
 
-                document.querySelectorAll('#app-view button[data-cmd]').forEach(btn => {
+                cmdButtons.forEach(btn => {
                     btn.disabled = !isConnected;
                 });
             };
-
-            const updateLog = (message) => {
-                const now = new Date().toLocaleTimeString('bn-BD');
-                appDebugLog.textContent = `[${now}] ${message}\n${appDebugLog.textContent}`;
+            
+            // --- Firebase Logic for Live Status ---
+            const getStatusDocRef = (db, appId, userId) => {
+                return window.db ? window.getDoc(window.db, window.doc(window.db, `artifacts/${appId}/public/data/ssfma_status/${userId}`)) : null;
             };
 
-            const simulateStatusUpdate = () => {
-                if (!isConnected) return;
-                
-                if (appStatusData.state === 'STOPPED' || appStatusData.state === 'IDLE') {
-                    // Start study simulation after 10s idle/stop
-                    if (logCount % 10 === 0) {
-                         appStatusData.state = 'STUDYING';
-                         updateLog("SYSTEM: Status changed to STUDYING.");
-                    }
+            const startFirebaseListener = () => {
+                if (!window.db || !window.userId || dataListener) {
+                    updateLog("ERROR: Firebase বা User ID প্রস্তুত নয়। সিমুলেশন চলছে।");
+                    isConnected = true; // Stay in simulation mode
+                    appConnectBtn.textContent = 'সিমুলেশন চলছে';
+                    appConnectBtn.disabled = true;
+                    btStatusText.textContent = 'Simulating Data';
+                    btStatusLight.classList.remove('bg-red-500');
+                    btStatusLight.classList.add('bg-blue-500', 'animate-pulse');
+                    startSimulation();
+                    return;
                 }
+
+                const statusRef = window.doc(window.db, `artifacts/${window.appId}/public/data/ssfma_status/${window.userId}`);
                 
-                if (appStatusData.state === 'STUDYING') {
-                    appStatusData.minutesToday += 1;
-                    appStatusData.points += 5;
-                    updateLog(`STATUS|state=${appStatusData.state}|minutesToday=${appStatusData.minutesToday}|points=${appStatusData.points}|silentMode=${appStatusData.silentMode ? '1' : '0'}`);
-                    
-                    // Simulate a distraction every 15 minutes
-                    if (appStatusData.minutesToday % 15 === 0 && appStatusData.minutesToday > 0) {
-                        appStatusData.state = 'DISTRACTED';
-                        updateLog("ALERT: Distraction detected! State changed to DISTRACTED.");
-                        setTimeout(() => {
-                            appStatusData.state = 'STUDYING'; // Revert back to studying
-                            updateLog("SYSTEM: Student refocused. State changed back to STUDYING.");
-                        }, 5000);
+                // Unsubscribe any existing listener
+                if(dataListener) dataListener();
+
+                // Start new real-time listener
+                dataListener = window.onSnapshot(statusRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        
+                        // Update appStatusData with live data
+                        appStatusData.state = data.state || 'STOPPED';
+                        appStatusData.minutesToday = data.minutesToday || 0;
+                        appStatusData.points = data.points || 0;
+                        appStatusData.silentMode = data.silentMode || false;
+                        appStatusData.lastUpdateTime = data.timestamp ? data.timestamp.toMillis() : Date.now();
+                        
+                        isConnected = true;
+                        btStatusText.textContent = 'Live Data (Firestore)';
+                        btStatusLight.classList.remove('bg-yellow-500', 'bg-red-500', 'animate-pulse');
+                        btStatusLight.classList.add('bg-green-500');
+                        appConnectBtn.textContent = 'লাইভ ডেটা সক্রিয়';
+                        appConnectBtn.disabled = true;
+                        
+                        updateLog(`FIREBASE: New data received. Status: ${appStatusData.state}. Minutes: ${appStatusData.minutesToday}`);
+
+                    } else {
+                        // Document doesn't exist, assume Arduino is offline or not yet started
+                        if (isConnected) {
+                            updateLog("FIREBASE: Data document not found. Assuming Arduino offline.");
+                        } else {
+                             updateLog("FIREBASE: Initial setup required. Document not created yet.");
+                        }
+                        isConnected = false;
+                        appStatusData.state = 'DEFAULT';
+                        btStatusText.textContent = 'Arduino Offline';
+                        btStatusLight.classList.remove('bg-green-500', 'bg-yellow-500', 'animate-pulse');
+                        btStatusLight.classList.add('bg-red-500');
+                        appConnectBtn.textContent = 'ম্যানুয়াল সংযোগের চেষ্টা করুন';
+                        appConnectBtn.disabled = false;
+                        
+                        // Start simulation if disconnected to show expected behavior
+                        startSimulation(); 
                     }
-                }
-                
-                updateAppUI();
-                logCount++;
-            };
-
-            appConnectBtn.addEventListener('click', () => {
-                if (isConnected) return;
-
-                appConnectBtn.textContent = 'সংযোগ হচ্ছে...';
-                btStatusText.textContent = 'Connecting...';
-                btStatusLight.classList.remove('bg-red-500');
-                btStatusLight.classList.add('bg-yellow-500');
-
-                // Simulate Bluetooth connection delay
-                setTimeout(() => {
-                    isConnected = true;
-                    appStatusData = { state: 'OBSERVING', minutesToday: 0, points: 0, silentMode: false };
-                    
-                    btStatusText.textContent = 'Connected';
-                    btStatusLight.classList.remove('bg-yellow-500');
-                    btStatusLight.classList.add('bg-green-500', 'animate-pulse');
-                    appConnectBtn.textContent = 'Arduino-এর সাথে সংযোগ';
-                    
-                    updateLog("SUCCESS: Arduino-এর সাথে সংযোগ সফল হয়েছে। সিস্টেম অবজার্ভিং মোডে আছে।");
-                    
-                    // Start simulation loop
-                    intervalId = setInterval(simulateStatusUpdate, 5000); // Update every 5 seconds (simulated minute)
                     updateAppUI();
+                }, (error) => {
+                    console.error("Firestore listener error:", error);
+                    updateLog(`ERROR: Firestore সংযোগে সমস্যা: ${error.message}`);
+                    isConnected = false;
+                    appConnectBtn.textContent = 'সংযোগ সমস্যা';
+                    appConnectBtn.disabled = false;
+                    updateAppUI();
+                    startSimulation(); 
+                });
+            };
 
-                }, 2000);
+            const sendRemoteCommand = async (command, value = null) => {
+                if (!window.db || !window.userId) {
+                    showModal("ত্রুটি", "Firebase বা ইউজার আইডি প্রস্তুত নয়। কমান্ড পাঠানো সম্ভব না।");
+                    return;
+                }
+                
+                const controlRef = window.doc(window.db, `artifacts/${window.appId}/public/data/ssfma_control/${window.userId}`);
+                const payload = {
+                    command: command,
+                    value: value !== null ? value : true,
+                    timestamp: new Date()
+                };
+
+                try {
+                    await window.setDoc(controlRef, payload);
+                    updateLog(`COMMAND: Sent command "${command}" to Arduino.`);
+                    showModal("কমান্ড পাঠানো হয়েছে!", `Arduino এখন আপনার পাঠানো কমান্ড: "${command}" গ্রহণ করার জন্য প্রস্তুত।`, "রিমোট কন্ট্রোল");
+                } catch (error) {
+                    console.error("Error sending command:", error);
+                    updateLog(`ERROR: কমান্ড পাঠাতে ব্যর্থ: ${error.message}`);
+                    showModal("ত্রুটি", `কমান্ড পাঠাতে সমস্যা হয়েছে: ${error.message}`, "রিমোট কন্ট্রোল");
+                }
+            };
+
+            // --- Simulation Logic (Fallback for Disconnected/Dev Mode) ---
+             const startSimulation = () => {
+                if (intervalId) return; // Already running
+                appStatusData.state = 'STOPPED';
+                updateLog("Starting Data Simulation (Fallback).");
+                
+                intervalId = setInterval(() => {
+                    // Simple state machine simulation
+                    if (appStatusData.state === 'STOPPED' || appStatusData.state === 'IDLE' || appStatusData.state === 'DEFAULT') {
+                        appStatusData.state = 'STUDYING';
+                        updateLog("SIMULATION: Status changed to STUDYING.");
+                    }
+                    
+                    if (appStatusData.state === 'STUDYING') {
+                        appStatusData.minutesToday += 1;
+                        appStatusData.points += 5;
+                        
+                        // Simulate a distraction every 15 minutes
+                        if (appStatusData.minutesToday % 15 === 0 && appStatusData.minutesToday > 0) {
+                            appStatusData.state = 'DISTRACTED';
+                            updateLog("SIMULATION ALERT: Distraction detected! State changed to DISTRACTED.");
+                            setTimeout(() => {
+                                appStatusData.state = 'STUDYING'; // Revert back to studying
+                                updateLog("SIMULATION: Refocused. State changed back to STUDYING.");
+                                updateAppUI();
+                            }, 5000);
+                        }
+                    }
+                    updateAppUI();
+                }, 5000); // Update every 5 seconds (simulated minute)
+            };
+
+
+            // --- Event Listeners and Initializers ---
+            document.addEventListener('firebase-ready', () => {
+                if(window.userId) {
+                    displayUserId.textContent = `ইউজার আইডি: ${window.userId}`;
+                    startFirebaseListener();
+                } else {
+                     displayUserId.textContent = `ইউজার আইডি: লোড হতে ব্যর্থ (ফায়ারবেস কনফিগ অনুপস্থিত)`;
+                     startSimulation();
+                     updateLog("WARNING: Firebase কনফিগারেশন নেই। গার্ডিয়ান অ্যাপ ডেমো সিমুলেশন মোডে চলছে।");
+                }
             });
 
-            document.querySelectorAll('#app-view button[data-cmd]').forEach(btn => {
+
+            appConnectBtn.addEventListener('click', () => {
+                if (!isConnected) {
+                    showModal("ম্যানুয়াল সংযোগ", "এই বাটনটি সাধারণত ব্লুটুথ সংযোগের জন্য ব্যবহৃত হয়। Firebase সক্রিয় থাকায়, এটি স্বয়ংক্রিয়ভাবে ডেটার জন্য অপেক্ষা করবে।", "", () => {
+                        // User clicked 'নিশ্চিত করুন' - attempt listener re-start
+                        startFirebaseListener();
+                    });
+                }
+            });
+
+
+            cmdButtons.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const cmd = e.currentTarget.dataset.cmd;
-                    if (!isConnected) {
-                        showModal("সংযোগ বিচ্ছিন্ন (Disconnected)", "দয়া করে আগে SSFA Arduino-এর সাথে সংযোগ করুন।");
+                    
+                    if (!isConnected && !intervalId) { // Check if not connected AND not simulating
+                        showModal("সংযোগ ত্রুটি", "Guardian App বর্তমানে Arduino-এর সাথে সংযুক্ত নয়। কোনো কমান্ড পাঠানো সম্ভব না।", "রিমোট কন্ট্রোল");
                         return;
                     }
-
+                    
                     if (cmd === 'reset') {
                          showModal("রিসেট নিশ্চিত করুন (Confirm Reset)", 
-                                    "আপনি কি আজকের স্টাডি ডেটা এবং পয়েন্ট রিসেট করতে চান? এই প্রক্রিয়াটি অপরিবর্তনীয়।",
-                                    "", // feature is empty
-                                    () => {
-                                        appStatusData.minutesToday = 0;
-                                        appStatusData.points = 0;
-                                        updateLog("COMMAND: Data reset executed.");
-                                        updateAppUI();
-                                    });
+                                    "আপনি কি আজকের স্টাডি ডেটা এবং পয়েন্ট **রিসেট** করতে চান? এই প্রক্রিয়াটি অপরিবর্তনীয়।",
+                                    "ডেটা রিসেট",
+                                    () => sendRemoteCommand(cmd, true));
                         return;
                     }
                     
                     if (cmd === 'silent') {
-                        appStatusData.silentMode = !appStatusData.silentMode;
-                        updateLog(`COMMAND: Silent mode set to ${appStatusData.silentMode}.`);
-                    } else if (cmd === 'motivation') {
-                        updateLog("COMMAND: Motivational prompt sent to Arduino LCD/Speaker.");
-                    } else if (cmd === 'status') {
-                        updateLog("COMMAND: Status request sent. Waiting for update...");
-                        // Will trigger an update immediately
+                        const nextState = !appStatusData.silentMode;
+                        sendRemoteCommand('set_silent_mode', nextState);
+                    } else {
+                        sendRemoteCommand(cmd, true);
                     }
-                    
-                    updateAppUI();
                 });
             });
 
@@ -741,6 +962,8 @@
                     tabApp.classList.remove('bg-[#588157]', 'text-white');
                     tabApp.classList.add('bg-white', 'text-[#344e41]');
                     document.getElementById('report-nav').style.display = 'flex'; // Show report sub-nav
+                    // Scroll to top of report view content
+                    reportView.scrollIntoView({ behavior: 'smooth' });
                 } else {
                     appView.classList.remove('hidden');
                     reportView.classList.add('hidden');
@@ -749,8 +972,9 @@
                     tabReport.classList.remove('bg-[#588157]', 'text-white');
                     tabReport.classList.add('bg-white', 'text-[#344e41]');
                     document.getElementById('report-nav').style.display = 'none'; // Hide report sub-nav
-                    // Ensure App UI is initialized/updated when switching to it
-                    updateAppUI(); 
+                    // Scroll to top of app view content
+                    appView.scrollIntoView({ behavior: 'smooth' });
+                    updateAppUI(); // Ensure App UI is up-to-date
                 }
             };
             
