@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SSFA Guardian App</title>
+    
+    <!-- **NEW ADDITION: Favicon / Website Icon** -->
+    <!-- Using a base64 encoded SVG for perfect display and quick loading -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FBBF24'%3E%3Cpath d='M12 2l3.09 6.26l6.91 1l-5 4.87l1.18 6.88L12 18l-6.18 3.01l1.18-6.88l-5-4.87l6.91-1L12 2z'/%3E%3C/svg%3E" type="image/svg+xml">
+    
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Load React and ReactDOM -->
@@ -11,18 +16,16 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <!-- Load Babel for JSX transformation -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Load Lucide Icons for professional look -->
-    <script type="module">
-      import * as Lucide from "https://unpkg.com/lucide@latest";
-      window.Lucide = Lucide;
-    </script>
+    
+    <!-- **CRITICAL FIX: Load Font Awesome for reliable icons** -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
     <style>
         /* Custom font for better UI */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         
         html.dark body {
-            background-color: #0d1117; /* Very Dark Background */
+            background-color: #0d1117; 
         }
         
         body {
@@ -42,7 +45,7 @@
         }
         /* Custom Button Hover Effect */
         .cmd-btn:hover {
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Add stronger shadow on hover */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
     </style>
 </head>
@@ -53,29 +56,27 @@
     <script type="text/babel">
         const { useState, useEffect, useCallback, useMemo } = React;
         
-        // --- CONFIGURATION CONSTANTS (Matching Arduino Logic) ---
+        // --- CONFIGURATION CONSTANTS ---
         const BLUETOOTH_SERVICE_UUID = '0000ffe0-0000-1000-8000-00805f9b34fb'; 
         const BLUETOOTH_CHARACTERISTIC_UUID = '0000ffe1-0000-1000-8000-00805f9b34fb';
-        const DAILY_GOAL_MINUTES = 60; // Set a default daily goal
+        const DAILY_GOAL_MINUTES = 60; 
 
-        // Custom Lucide Icon Component
-        const Icon = ({ name, size = 24, className = "" }) => {
-            const LucideIcon = window.Lucide?.[name];
-            if (!LucideIcon) return null;
-            return <LucideIcon size={size} className={className} />;
+        // --- Custom Icon Component using Font Awesome ---
+        const Icon = ({ className, iconClass }) => {
+            return <i className={`${className} ${iconClass}`}></i>;
         };
-
+        
         // Mappings for the study states sent by Arduino
         const STATUS_ICONS = {
-            STUDYING: { icon: 'Zap', color: 'text-green-400', label: 'Focused Studying' },
-            DISTRACTED: { icon: 'AlertTriangle', color: 'text-red-400', label: 'Distracted! Refocus' },
-            IDLE: { icon: 'Coffee', color: 'text-yellow-400', label: 'Idle / Break Time' },
-            OBSERVING: { icon: 'Search', color: 'text-blue-400', label: 'System Observing' },
-            STOPPED: { icon: 'Octagon', color: 'text-gray-500', label: 'Stopped / Ready' },
-            DEFAULT: { icon: 'PlugOff', color: 'text-gray-600', label: 'Disconnected' }
+            STUDYING: { iconClass: 'fa-solid fa-lightbulb', color: 'text-green-400', label: 'Focused Studying' },
+            DISTRACTED: { iconClass: 'fa-solid fa-triangle-exclamation', color: 'text-red-400', label: 'Distracted! Refocus' },
+            IDLE: { iconClass: 'fa-solid fa-mug-hot', color: 'text-yellow-400', label: 'Idle / Break Time' },
+            OBSERVING: { iconClass: 'fa-solid fa-magnifying-glass', color: 'text-blue-400', label: 'System Observing' },
+            STOPPED: { iconClass: 'fa-solid fa-stop-circle', color: 'text-gray-500', label: 'Stopped / Ready' },
+            DEFAULT: { iconClass: 'fa-solid fa-plug-circle-xmark', color: 'text-gray-600', label: 'Disconnected' }
         };
 
-        // --- Custom Modal Component (Instead of alert/confirm) ---
+        // --- Custom Modal Component (Same as before) ---
         const CustomModal = ({ isOpen, title, message, onClose, onConfirm }) => {
             if (!isOpen) return null;
             return (
@@ -253,10 +254,10 @@
 
 
             // UI Components (Cards and Buttons)
-            const StatCard = ({ title, value, icon, iconColor = 'text-blue-400' }) => (
+            const StatCard = ({ title, value, iconClass, iconColor = 'text-blue-400' }) => (
                 <div className="bg-gray-800 p-4 rounded-xl shadow-lg flex items-center space-x-4 transition duration-300 hover:shadow-xl border border-gray-700">
                     <div className={`p-3 rounded-full ${iconColor} bg-opacity-20`}>
-                        <Icon name={icon} size={28} className={iconColor} />
+                        <Icon iconClass={iconClass} className={`${iconColor} text-2xl w-8 h-8 flex items-center justify-center`} />
                     </div>
                     <div>
                         <p className="text-xs font-medium text-gray-400 uppercase">{title}</p>
@@ -265,13 +266,13 @@
                 </div>
             );
 
-            const CommandButton = ({ label, icon, onClick, bgColor, disabled = false }) => (
+            const CommandButton = ({ label, iconClass, onClick, bgColor, disabled = false }) => (
                 <button
                     onClick={onClick}
                     disabled={disabled}
                     className={`cmd-btn flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl shadow-md transition duration-200 ${bgColor} text-white font-semibold transform hover:scale-[1.03] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed h-24`}
                 >
-                    <Icon name={icon} size={32} className="mb-1" />
+                    <Icon iconClass={iconClass} className="mb-1 text-3xl" />
                     <span className="text-xs font-medium text-center">{label}</span>
                 </button>
             );
@@ -311,7 +312,7 @@
                     {/* Live Status and Stats */}
                     <div className="bg-gray-800 p-6 rounded-xl shadow-2xl mb-6 border border-gray-700">
                         <div className="flex items-center space-x-4 mb-4">
-                            <Icon name={currentStatus.icon} size={48} className={`text-4xl ${currentStatus.color}`} />
+                            <Icon iconClass={currentStatus.iconClass} className={`text-4xl ${currentStatus.color} w-12 h-12 flex items-center justify-center`} />
                             <div>
                                 <p className="text-xs text-gray-400 uppercase">বর্তমান স্ট্যাটাস</p>
                                 <p className={`text-2xl font-extrabold ${currentStatus.color}`}>{currentStatus.label}</p>
@@ -328,13 +329,13 @@
                             </div>
                             <div className="bg-gray-700 rounded-lg progress-bar">
                                 <div 
-                                    className={`progress-bar bg-pink-500 ${progressPercentage === 100 ? 'bg-green-500' : 'bg-pink-500'}`}
+                                    className={`progress-bar ${progressPercentage >= 100 ? 'bg-green-500' : 'bg-pink-500'}`}
                                     style={{ width: `${progressPercentage}%` }}
                                 ></div>
                             </div>
                             {progressPercentage >= 100 && (
                                 <p className="text-xs text-green-400 mt-2 font-semibold flex items-center">
-                                    <Icon name="CheckCircle" size={16} className="mr-1" />
+                                    <Icon iconClass="fa-solid fa-circle-check" className="mr-1 text-sm" />
                                     আজকের ফোকাস লক্ষ্য অর্জন করা হয়েছে!
                                 </p>
                             )}
@@ -344,13 +345,13 @@
                             <StatCard 
                                 title="মোট স্টাডি টাইম" 
                                 value={formatMinutes(statusData.minutesToday)} 
-                                icon="Clock"
+                                iconClass="fa-solid fa-clock"
                                 iconColor="text-pink-400"
                             />
                             <StatCard 
                                 title="ফোকাস পয়েন্ট" 
                                 value={statusData.points} 
-                                icon="Star"
+                                iconClass="fa-solid fa-star"
                                 iconColor="text-yellow-400"
                             />
                         </div>
@@ -362,28 +363,28 @@
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <CommandButton
                             label={statusData.silentMode ? 'সাউন্ড চালু করুন' : 'সাইলেন্ট মোড'}
-                            icon={statusData.silentMode ? 'Volume2' : 'VolumeX'}
+                            iconClass={statusData.silentMode ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-off'}
                             onClick={() => handleSendCommand('silent')}
                             bgColor={statusData.silentMode ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-600 hover:bg-gray-700'}
                             disabled={bluetoothStatus !== 'Connected'}
                         />
                         <CommandButton
                             label="মোটিভেশন পাঠান"
-                            icon="Sparkles"
+                            iconClass="fa-solid fa-bell-concierge"
                             onClick={() => handleSendCommand('motivation')}
                             bgColor="bg-green-600 hover:bg-green-700"
                             disabled={bluetoothStatus !== 'Connected'}
                         />
                         <CommandButton
                             label="ডেটা রিসেট"
-                            icon="RefreshCw"
+                            iconClass="fa-solid fa-arrows-rotate"
                             onClick={() => handleSendCommand('reset')}
                             bgColor="bg-red-600 hover:bg-red-700"
                             disabled={bluetoothStatus !== 'Connected'}
                         />
                             <CommandButton
                             label="স্ট্যাটাস রিফ্রেশ"
-                            icon="RotateCw"
+                            iconClass="fa-solid fa-arrows-rotate"
                             onClick={() => handleSendCommand('status')}
                             bgColor="bg-blue-600 hover:bg-blue-700"
                             disabled={bluetoothStatus !== 'Connected'}
