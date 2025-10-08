@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark"> <!-- **CRITICAL CHANGE: Added class="dark" here** -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,19 +15,21 @@
     <style>
         /* Custom font for better UI */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        
+        /* Tailwind configuration for Dark Mode */
+        html.dark body {
+            background-color: #111827; /* Darker background for dark mode */
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f3f4f6; /* Light gray background */
+            background-color: #f3f4f6; /* Light gray background (fallback) */
         }
         /* CRITICAL FIX: Ensure the root element takes the full available width */
         #root {
             width: 100%;
-        }
-        /* App container background styling */
-        .app-container {
-             background-color: #f3f4f6; 
         }
     </style>
 </head>
@@ -44,12 +46,12 @@
 
         // Mappings for the study states sent by Arduino
         const STATUS_ICONS = {
-            STUDYING: { icon: '💡', color: 'text-green-500', label: 'Focused Studying' },
-            DISTRACTED: { icon: '🚨', color: 'text-red-500', label: 'Distracted! Refocus' },
-            IDLE: { icon: '☕', color: 'text-yellow-500', label: 'Idle / Break Time' },
-            OBSERVING: { icon: '🔎', color: 'text-blue-500', label: 'System Observing' },
-            STOPPED: { icon: '🛑', color: 'text-gray-400', label: 'Stopped / Ready' },
-            DEFAULT: { icon: '🔌', color: 'text-gray-400', label: 'Disconnected' }
+            STUDYING: { icon: '💡', color: 'text-green-400', label: 'Focused Studying' },
+            DISTRACTED: { icon: '🚨', color: 'text-red-400', label: 'Distracted! Refocus' },
+            IDLE: { icon: '☕', color: 'text-yellow-400', label: 'Idle / Break Time' },
+            OBSERVING: { icon: '🔎', color: 'text-blue-400', label: 'System Observing' },
+            STOPPED: { icon: '🛑', color: 'text-gray-500', label: 'Stopped / Ready' },
+            DEFAULT: { icon: '🔌', color: 'text-gray-600', label: 'Disconnected' }
         };
 
         // --- Custom Modal Component (Instead of alert/confirm) ---
@@ -57,9 +59,9 @@
             if (!isOpen) return null;
             return (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm">
-                    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-2xl w-11/12 max-w-sm transform transition-all duration-300 scale-100">
-                        <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">{title}</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">{message}</p>
+                    <div className="bg-gray-900 p-6 rounded-xl shadow-2xl w-11/12 max-w-sm transform transition-all duration-300 scale-100 border border-gray-700">
+                        <h3 className="text-xl font-bold mb-3 text-white">{title}</h3>
+                        <p className="text-sm text-gray-400 mb-6">{message}</p>
                         <div className="flex justify-end space-x-3">
                             {onConfirm && (
                                 <button
@@ -71,7 +73,7 @@
                             )}
                             <button
                                 onClick={onClose}
-                                className={`px-4 py-2 ${onConfirm ? 'bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600' : 'bg-blue-600 text-white hover:bg-blue-700'} font-semibold rounded-lg transition duration-150`}
+                                className={`px-4 py-2 ${onConfirm ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-blue-600 text-white hover:bg-blue-700'} font-semibold rounded-lg transition duration-150`}
                             >
                                 {onConfirm ? 'বাতিল (Cancel)' : 'বন্ধ করুন (Close)'}
                             </button>
@@ -241,14 +243,14 @@
             };
 
             // UI Components (Cards and Buttons)
-            const StatCard = ({ title, value, icon, iconColor = 'text-blue-500' }) => (
-                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl shadow-lg flex items-center space-x-4 transition duration-300 hover:shadow-xl border-t-4 border-gray-300 dark:border-gray-600">
+            const StatCard = ({ title, value, icon, iconColor = 'text-blue-400' }) => (
+                <div className="bg-gray-800 p-4 rounded-xl shadow-lg flex items-center space-x-4 transition duration-300 hover:shadow-xl border-t-4 border-gray-700">
                     <div className={`p-3 rounded-full ${iconColor} bg-opacity-20`}>
                         <span className="text-2xl">{icon}</span>
                     </div>
                     <div>
-                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{title}</p>
-                        <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
+                        <p className="text-xs font-medium text-gray-400 uppercase">{title}</p>
+                        <p className="text-2xl font-bold text-white">{value}</p>
                     </div>
                 </div>
             );
@@ -266,30 +268,30 @@
 
             // Main Render
             return (
-                <div className="app-container w-full mx-auto max-w-screen-md font-sans p-4 sm:p-6">
+                <div className="app-container w-full mx-auto max-w-screen-md font-sans p-4 sm:p-6 dark:bg-gray-900">
                     
                     <header className="mb-6">
-                        <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-2 text-shadow">
+                        <h1 className="text-3xl font-extrabold text-white mb-2 text-shadow">
                             SSFA Guardian
                         </h1>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-gray-400">
                             রিমোট মনিটরিং ইন্টারফেস (Pure Bluetooth)
                         </p>
                     </header>
 
                     {/* Connection Status Card */}
-                    <div className="mb-6 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-lg border-b-4 border-blue-500">
+                    <div className="mb-6 bg-gray-800 p-4 rounded-xl shadow-lg border-b-4 border-blue-500">
                         <div className="flex justify-between items-center">
                             <div className="flex items-center space-x-3">
                                 <span className={`h-3 w-3 rounded-full ${bluetoothStatus === 'Connected' ? 'bg-green-500 animate-pulse' : bluetoothStatus === 'Connecting...' ? 'bg-yellow-500' : 'bg-red-500'}`}></span>
-                                <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                                    Bluetooth স্ট্যাটাস: <span className="font-bold">{bluetoothStatus}</span>
+                                <p className="text-sm font-semibold text-gray-300">
+                                    Bluetooth স্ট্যাটাস: <span className="font-bold text-white">{bluetoothStatus}</span>
                                 </p>
                             </div>
                             <button
                                 onClick={handleConnect}
                                 disabled={bluetoothStatus === 'Connected' || bluetoothStatus === 'Connecting...'}
-                                className="px-4 py-2 text-xs font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition duration-150 disabled:bg-gray-400 disabled:shadow-none"
+                                className="px-4 py-2 text-xs font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition duration-150 disabled:bg-gray-700 disabled:shadow-none"
                             >
                                 {bluetoothStatus === 'Connecting...' ? 'সংযোগ হচ্ছে...' : 'Arduino-এর সাথে সংযোগ'}
                             </button>
@@ -297,40 +299,40 @@
                     </div>
 
                     {/* Live Status and Stats */}
-                    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-2xl mb-6">
+                    <div className="bg-gray-800 p-6 rounded-xl shadow-2xl mb-6 border border-gray-700">
                         <div className="flex items-center space-x-4 mb-4">
                             <span className={`text-5xl ${currentStatus.color}`}>{currentStatus.icon}</span>
                             <div>
-                                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">বর্তমান স্ট্যাটাস</p>
+                                <p className="text-xs text-gray-400 uppercase">বর্তমান স্ট্যাটাস</p>
                                 <p className={`text-2xl font-extrabold ${currentStatus.color}`}>{currentStatus.label}</p>
                             </div>
                         </div>
-                        <hr className="border-gray-200 dark:border-gray-700 my-4" />
+                        <hr className="border-gray-700 my-4" />
                         <div className="grid grid-cols-2 gap-4">
                             <StatCard 
                                 title="আজকের স্টাডি টাইম" 
                                 value={formatMinutes(statusData.minutesToday)} 
                                 icon="⏰"
-                                iconColor="text-pink-500"
+                                iconColor="text-pink-400"
                             />
                             <StatCard 
                                 title="ফোকাস পয়েন্ট" 
                                 value={statusData.points} 
                                 icon="⭐️"
-                                iconColor="text-yellow-500"
+                                iconColor="text-yellow-400"
                             />
                         </div>
                     </div>
                     
                     {/* Remote Commands */}
-                    <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">রিমোট কমান্ডস</h2>
+                    <h2 className="text-xl font-bold text-white mb-4">রিমোট কমান্ডস</h2>
 
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <CommandButton
                             label={statusData.silentMode ? 'সাউন্ড চালু করুন' : 'সাইলেন্ট মোড'}
                             icon={statusData.silentMode ? '🔊' : '🔇'}
                             onClick={() => handleSendCommand('silent')}
-                            bgColor={statusData.silentMode ? 'bg-indigo-600' : 'bg-gray-500'}
+                            bgColor={statusData.silentMode ? 'bg-indigo-600' : 'bg-gray-600'}
                             disabled={bluetoothStatus !== 'Connected'}
                         />
                         <CommandButton
@@ -357,8 +359,8 @@
                     </div>
 
                     {/* Debug/Info Section */}
-                    <h2 className="text-xl font-bold text-gray-800 dark:text-white mt-8 mb-4">ডিবাগ লগ</h2>
-                    <div className="bg-gray-200 dark:bg-gray-800 p-4 rounded-xl text-xs overflow-x-auto text-gray-700 dark:text-gray-300">
+                    <h2 className="text-xl font-bold text-white mt-8 mb-4">ডিবাগ লগ</h2>
+                    <div className="bg-gray-800 p-4 rounded-xl text-xs overflow-x-auto text-gray-400 border border-gray-700">
                         <pre className="whitespace-pre-wrap break-words">{statusData.raw}</pre>
                     </div>
 
@@ -378,3 +380,4 @@
     </script>
 </body>
 </html>
+
