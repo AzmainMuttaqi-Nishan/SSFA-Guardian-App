@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSFMA ইন্টারফেস বান্ডল V3</title>
+    <title>SSFMA: Smart Study Focus Assistant</title>
     
     <!-- Combined Logo Favicon -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3C!-- Base (Book) --%3E%3Cpath d='M2 6V20C2 21.1046 2.89543 22 4 22H20C21.1046 22 22 21.1046 22 20V6C22 4.89543 21.1046 4 20 4H4C2.89543 4 2 4.89543 2 6Z' fill='%236EE7B7' opacity='0.7'/%3E%3C!-- Focus Ring (Magnifier) --%3E%3Ccircle cx='12' cy='12' r='4.5' stroke='%233B82F6' stroke-width='1.5'/%3E%3Cpath d='M15 15L18 18' stroke='%233B82F6' stroke-width='1.5' stroke-linecap='round'/%3E%3C!-- Success Star (Top) --%3E%3Cpath d='M12 7L13.8861 10.8861L18 12L13.8861 13.8861L12 18L10.1139 13.8861L6 12L10.1139 10.1139L12 7Z' fill='%23FBBF24' stroke='%23FBBF24' stroke-width='0.5'/%3E%3C/svg%3E" type="image/svg+xml">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3C!-- Base (Book) --%3E%3Cpath d='M2 6V20C2 21.1046 2.89543 22 4 22H20C21.1046 22 22 21.1046 22 20V6C22 4.89543 21.1046 4 20 4H4C2.89543 4 2 4.89543 2 6Z' fill='%236EE7B7' opacity='0.7'/%3E%3C!-- Focus Ring (Magnifier) --%3E%3Ccircle cx='12' cy='12' r='4.5' stroke='%233B82F6' stroke-width='1.5'/%3E%3Cpath d='M15 15L18 18' stroke='%233B82F6' stroke-width='1.5' stroke-linecap='round'/%3E%3C!-- Success Star (Top) --%3E%3Cpath d='M12 7L13.8861 10.8861L18 12L13.8861 13.8861L12 18L10.1139 13.8861L6 12L10.1139 10.1139L10.1139 10.1139L12 7Z' fill='%23FBBF24' stroke='%23FBBF24' stroke-width='0.5'/%3E%3C/svg%3E" type="image/svg+xml">
     
     <!-- Tailwind CSS and Chart.js -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -120,20 +120,20 @@
         
         /* Workflow Container: Horizontal Scroll on Small Screens */
         .workflow-scroll-container {
-            display: flex; /* Ensures steps are inline */
+            display: flex; 
             overflow-x: auto;
             white-space: nowrap;
-            padding: 10px 0; /* Add padding for visual space */
+            padding: 10px 0; 
             -webkit-overflow-scrolling: touch;
-            scrollbar-width: none; /* Firefox */
-            justify-content: flex-start; /* Start from the left on mobile */
+            scrollbar-width: none; 
+            justify-content: flex-start; 
         }
         .workflow-scroll-container::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+            display: none; 
         }
         .workflow-scroll-container .workflow-step {
-            flex: 0 0 160px; /* Fixed width for card on mobile */
-            margin-right: 12px; /* Space between cards */
+            flex: 0 0 160px; 
+            margin-right: 12px; 
         }
         .workflow-scroll-container .workflow-arrow {
             display: flex;
@@ -146,30 +146,54 @@
         /* Default (Desktop) Layout for Workflow */
         @media (min-width: 768px) {
             .workflow-scroll-container {
-                overflow-x: hidden; /* Hide scrollbar on desktop */
-                justify-content: center; /* Center steps on desktop */
+                overflow-x: hidden; 
+                justify-content: center; 
                 white-space: normal;
             }
              .workflow-scroll-container .workflow-step {
-                flex: 1 1 18%; /* Distribute space evenly on desktop */
+                flex: 1 1 18%; 
                 max-width: 18%;
                 margin-right: 0; 
             }
         }
 
-        /* Mobile Specific: Horizontal Scroll for Command Buttons (Guardian App) */
-        .cmd-scroll-container {
-            overflow-x: auto;
-            white-space: nowrap;
-            padding-bottom: 10px; /* Space for scrollbar */
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none; /* Firefox */
+        /* COMMAND BUTTONS: Vertical Layout for Guardian App (Restored to clean block style) */
+        .cmd-vertical-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; 
+            padding-bottom: 10px; 
+            max-width: 300px; 
+            margin: 0 auto; 
         }
-        .cmd-scroll-container::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+        .cmd-vertical-container .cmd-btn {
+            width: 100%; 
+            height: 90px;
+            padding: 16px;
+             /* Ensure color transition is smooth */
+             transition: background-color 0.2s, box-shadow 0.2s; 
+             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
         }
-        .cmd-scroll-container > * {
-            display: inline-block;
+        
+        /* Hero Section Styling */
+        #hero-section {
+            min-height: calc(100vh - 80px); /* Full height minus header */
+            background-color: #588157; /* Deep green color */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .cta-button {
+            transition: all 0.3s ease;
+            transform: scale(1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+        }
+        .cta-button:hover {
+             transform: scale(1.03);
+             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -178,30 +202,64 @@
     <header class="bg-[#dad7cd] shadow-sm sticky top-0 z-20">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between py-3">
-                <div class="flex items-center mb-2 md:mb-0">
+                <div class="flex items-center mb-2 md:mb-0 cursor-pointer" id="logo-home-btn">
                     <span class="text-3xl mr-3">🎯</span>
                     <div>
                         <h1 class="text-xl md:text-2xl font-bold text-[#344e41]">SSFMA ইন্টারফেস</h1>
-                        <p class="text-sm text-[#588157]">SSFMA ইন্টারেক্টিভ রিপোর্ট ও গার্ডিয়ান অ্যাপ ডেমো</p>
+                        <p class="text-sm text-[#588157]">Smart Study Focus Assistant</p>
                     </div>
                 </div>
                 <!-- Main Navigation Tabs -->
                 <nav class="flex space-x-2 md:space-x-4">
-                    <button id="tab-report" data-target="report-view" class="tab-button px-3 py-2 text-sm font-semibold rounded-lg bg-[#588157] text-white">
+                    <button id="tab-home" data-target="landing-view" class="tab-button px-3 py-2 text-sm font-semibold rounded-lg bg-[#588157] text-white">
+                        🏠 হোম
+                    </button>
+                    <button id="tab-report" data-target="report-view" class="tab-button px-3 py-2 text-sm font-semibold rounded-lg bg-white text-[#344e41] hover:bg-gray-100">
                         📊 রিপোর্ট ড্যাশবোর্ড
                     </button>
                     <button id="tab-app" data-target="app-view" class="tab-button px-3 py-2 text-sm font-semibold rounded-lg bg-white text-[#344e41] hover:bg-gray-100">
-                        📱 গার্ডিয়ান অ্যাপ ডেমো
+                        📱 গার্ডিয়ান অ্যাপ
                     </button>
                 </nav>
             </div>
         </div>
     </header>
 
-    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+    <main id="main-content">
+
+        <!-- LANDING PAGE VIEW (New Hero Section) -->
+        <div id="landing-view" class="view-content">
+            <section id="hero-section" class="px-4 py-16 sm:py-24 lg:py-32">
+                <div class="max-w-4xl mx-auto text-center">
+                    <div class="flex justify-center mb-6">
+                        <span class="text-7xl lg:text-8xl p-5 bg-[#3a5a40] rounded-full shadow-2xl">🎯</span>
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
+                        Smart Study Focus Assistant (SSFMA)
+                    </h1>
+                    <p class="mt-4 text-xl sm:text-2xl text-gray-200 font-light">
+                        Arduino-ভিত্তিক এই উদ্ভাবনী সিস্টেমটি আপনাকে মনোযোগ সহকারে এবং লক্ষ্য নির্ধারণ করে পড়াশোনা করতে সাহায্য করবে।
+                    </p>
+                    <p class="mt-2 text-lg text-gray-300">
+                        সিস্টেমের মূল ভিত্তি: **ডিসট্র্যাকশন শনাক্তকরণ, অডিও মোটিভেশন** ও **রিমোট মনিটরিং**।
+                    </p>
+
+                    <!-- Call-to-Action Buttons -->
+                    <div class="mt-10 flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                        <button id="cta-report" class="cta-button flex items-center justify-center px-8 py-4 text-lg font-bold rounded-xl bg-white text-[#344e41] hover:bg-gray-100">
+                            📊 লাইভ রিপোর্ট ড্যাশবোর্ড দেখুন
+                        </button>
+                        <button id="cta-app" class="cta-button flex items-center justify-center px-8 py-4 text-lg font-bold rounded-xl bg-[#a3b18a] text-white hover:bg-[#8f9b7b]">
+                            📱 গার্ডিয়ান অ্যাপ ডেমো চালু করুন
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
 
         <!-- REPORT VIEW (Interactive Report Content) -->
-        <div id="report-view" class="view-content">
+        <div id="report-view" class="view-content hidden container mx-auto p-4 sm:p-6 lg:p-8">
             <!-- Sub Navigation for Report -->
             <nav id="report-nav" class="flex flex-wrap justify-center border-b border-gray-300 mb-8 space-x-2 md:space-x-4">
                 <a href="#dashboard" class="nav-link font-semibold p-2 active">ড্যাশবোর্ড</a>
@@ -333,7 +391,7 @@
         </div>
 
         <!-- GUARDIAN APP VIEW (Bluetooth Demo) -->
-        <div id="app-view" class="view-content hidden">
+        <div id="app-view" class="view-content hidden container mx-auto p-4 sm:p-6 lg:p-8">
             <h2 class="text-3xl font-bold text-[#3a5a40] text-center mb-8">📱 SSFMA Guardian App ডেমো</h2>
             <!-- Display User ID for connection clarity -->
             <p id="display-user-id" class="text-sm text-gray-600 mt-2 text-center mb-4">ইউজার আইডি: লোড হচ্ছে...</p>
@@ -419,25 +477,25 @@
                         </div>
                     </div>
                     
-                    <!-- Remote Commands: Mobile Optimized Horizontal Scroll -->
-                    <h2 class="text-xl font-bold text-white mb-4">রিমোট কমান্ডস</h2>
-                    <div class="cmd-scroll-container">
-                        <!-- Command buttons (H-scroll on mobile) -->
-                        <button id="app-silent-btn" data-cmd="silent" class="cmd-btn flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl shadow-md transition duration-200 bg-gray-600 hover:bg-gray-700 text-white font-semibold h-24 w-28 mx-1 disabled:opacity-40 disabled:cursor-not-allowed">
-                             <i id="app-silent-icon" class="mb-1 text-3xl fa-solid fa-volume-off"></i>
-                            <span id="app-silent-label" class="text-xs font-medium text-center">সাইলেন্ট মোড</span>
+                    <!-- Remote Commands: Vertical Layout (Restored) -->
+                    <h2 class="text-xl font-bold text-white mb-4 text-center">রিমোট কমান্ডস</h2>
+                    <div class="cmd-vertical-container">
+                        <!-- Command buttons (Vertical Column) -->
+                        <button id="app-silent-btn" data-cmd="silent" class="cmd-btn flex items-center justify-start p-4 rounded-xl transition duration-200 bg-gray-600 hover:bg-gray-700 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
+                             <i id="app-silent-icon" class="mr-4 text-3xl fa-solid fa-volume-off"></i>
+                            <span id="app-silent-label" class="text-lg font-medium">সাইলেন্ট মোড</span>
                         </button>
-                        <button data-cmd="motivation" class="cmd-btn flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl shadow-md transition duration-200 bg-green-600 hover:bg-green-700 text-white font-semibold h-24 w-28 mx-1 disabled:opacity-40 disabled:cursor-not-allowed">
-                            <i class="mb-1 text-3xl fa-solid fa-bell-concierge"></i>
-                            <span class="text-xs font-medium text-center">মোটিভেশন পাঠান</span>
+                        <button data-cmd="motivation" class="cmd-btn flex items-center justify-start p-4 rounded-xl transition duration-200 bg-green-600 hover:bg-green-700 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="mr-4 text-3xl fa-solid fa-bell-concierge"></i>
+                            <span class="text-lg font-medium">মোটিভেশন পাঠান</span>
                         </button>
-                        <button id="app-reset-btn" data-cmd="reset" class="cmd-btn flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl shadow-md transition duration-200 bg-red-600 hover:bg-red-700 text-white font-semibold h-24 w-28 mx-1 disabled:opacity-40 disabled:cursor-not-allowed">
-                            <i class="mb-1 text-3xl fa-solid fa-arrows-rotate"></i>
-                            <span class="text-xs font-medium text-center">ডেটা রিসেট</span>
+                        <button id="app-reset-btn" data-cmd="reset" class="cmd-btn flex items-center justify-start p-4 rounded-xl transition duration-200 bg-red-600 hover:bg-red-700 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="mr-4 text-3xl fa-solid fa-arrows-rotate"></i>
+                            <span class="text-lg font-medium">ডেটা রিসেট</span>
                         </button>
-                        <button data-cmd="status" class="cmd-btn flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl shadow-md transition duration-200 bg-blue-600 hover:bg-blue-700 text-white font-semibold h-24 w-28 mx-1 disabled:opacity-40 disabled:cursor-not-allowed">
-                            <i class="mb-1 text-3xl fa-solid fa-arrows-rotate"></i>
-                            <span class="text-xs font-medium text-center">স্ট্যাটাস রিফ্রেশ</span>
+                        <button data-cmd="status" class="cmd-btn flex items-center justify-start p-4 rounded-xl transition duration-200 bg-blue-600 hover:bg-blue-700 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="mr-4 text-3xl fa-solid fa-arrows-rotate"></i>
+                            <span class="text-lg font-medium">স্ট্যাটাস রিফ্রেশ</span>
                         </button>
                     </div>
 
@@ -754,7 +812,7 @@
                 appProgressBar.classList.toggle('bg-pink-500', progressPercentage < 100);
                 appGoalAchieved.classList.toggle('hidden', progressPercentage < 100);
                 
-                appSilentIcon.className = `mb-1 text-3xl ${appStatusData.silentMode ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-off'}`;
+                appSilentIcon.className = `mr-4 text-3xl ${appStatusData.silentMode ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-off'}`;
                 appSilentLabel.textContent = appStatusData.silentMode ? 'সাউন্ড চালু করুন' : 'সাইলেন্ট মোড';
                 appSilentBtn.classList.toggle('bg-indigo-600', appStatusData.silentMode);
                 appSilentBtn.classList.toggle('hover:bg-indigo-700', appStatusData.silentMode);
@@ -947,42 +1005,67 @@
             });
 
 
-            // --- Unified Tab Logic ---
+            // --- Unified Tab and CTA Logic ---
+            const tabHome = document.getElementById('tab-home');
             const tabReport = document.getElementById('tab-report');
             const tabApp = document.getElementById('tab-app');
-            const reportView = document.getElementById('report-view');
-            const appView = document.getElementById('app-view');
+            
+            const ctaReport = document.getElementById('cta-report');
+            const ctaApp = document.getElementById('cta-app');
+            const logoHomeBtn = document.getElementById('logo-home-btn');
 
-            const switchView = (viewId) => {
-                if (viewId === 'report-view') {
-                    reportView.classList.remove('hidden');
-                    appView.classList.add('hidden');
-                    tabReport.classList.add('bg-[#588157]', 'text-white');
-                    tabReport.classList.remove('bg-white', 'text-[#344e41]');
-                    tabApp.classList.remove('bg-[#588157]', 'text-white');
-                    tabApp.classList.add('bg-white', 'text-[#344e41]');
-                    document.getElementById('report-nav').style.display = 'flex'; // Show report sub-nav
-                    // Scroll to top of report view content
-                    reportView.scrollIntoView({ behavior: 'smooth' });
+            const viewContents = document.querySelectorAll('.view-content');
+            const navButtons = document.querySelectorAll('.tab-button');
+
+
+            const switchView = (targetViewId) => {
+                // 1. Hide all views
+                viewContents.forEach(view => view.classList.add('hidden'));
+
+                // 2. Show the target view
+                const targetView = document.getElementById(targetViewId);
+                if (targetView) {
+                    targetView.classList.remove('hidden');
+                }
+
+                // 3. Update active tab styling
+                navButtons.forEach(btn => {
+                    const isActive = btn.dataset.target === targetViewId;
+                    btn.classList.toggle('bg-[#588157]', isActive);
+                    btn.classList.toggle('text-white', isActive);
+                    btn.classList.toggle('bg-white', !isActive);
+                    btn.classList.toggle('text-[#344e41]', !isActive);
+                });
+                
+                // 4. Handle Report Sub-nav visibility
+                 const reportNav = document.getElementById('report-nav');
+                 if (reportNav) {
+                    reportNav.style.display = targetViewId === 'report-view' ? 'flex' : 'none';
+                 }
+
+                // 5. Scroll to top (if not landing page)
+                if (targetViewId !== 'landing-view') {
+                    targetView.scrollIntoView({ behavior: 'smooth' });
+                    if (targetViewId === 'app-view') {
+                        updateAppUI(); 
+                    }
                 } else {
-                    appView.classList.remove('hidden');
-                    reportView.classList.add('hidden');
-                    tabApp.classList.add('bg-[#588157]', 'text-white');
-                    tabApp.classList.remove('bg-white', 'text-[#344e41]');
-                    tabReport.classList.remove('bg-[#588157]', 'text-white');
-                    tabReport.classList.add('bg-white', 'text-[#344e41]');
-                    document.getElementById('report-nav').style.display = 'none'; // Hide report sub-nav
-                    // Scroll to top of app view content
-                    appView.scrollIntoView({ behavior: 'smooth' });
-                    updateAppUI(); // Ensure App UI is up-to-date
+                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             };
             
+            // Event listeners for tabs
+            tabHome.addEventListener('click', () => switchView('landing-view'));
             tabReport.addEventListener('click', () => switchView('report-view'));
             tabApp.addEventListener('click', () => switchView('app-view'));
             
-            // Initial view setup
-            switchView('report-view');
+            // Event listeners for CTA buttons
+            ctaReport.addEventListener('click', () => switchView('report-view'));
+            ctaApp.addEventListener('click', () => switchView('app-view'));
+            logoHomeBtn.addEventListener('click', () => switchView('landing-view'));
+            
+            // Initial view setup: Show Landing Page
+            switchView('landing-view');
         });
     </script>
 </body>
