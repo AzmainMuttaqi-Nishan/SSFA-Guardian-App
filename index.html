@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SSFMA: Smart Study Focus Assistant</title>
     
-    <!-- Combined Logo Favicon (Updated with an accent color) -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3C!-- Base (Book - Darker Green) --%3E%3Cpath d='M2 6V20C2 21.1046 2.89543 22 4 22H20C21.1046 22 22 21.1046 22 20V6C22 4.89543 21.1046 4 20 4H4C2.89543 4 2 4.89543 2 6Z' fill='%23344E41' opacity='0.7'/%3E%3C!-- Focus Ring (Accent Color - Orange) --%3E%3Ccircle cx='12' cy='12' r='4.5' stroke='%23F97316' stroke-width='1.5'/%3E%3Cpath d='M15 15L18 18' stroke='%23F97316' stroke-width='1.5' stroke-linecap='round'/%3E%3C!-- Success Star (Top) --%3E%3Cpath d='M12 7L13.8861 10.8861L18 12L13.8861 13.8861L12 18L10.1139 13.8861L6 12L10.1139 10.1139L10.1139 10.1139L12 7Z' fill='%23FBBF24' stroke='%23FBBF24' stroke-width='0.5'/%3E%3C/svg%3E" type="image/svg+xml">
+    <!-- New SSFMA Logo (SVG - Targeted Book Concept) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3C!-- Base Book Shape (Deep Green) --%3E%3Cpath d='M4 4C2.89543 4 2 4.89543 2 6V20C2 21.1046 2.89543 22 4 22H20C21.1046 22 22 21.1046 22 20V6C22 4.89543 21.1046 4 20 4H4Z' fill='%23344E41' opacity='0.8'/%3E%3C!-- Open Book Split Line --%3E%3Cpath d='M12 4V22' stroke='%23F4F4F0' stroke-width='1.5' stroke-linecap='round'/%3E%3C!-- Target (Focus - Bright Orange Accent) --%3E%3Ccircle cx='12' cy='13' r='4' stroke='%23F97316' stroke-width='2' fill='none'/%3E%3Ccircle cx='12' cy='13' r='1.5' fill='%23F97316'/%3E%3C!-- Line connecting Focus to Smart/Tech -%3E%3Cpath d='M12 9L12 11' stroke='%23F97316' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E" type="image/svg+xml">
     
     <!-- Tailwind CSS and Chart.js -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -240,6 +240,38 @@
             }
         }
         
+        /* Custom Header Logo Styling */
+        .logo-icon-container {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--color-text); /* Dark Green */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .logo-icon-container .focus-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--color-accent); /* Orange */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .logo-icon-container .book-line {
+            width: 2px;
+            height: 80%;
+            background-color: #f4f4f0; 
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
     </style>
 </head>
 <body class="antialiased">
@@ -249,13 +281,14 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between py-3">
                 <div class="flex items-center mb-2 md:mb-0 cursor-pointer" id="logo-home-btn">
-                    <!-- Placeholder Logo (Replace with your actual image later) -->
-                    <div class="flex items-center">
-                        <img src="https://placehold.co/40x40/588157/ffffff?text=L" alt="SSFMA Logo" class="h-10 w-10 mr-3 rounded-full shadow-md">
-                        <div>
-                            <h1 class="text-xl md:text-2xl font-bold text-gray-800">SSFMA ইন্টারফেস</h1>
-                            <p class="text-sm text-[#588157]">Smart Study Focus Assistant</p>
-                        </div>
+                    <!-- New Logo Implementation -->
+                    <div class="logo-icon-container mr-3">
+                        <div class="book-line"></div>
+                        <div class="focus-dot"></div>
+                    </div>
+                    <div>
+                        <h1 class="text-xl md:text-2xl font-bold text-gray-800">SSFMA ইন্টারফেস</h1>
+                        <p class="text-sm text-[#588157]">Smart Study Focus Assistant</p>
                     </div>
                 </div>
                 <!-- Main Navigation Tabs -->
@@ -689,15 +722,41 @@
 
             function updateSlider() {
                 const totalCards = ssfmaData.developerData.length;
+                const containerWidth = developerSlide.parentElement.offsetWidth;
+                const cardVisibleCount = Math.floor(containerWidth / slideWidth); 
+
+                // If number of cards is less than what can be visible, no need to slide
+                if (totalCards <= cardVisibleCount) {
+                    slideIndex = 0;
+                } else {
+                    // Slide one card width
+                    slideIndex++;
+                    if (slideIndex > totalCards - cardVisibleCount) {
+                         // Reset smoothly to start after the last card is fully visible
+                        developerSlide.style.transition = 'none'; // Temporarily disable transition for quick reset
+                        slideIndex = 0;
+                         // Force a reflow/repaint to apply 'none' before reenabling transition
+                        void developerSlide.offsetWidth; 
+                        developerSlide.style.transition = 'transform 0.8s ease-in-out';
+                    }
+                }
+                
+                // Calculate offset for a single card slide (if more than one card is visible)
                 const offset = -slideIndex * slideWidth;
                 developerSlide.style.transform = `translateX(${offset}px)`;
-
-                // Smooth loop logic
-                slideIndex = (slideIndex + 1) % totalCards; 
             }
 
             // Start smooth automatic sliding
-            setInterval(updateSlider, 3000); 
+            let intervalId = setInterval(updateSlider, 3000); 
+            
+            // To ensure smooth looping when window size changes
+            window.addEventListener('resize', () => {
+                clearInterval(intervalId); 
+                slideIndex = 0; // Reset index on resize
+                developerSlide.style.transform = 'translateX(0px)';
+                intervalId = setInterval(updateSlider, 3000);
+            });
+
 
             // --- Modal/UI Utility Functions ---
             const modal = document.getElementById('unified-modal');
@@ -886,7 +945,7 @@
             };
             
             let isConnected = false;
-            let intervalId = null; 
+            let simulationIntervalId = null; 
             let dataListener = null;
 
             const btStatusLight = document.getElementById('bt-status-light');
@@ -1085,11 +1144,11 @@
             // --- Simulation Logic (Fallback for Disconnected/Dev Mode) ---
             const distractionReasons = ['মোবাইল', 'শব্দ', 'আসন ত্যাগ', 'নড়াচড়া'];
             const startSimulation = () => {
-                if (intervalId) return; 
+                if (simulationIntervalId) return; 
                 appStatusData.state = 'STOPPED';
                 updateLog("Starting Data Simulation (Fallback).");
                 
-                intervalId = setInterval(() => {
+                simulationIntervalId = setInterval(() => {
                     if (appStatusData.state === 'STOPPED' || appStatusData.state === 'IDLE' || appStatusData.state === 'DEFAULT') {
                         appStatusData.state = 'STUDYING';
                     }
@@ -1148,7 +1207,7 @@
                 btn.addEventListener('click', (e) => {
                     const cmd = e.currentTarget.dataset.cmd;
                     
-                    if (!isConnected && !intervalId) { 
+                    if (!isConnected && !simulationIntervalId) { 
                         showModal("সংযোগ ত্রুটি", "Guardian App বর্তমানে Arduino-এর সাথে সংযুক্ত নয়। কোনো কমান্ড পাঠানো সম্ভব না।", "রিমোট কন্ট্রোল");
                         return;
                     }
