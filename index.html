@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SSFMA: Smart Study Focus Assistant</title>
     
-    <!-- Combined Logo Favicon -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3C!-- Base (Book) --%3E%3Cpath d='M2 6V20C2 21.1046 2.89543 22 4 22H20C21.1046 22 22 21.1046 22 20V6C22 4.89543 21.1046 4 20 4H4C2.89543 4 2 4.89543 2 6Z' fill='%236EE7B7' opacity='0.7'/%3E%3C!-- Focus Ring (Magnifier) --%3E%3Ccircle cx='12' cy='12' r='4.5' stroke='%233B82F6' stroke-width='1.5'/%3E%3Cpath d='M15 15L18 18' stroke='%233B82F6' stroke-width='1.5' stroke-linecap='round'/%3E%3C!-- Success Star (Top) --%3E%3Cpath d='M12 7L13.8861 10.8861L18 12L13.8861 13.8861L12 18L10.1139 13.8861L6 12L10.1139 10.1139L10.1139 10.1139L12 7Z' fill='%23FBBF24' stroke='%23FBBF24' stroke-width='0.5'/%3E%3C/svg%3E" type="image/svg+xml">
+    <!-- Combined Logo Favicon (Updated with an accent color) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3C!-- Base (Book - Darker Green) --%3E%3Cpath d='M2 6V20C2 21.1046 2.89543 22 4 22H20C21.1046 22 22 21.1046 22 20V6C22 4.89543 21.1046 4 20 4H4C2.89543 4 2 4.89543 2 6Z' fill='%23344E41' opacity='0.7'/%3E%3C!-- Focus Ring (Accent Color - Orange) --%3E%3Ccircle cx='12' cy='12' r='4.5' stroke='%23F97316' stroke-width='1.5'/%3E%3Cpath d='M15 15L18 18' stroke='%23F97316' stroke-width='1.5' stroke-linecap='round'/%3E%3C!-- Success Star (Top) --%3E%3Cpath d='M12 7L13.8861 10.8861L18 12L13.8861 13.8861L12 18L10.1139 13.8861L6 12L10.1139 10.1139L10.1139 10.1139L12 7Z' fill='%23FBBF24' stroke='%23FBBF24' stroke-width='0.5'/%3E%3C/svg%3E" type="image/svg+xml">
     
     <!-- Tailwind CSS and Chart.js -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -72,12 +72,20 @@
     
 
     <style>
+        /* Define Accent Color: Orange for high visibility elements */
+        :root {
+            --color-primary: #588157; /* Deep Green */
+            --color-secondary: #dad7cd; /* Light Beige */
+            --color-text: #344e41; /* Dark Green Text */
+            --color-accent: #F97316; /* Bright Orange */
+        }
+
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Hind Siliguri', sans-serif;
             background-color: #f4f4f0;
-            color: #3e4444;
-            overflow-x: hidden; /* Prevents horizontal scroll on all devices */
+            color: var(--color-text);
+            overflow-x: hidden;
         }
         .chart-container {
             position: relative;
@@ -93,8 +101,8 @@
             border-bottom: 2px solid transparent;
         }
         .nav-link.active, .nav-link:hover {
-            border-bottom-color: #588157;
-            color: #344e41;
+            border-bottom-color: var(--color-primary);
+            color: var(--color-text);
         }
         .workflow-step {
             transition: all 0.3s ease;
@@ -103,22 +111,99 @@
         .workflow-step.active, .workflow-step:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            border-color: #588157;
+            border-color: var(--color-primary);
         }
         .arrow {
             color: #a3b18a;
         }
-        .modal-backdrop {
-            transition: opacity 0.3s ease;
-        }
-        .modal-content-wrapper {
-            transition: transform 0.3s ease;
-        }
         .tab-button {
              transition: all 0.2s;
         }
+        .cta-button {
+            transition: all 0.3s ease;
+            transform: scale(1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+        }
+        .cta-button:hover {
+             transform: scale(1.03);
+             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+        }
+        /* New: Button feedback animation */
+        .btn-feedback {
+            animation: pulse-green 0.6s ease-out;
+        }
+        @keyframes pulse-green {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(88, 129, 87, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(88, 129, 87, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(88, 129, 87, 0); }
+        }
+
+        /* COMMAND BUTTONS: Vertical Layout */
+        .cmd-vertical-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; 
+            padding-bottom: 10px; 
+            max-width: 350px; 
+            margin: 0 auto; 
+        }
+        .cmd-vertical-container .cmd-btn {
+            width: 100%; 
+            height: 80px;
+            padding: 16px;
+             transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s; 
+             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        }
+        .cmd-vertical-container .cmd-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 10px -3px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Hero Section Styling */
+        #hero-section {
+            min-height: calc(100vh - 80px);
+            background-color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative; /* Needed for absolute positioning of slider */
+        }
         
-        /* Workflow Container: Horizontal Scroll on Small Screens */
+        /* New: Developer Slider Styles */
+        .developer-slider-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            margin-top: 40px; 
+            padding-bottom: 30px; 
+        }
+        .developer-slide {
+            display: flex;
+            transition: transform 0.8s ease-in-out;
+        }
+        .dev-card {
+            flex: 0 0 auto;
+            width: 250px; /* Card fixed width */
+            margin: 0 15px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--color-text);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+        .dev-card img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--color-accent);
+            margin: 0 auto 10px;
+        }
+
+        /* Custom Scrollbar Hide for Workflow */
         .workflow-scroll-container {
             display: flex; 
             overflow-x: auto;
@@ -142,8 +227,6 @@
             flex-shrink: 0;
             margin: 0 5px;
         }
-
-        /* Default (Desktop) Layout for Workflow */
         @media (min-width: 768px) {
             .workflow-scroll-container {
                 overflow-x: hidden; 
@@ -156,57 +239,23 @@
                 margin-right: 0; 
             }
         }
-
-        /* COMMAND BUTTONS: Vertical Layout for Guardian App (Restored to clean block style) */
-        .cmd-vertical-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px; 
-            padding-bottom: 10px; 
-            max-width: 300px; 
-            margin: 0 auto; 
-        }
-        .cmd-vertical-container .cmd-btn {
-            width: 100%; 
-            height: 90px;
-            padding: 16px;
-             /* Ensure color transition is smooth */
-             transition: background-color 0.2s, box-shadow 0.2s; 
-             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-        }
         
-        /* Hero Section Styling */
-        #hero-section {
-            min-height: calc(100vh - 80px); /* Full height minus header */
-            background-color: #588157; /* Deep green color */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .cta-button {
-            transition: all 0.3s ease;
-            transform: scale(1);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-        }
-        .cta-button:hover {
-             transform: scale(1.03);
-             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
-        }
     </style>
 </head>
 <body class="antialiased">
 
-    <header class="bg-[#dad7cd] shadow-sm sticky top-0 z-20">
+    <!-- Header & Navigation -->
+    <header class="bg-[#dad7cd] shadow-lg sticky top-0 z-20">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between py-3">
                 <div class="flex items-center mb-2 md:mb-0 cursor-pointer" id="logo-home-btn">
-                    <span class="text-3xl mr-3">🎯</span>
-                    <div>
-                        <h1 class="text-xl md:text-2xl font-bold text-[#344e41]">SSFMA ইন্টারফেস</h1>
-                        <p class="text-sm text-[#588157]">Smart Study Focus Assistant</p>
+                    <!-- Placeholder Logo (Replace with your actual image later) -->
+                    <div class="flex items-center">
+                        <img src="https://placehold.co/40x40/588157/ffffff?text=L" alt="SSFMA Logo" class="h-10 w-10 mr-3 rounded-full shadow-md">
+                        <div>
+                            <h1 class="text-xl md:text-2xl font-bold text-gray-800">SSFMA ইন্টারফেস</h1>
+                            <p class="text-sm text-[#588157]">Smart Study Focus Assistant</p>
+                        </div>
                     </div>
                 </div>
                 <!-- Main Navigation Tabs -->
@@ -227,9 +276,9 @@
 
     <main id="main-content">
 
-        <!-- LANDING PAGE VIEW (New Hero Section) -->
+        <!-- LANDING PAGE VIEW -->
         <div id="landing-view" class="view-content">
-            <section id="hero-section" class="px-4 py-16 sm:py-24 lg:py-32">
+            <section id="hero-section" class="px-4 py-16 sm:py-24 lg:py-16">
                 <div class="max-w-4xl mx-auto text-center">
                     <div class="flex justify-center mb-6">
                         <span class="text-7xl lg:text-8xl p-5 bg-[#3a5a40] rounded-full shadow-2xl">🎯</span>
@@ -249,18 +298,25 @@
                         <button id="cta-report" class="cta-button flex items-center justify-center px-8 py-4 text-lg font-bold rounded-xl bg-white text-[#344e41] hover:bg-gray-100">
                             📊 লাইভ রিপোর্ট ড্যাশবোর্ড দেখুন
                         </button>
-                        <button id="cta-app" class="cta-button flex items-center justify-center px-8 py-4 text-lg font-bold rounded-xl bg-[#a3b18a] text-white hover:bg-[#8f9b7b]">
+                        <button id="cta-app" class="cta-button flex items-center justify-center px-8 py-4 text-lg font-bold rounded-xl bg-orange-500 text-white hover:bg-orange-600">
                             📱 গার্ডিয়ান অ্যাপ ডেমো চালু করুন
                         </button>
                     </div>
                 </div>
+                
+                <!-- New: Developer Slider -->
+                <div class="developer-slider-container">
+                    <div id="developer-slide" class="developer-slide">
+                         <!-- Dynamically populate with JS using developerData -->
+                    </div>
+                </div>
+
             </section>
         </div>
 
 
-        <!-- REPORT VIEW (Interactive Report Content) -->
+        <!-- REPORT VIEW -->
         <div id="report-view" class="view-content hidden container mx-auto p-4 sm:p-6 lg:p-8">
-            <!-- Sub Navigation for Report -->
             <nav id="report-nav" class="flex flex-wrap justify-center border-b border-gray-300 mb-8 space-x-2 md:space-x-4">
                 <a href="#dashboard" class="nav-link font-semibold p-2 active">ড্যাশবোর্ড</a>
                 <a href="#features" class="nav-link font-semibold p-2">ফিচার</a>
@@ -269,46 +325,53 @@
                 <a href="#hardware" class="nav-link font-semibold p-2">হার্ডওয়্যার</a>
             </nav>
 
-             <!-- Section 1: Live Dashboard -->
+             <!-- Section 1: Live Dashboard (Enhanced) -->
             <section id="dashboard" class="mb-12">
                  <div class="text-center mb-8">
                     <h2 class="text-3xl font-bold text-[#3a5a40]">লাইভ সিস্টেম স্ট্যাটাস (রিপোর্ট থেকে সিমুলেশন)</h2>
-                    <p class="text-md text-gray-600 mt-2">এই ড্যাশবোর্ডটি SSFMA সিস্টেমের বর্তমান অবস্থার একটি সিমুলেটেড ভিউ প্রদান করে।</p>
+                    <p class="text-md text-gray-600 mt-2">SSFMA সিস্টেমের বর্তমান অবস্থার একটি সিমুলেটেড ভিউ প্রদান করে।</p>
                 </div>
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center space-x-3 sm:space-x-4">
-                        <div class="bg-green-100 p-3 rounded-full"><span class="text-2xl sm:text-3xl">💡</span></div>
+                <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
+                    <div class="bg-white p-4 sm:p-4 rounded-xl shadow-lg flex items-center space-x-3 sm:space-x-4 border-b-4 border-green-500 transition hover:shadow-xl">
+                        <div class="bg-green-100 p-2 rounded-full"><span class="text-2xl sm:text-2xl">💡</span></div>
                         <div>
-                            <p class="text-xs sm:text-sm text-gray-500 font-medium">বর্তমান অবস্থা</p>
-                            <p id="current-status" class="text-lg sm:text-2xl font-bold text-[#344e41]">স্টাডি চলছে</p>
+                            <p class="text-xs text-gray-500 font-medium">বর্তমান অবস্থা</p>
+                            <p id="current-status" class="text-lg sm:text-xl font-bold text-[#344e41]">স্টাডি চলছে</p>
                         </div>
                     </div>
-                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center space-x-3 sm:space-x-4">
-                         <div class="bg-yellow-100 p-3 rounded-full"><span class="text-2xl sm:text-3xl">⭐</span></div>
+                    <div class="bg-white p-4 sm:p-4 rounded-xl shadow-lg flex items-center space-x-3 sm:space-x-4 border-b-4 border-orange-500 transition hover:shadow-xl">
+                         <div class="bg-orange-100 p-2 rounded-full"><span class="text-2xl sm:text-2xl">⭐</span></div>
                         <div>
-                            <p class="text-xs sm:text-sm text-gray-500 font-medium">আজকের ফোকাস পয়েন্ট</p>
-                            <p id="focus-points" class="text-lg sm:text-2xl font-bold text-[#344e41]">১২৫</p>
+                            <p class="text-xs text-gray-500 font-medium">আজকের ফোকাস পয়েন্ট</p>
+                            <p id="focus-points" class="text-lg sm:text-xl font-bold text-[#344e41]">১২৫</p>
                         </div>
                     </div>
-                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center space-x-3 sm:space-x-4">
-                         <div class="bg-blue-100 p-3 rounded-full"><span class="text-2xl sm:text-3xl">⏰</span></div>
+                    <div class="bg-white p-4 sm:p-4 rounded-xl shadow-lg flex items-center space-x-3 sm:space-x-4 border-b-4 border-blue-500 transition hover:shadow-xl">
+                         <div class="bg-blue-100 p-2 rounded-full"><span class="text-2xl sm:text-2xl">⏰</span></div>
                         <div>
-                            <p class="text-xs sm:text-sm text-gray-500 font-medium">আজকের স্টাডি টাইম</p>
-                            <p id="study-time" class="text-lg sm:text-2xl font-bold text-[#344e41]">২ ঘন্টা ৩৫ মিনিট</p>
+                            <p class="text-xs text-gray-500 font-medium">মোট স্টাডি টাইম</p>
+                            <p id="study-time" class="text-lg sm:text-xl font-bold text-[#344e41]">২ ঘন্টা ৩৫ মিনিট</p>
                         </div>
                     </div>
-                     <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center space-x-3 sm:space-x-4">
-                         <div class="bg-red-100 p-3 rounded-full"><span class="text-2xl sm:text-3xl">⚠️</span></div>
+                     <div class="bg-white p-4 sm:p-4 rounded-xl shadow-lg flex items-center space-x-3 sm:space-x-4 border-b-4 border-red-500 transition hover:shadow-xl">
+                         <div class="bg-red-100 p-2 rounded-full"><span class="text-2xl sm:text-2xl">⚠️</span></div>
                         <div>
-                            <p class="text-xs sm:text-sm text-gray-500 font-medium">ডিস্ট্র্যাকশন অ্যালার্ট</p>
-                            <p id="distraction-alerts" class="text-lg sm:text-2xl font-bold text-[#344e41]">৩</p>
+                            <p class="text-xs text-gray-500 font-medium">ডিস্ট্র্যাকশন অ্যালার্ট</p>
+                            <p id="distraction-alerts" class="text-lg sm:text-xl font-bold text-[#344e41]">৩</p>
+                        </div>
+                    </div>
+                     <div class="bg-white p-4 sm:p-4 rounded-xl shadow-lg flex items-center space-x-3 sm:space-x-4 border-b-4 border-purple-500 transition hover:shadow-xl">
+                         <div class="bg-purple-100 p-2 rounded-full"><span class="text-2xl sm:text-2xl">🤔</span></div>
+                        <div>
+                            <p class="text-xs text-gray-500 font-medium">বেশি ডিস্ট্র্যাকশন</p>
+                            <p id="major-distraction" class="text-lg sm:text-xl font-bold text-[#344e41]">মোবাইল</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             <!-- Section 2: Features Deep Dive -->
-            <section id="features" class="mb-12 bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+            <section id="features" class="mb-12 bg-white p-6 sm:p-8 rounded-xl shadow-2xl">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-bold text-[#3a5a40]">সিস্টেমের প্রধান ফিচারসমূহ</h2>
                     <p class="text-md text-gray-600 mt-2">SSFMA সিস্টেমের মূল ভিত্তি হলো এর স্মার্ট ফিচারগুলো। নিচের ট্যাবগুলোতে ক্লিক করে প্রতিটি ফিচার সম্পর্কে বিস্তারিত জানুন।</p>
@@ -331,7 +394,6 @@
                     <h2 class="text-3xl font-bold text-[#3a5a40]">কার্যপ্রণালী (Workflow)</h2>
                     <p class="text-md text-gray-600 mt-2">সিস্টেমটি কীভাবে ধাপে ধাপে কাজ করে তা জানতে নিচের ধাপগুলোতে ক্লিক করুন।</p>
                 </div>
-                <!-- Workflow steps optimized for mobile to be horizontal and scrollable -->
                 <div class="workflow-scroll-container">
                     <div id="workflow-step-1" class="workflow-step bg-white p-4 rounded-lg shadow-md border-2 border-transparent text-center active">
                         <span class="text-4xl">🧑‍💻</span>
@@ -362,7 +424,7 @@
             </section>
 
             <!-- Section 4: Data Analysis -->
-            <section id="analysis" class="mb-12 bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+            <section id="analysis" class="mb-12 bg-white p-6 sm:p-8 rounded-xl shadow-2xl">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-bold text-[#3a5a40]">পারফরম্যান্স বিশ্লেষণ</h2>
                     <p class="text-md text-gray-600 mt-2">সাপ্তাহিক স্টাডি ডেটার একটি সিমুলেটেড গ্রাফ। নিচে বাটনে ক্লিক করে ডেটা পরিবর্তন করে দেখুন।</p>
@@ -379,7 +441,7 @@
             </section>
 
             <!-- Section 5: Hardware Overview -->
-            <section id="hardware">
+            <section id="hardware" class="pb-12">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-bold text-[#3a5a40]">ব্যবহৃত হার্ডওয়্যার</h2>
                     <p class="text-md text-gray-600 mt-2">প্রকল্পটিতে ব্যবহৃত প্রধান কম্পোনেন্টগুলো সম্পর্কে জানতে কার্ডে ক্লিক করুন।</p>
@@ -390,10 +452,9 @@
             </section>
         </div>
 
-        <!-- GUARDIAN APP VIEW (Bluetooth Demo) -->
+        <!-- GUARDIAN APP VIEW -->
         <div id="app-view" class="view-content hidden container mx-auto p-4 sm:p-6 lg:p-8">
             <h2 class="text-3xl font-bold text-[#3a5a40] text-center mb-8">📱 SSFMA Guardian App ডেমো</h2>
-            <!-- Display User ID for connection clarity -->
             <p id="display-user-id" class="text-sm text-gray-600 mt-2 text-center mb-4">ইউজার আইডি: লোড হচ্ছে...</p>
             <p class="text-md text-gray-600 mt-2 text-center mb-8">Firebase সেটআপ সম্পন্ন হয়েছে। নিচের UI এখন রিয়েল-টাইম ডেটা (যদি Arduino থেকে ডেটা আসে) বা সিমুলেশন মোডে চলবে।</p>
 
@@ -477,26 +538,44 @@
                         </div>
                     </div>
                     
-                    <!-- Remote Commands: Vertical Layout (Restored) -->
+                    <!-- Remote Commands: Vertical Layout (Updated with temporary feedback label) -->
                     <h2 class="text-xl font-bold text-white mb-4 text-center">রিমোট কমান্ডস</h2>
                     <div class="cmd-vertical-container">
-                        <!-- Command buttons (Vertical Column) -->
-                        <button id="app-silent-btn" data-cmd="silent" class="cmd-btn flex items-center justify-start p-4 rounded-xl transition duration-200 bg-gray-600 hover:bg-gray-700 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
-                             <i id="app-silent-icon" class="mr-4 text-3xl fa-solid fa-volume-off"></i>
-                            <span id="app-silent-label" class="text-lg font-medium">সাইলেন্ট মোড</span>
+                        <button id="app-silent-btn" data-cmd="silent" class="cmd-btn flex items-center justify-between rounded-xl transition duration-200 bg-gray-600 hover:bg-gray-700 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
+                             <div class="flex items-center">
+                                 <i id="app-silent-icon" class="mr-4 text-3xl fa-solid fa-volume-off"></i>
+                                <span id="app-silent-label" class="text-lg font-medium">সাইলেন্ট মোড</span>
+                             </div>
+                             <span data-label-for="silent" class="command-feedback text-sm text-green-300 font-bold opacity-0"></span>
                         </button>
-                        <button data-cmd="motivation" class="cmd-btn flex items-center justify-start p-4 rounded-xl transition duration-200 bg-green-600 hover:bg-green-700 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
-                            <i class="mr-4 text-3xl fa-solid fa-bell-concierge"></i>
-                            <span class="text-lg font-medium">মোটিভেশন পাঠান</span>
+                        <button data-cmd="motivation" class="cmd-btn flex items-center justify-between rounded-xl transition duration-200 bg-green-600 hover:bg-green-700 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
+                            <div class="flex items-center">
+                                <i class="mr-4 text-3xl fa-solid fa-bell-concierge"></i>
+                                <span class="text-lg font-medium">মোটিভেশন পাঠান</span>
+                            </div>
+                             <span data-label-for="motivation" class="command-feedback text-sm text-green-300 font-bold opacity-0"></span>
                         </button>
-                        <button id="app-reset-btn" data-cmd="reset" class="cmd-btn flex items-center justify-start p-4 rounded-xl transition duration-200 bg-red-600 hover:bg-red-700 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
-                            <i class="mr-4 text-3xl fa-solid fa-arrows-rotate"></i>
-                            <span class="text-lg font-medium">ডেটা রিসেট</span>
+                        <button id="app-reset-btn" data-cmd="reset" class="cmd-btn flex items-center justify-between rounded-xl transition duration-200 bg-red-600 hover:bg-red-700 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
+                            <div class="flex items-center">
+                                <i class="mr-4 text-3xl fa-solid fa-arrows-rotate"></i>
+                                <span class="text-lg font-medium">ডেটা রিসেট</span>
+                            </div>
+                             <span data-label-for="reset" class="command-feedback text-sm text-green-300 font-bold opacity-0"></span>
                         </button>
-                        <button data-cmd="status" class="cmd-btn flex items-center justify-start p-4 rounded-xl transition duration-200 bg-blue-600 hover:bg-blue-700 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
-                            <i class="mr-4 text-3xl fa-solid fa-arrows-rotate"></i>
-                            <span class="text-lg font-medium">স্ট্যাটাস রিফ্রেশ</span>
+                        <button data-cmd="status" class="cmd-btn flex items-center justify-between rounded-xl transition duration-200 bg-blue-600 hover:bg-blue-700 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed">
+                            <div class="flex items-center">
+                                <i class="mr-4 text-3xl fa-solid fa-sync-alt"></i>
+                                <span class="text-lg font-medium">স্ট্যাটাস রিফ্রেশ</span>
+                            </div>
+                            <span data-label-for="status" class="command-feedback text-sm text-green-300 font-bold opacity-0"></span>
                         </button>
+                    </div>
+
+                     <!-- New: Distraction History Log -->
+                    <h2 class="text-xl font-bold text-white mt-8 mb-4">ডিস্ট্র্যাকশন হিস্টরি</h2>
+                    <div id="distraction-history" class="bg-gray-800 p-4 rounded-xl text-xs overflow-y-auto max-h-48 text-gray-400 border border-gray-700 space-y-2">
+                        <!-- History items will be populated here -->
+                         <p class="text-gray-500 italic">কোনো ডিস্ট্র্যাকশন ইভেন্ট নেই।</p>
                     </div>
 
                      <!-- Debug/Info Section -->
@@ -512,10 +591,19 @@
 
     </main>
 
+    <!-- Footer with Developer Credit -->
+    <footer class="bg-[#dad7cd] py-4 mt-8 shadow-inner">
+        <div class="container mx-auto px-4 text-center text-sm text-[#344e41] font-medium">
+            <p>প্রকল্পটি তৈরি করেছেন: **Azmain Muttaqi Nishan**</p>
+            <p class="text-xs mt-1 text-gray-500">SSFMA ইন্টারফেস ডেভেলপমেন্ট, অক্টোবর ২০২৫</p>
+        </div>
+    </footer>
+
+
     <!-- Modal Structure (Used by both views) -->
     <div id="unified-modal" class="fixed inset-0 z-30 flex items-center justify-center p-4 hidden">
-        <div id="modal-backdrop" class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 opacity-0"></div>
-        <div id="modal-content" class="modal-content-wrapper bg-white rounded-lg shadow-xl w-full max-w-sm p-6 z-40 transform scale-95">
+        <div id="modal-backdrop" class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 opacity-0 transition-opacity duration-300"></div>
+        <div id="modal-content" class="modal-content-wrapper bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 z-40 transform scale-95 transition-transform duration-300">
             <div class="flex justify-between items-start">
                  <div>
                     <h3 id="modal-title" class="text-2xl font-bold text-[#344e41]"></h3>
@@ -537,6 +625,13 @@
 
             // --- Unified Data Source ---
             const ssfmaData = {
+                developerData: [
+                    { name: 'Azmain Muttaqi Nishan', role: 'প্রজেক্ট লিড ও হার্ডওয়্যার ডিজাইন', img: 'https://placehold.co/150x150/F97316/ffffff?text=Azmain' },
+                    { name: 'Developer 2', role: 'সফটওয়্যার ও ডেটা অ্যানালাইসিস', img: 'https://placehold.co/150x150/A3B18A/344e41?text=Dev+2' },
+                    { name: 'Developer 3', role: 'মোটিভেশনাল কনটেন্ট ও টেস্টিং', img: 'https://placehold.co/150x150/588157/ffffff?text=Dev+3' },
+                    { name: 'Developer 4', role: 'ডকুমেন্টেশন ও প্রেজেন্টেশন', img: 'https://placehold.co/150x150/344E41/ffffff?text=Dev+4' }
+                    // Add more members if needed
+                ],
                 features: {
                     'feature-detection': {
                         title: '🎯 মাল্টি-সেন্সর ফিউশন',
@@ -575,6 +670,34 @@
                     points: [110, 145, 125, 170, 155, 190, 85]
                 }
             };
+
+            // --- Home Page Slider Logic ---
+            const developerSlide = document.getElementById('developer-slide');
+            let slideIndex = 0;
+            const slideWidth = 280; // Card width + margin (250 + 30)
+
+            ssfmaData.developerData.forEach(dev => {
+                const card = document.createElement('div');
+                card.className = 'dev-card';
+                card.innerHTML = `
+                    <img src="${dev.img}" alt="${dev.name} ছবি" onerror="this.onerror=null;this.src='https://placehold.co/150x150/F97316/ffffff?text=${dev.name.split(' ')[0]}'" />
+                    <h4 class="font-bold text-lg">${dev.name}</h4>
+                    <p class="text-sm text-gray-600 mt-1">${dev.role}</p>
+                `;
+                developerSlide.appendChild(card);
+            });
+
+            function updateSlider() {
+                const totalCards = ssfmaData.developerData.length;
+                const offset = -slideIndex * slideWidth;
+                developerSlide.style.transform = `translateX(${offset}px)`;
+
+                // Smooth loop logic
+                slideIndex = (slideIndex + 1) % totalCards; 
+            }
+
+            // Start smooth automatic sliding
+            setInterval(updateSlider, 3000); 
 
             // --- Modal/UI Utility Functions ---
             const modal = document.getElementById('unified-modal');
@@ -626,7 +749,7 @@
             const workflowSteps = document.querySelectorAll('.workflow-step');
             const workflowDetails = document.getElementById('workflow-details');
             const hardwareGrid = document.getElementById('hardware-grid');
-            
+            const majorDistractionEl = document.getElementById('major-distraction'); // New element
 
             function showFeatureContent(targetId) {
                 const feature = ssfmaData.features[targetId];
@@ -658,9 +781,11 @@
                 });
             });
 
-            // Set initial workflow details
+            // Set initial workflow details and major distraction
             workflowSteps[0].classList.add('active');
             workflowDetails.innerHTML = `<p class="text-gray-800 font-medium">${ssfmaData.workflow['workflow-step-1']}</p>`;
+            majorDistractionEl.textContent = 'মোবাইল/সাউন্ড';
+
 
             hardwareGrid.innerHTML = ssfmaData.hardware.map(item => `
                 <div data-id="${item.id}" class="hardware-card bg-white p-4 rounded-lg shadow-md text-center cursor-pointer transition transform hover:scale-105">
@@ -756,7 +881,8 @@
                 minutesToday: 0, 
                 points: 0, 
                 silentMode: false,
-                lastUpdateTime: Date.now() 
+                lastUpdateTime: Date.now(),
+                distractionHistory: []
             };
             
             let isConnected = false;
@@ -779,6 +905,7 @@
             const appSilentLabel = document.getElementById('app-silent-label');
             const displayUserId = document.getElementById('display-user-id');
             const cmdButtons = document.querySelectorAll('#app-view button[data-cmd]');
+            const distractionHistoryEl = document.getElementById('distraction-history');
 
 
             const formatMinutes = (totalMinutes) => {
@@ -791,6 +918,22 @@
                 const now = new Date().toLocaleTimeString('bn-BD');
                 appDebugLog.textContent = `[${now}] ${message}\n${appDebugLog.textContent}`;
             };
+            
+            const renderDistractionHistory = () => {
+                if (appStatusData.distractionHistory.length === 0) {
+                    distractionHistoryEl.innerHTML = '<p class="text-gray-500 italic">কোনো ডিস্ট্র্যাকশন ইভেন্ট নেই।</p>';
+                    return;
+                }
+
+                // Only show last 5 events
+                const recentHistory = appStatusData.distractionHistory.slice(-5).reverse(); 
+
+                distractionHistoryEl.innerHTML = recentHistory.map(item => {
+                    const time = new Date(item.timestamp).toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+                    return `<p class="text-red-400"><strong>[${time}]</strong> <i class="fa-solid fa-times-circle mr-1"></i> ডিস্ট্র্যাকশন: ${item.reason}</p>`;
+                }).join('');
+            }
+
 
             const updateAppUI = () => {
                 const current = STATUS_ICONS[appStatusData.state] || STATUS_ICONS.DEFAULT;
@@ -812,7 +955,7 @@
                 appProgressBar.classList.toggle('bg-pink-500', progressPercentage < 100);
                 appGoalAchieved.classList.toggle('hidden', progressPercentage < 100);
                 
-                appSilentIcon.className = `mr-4 text-3xl ${appStatusData.silentMode ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-off'}`;
+                appSilentIcon.className = `mr-4 text-3xl ${appStatusData.silentMode ? 'fa-solid fa-volume-high text-indigo-400' : 'fa-solid fa-volume-off text-gray-400'}`;
                 appSilentLabel.textContent = appStatusData.silentMode ? 'সাউন্ড চালু করুন' : 'সাইলেন্ট মোড';
                 appSilentBtn.classList.toggle('bg-indigo-600', appStatusData.silentMode);
                 appSilentBtn.classList.toggle('hover:bg-indigo-700', appStatusData.silentMode);
@@ -822,6 +965,8 @@
                 cmdButtons.forEach(btn => {
                     btn.disabled = !isConnected;
                 });
+                
+                renderDistractionHistory();
             };
             
             // --- Firebase Logic for Live Status ---
@@ -832,7 +977,7 @@
             const startFirebaseListener = () => {
                 if (!window.db || !window.userId || dataListener) {
                     updateLog("ERROR: Firebase বা User ID প্রস্তুত নয়। সিমুলেশন চলছে।");
-                    isConnected = true; // Stay in simulation mode
+                    isConnected = true; 
                     appConnectBtn.textContent = 'সিমুলেশন চলছে';
                     appConnectBtn.disabled = true;
                     btStatusText.textContent = 'Simulating Data';
@@ -844,10 +989,8 @@
 
                 const statusRef = window.doc(window.db, `artifacts/${window.appId}/public/data/ssfma_status/${window.userId}`);
                 
-                // Unsubscribe any existing listener
-                if(dataListener) dataListener();
+                if(dataListener) dataListener(); // Unsubscribe existing
 
-                // Start new real-time listener
                 dataListener = window.onSnapshot(statusRef, (docSnap) => {
                     if (docSnap.exists()) {
                         const data = docSnap.data();
@@ -859,6 +1002,15 @@
                         appStatusData.silentMode = data.silentMode || false;
                         appStatusData.lastUpdateTime = data.timestamp ? data.timestamp.toMillis() : Date.now();
                         
+                        // Handle Distraction History - assuming Arduino sends the full history array or a change
+                        if (data.distractionHistory && Array.isArray(data.distractionHistory)) {
+                             appStatusData.distractionHistory = data.distractionHistory.map(d => ({
+                                 reason: d.reason || 'Unknown',
+                                 timestamp: d.timestamp.toMillis() // Convert Firestore Timestamp to JS timestamp
+                             }));
+                        }
+
+
                         isConnected = true;
                         btStatusText.textContent = 'Live Data (Firestore)';
                         btStatusLight.classList.remove('bg-yellow-500', 'bg-red-500', 'animate-pulse');
@@ -866,15 +1018,12 @@
                         appConnectBtn.textContent = 'লাইভ ডেটা সক্রিয়';
                         appConnectBtn.disabled = true;
                         
-                        updateLog(`FIREBASE: New data received. Status: ${appStatusData.state}. Minutes: ${appStatusData.minutesToday}`);
+                        updateLog(`FIREBASE: New data received. Status: ${appStatusData.state}.`);
 
                     } else {
-                        // Document doesn't exist, assume Arduino is offline or not yet started
-                        if (isConnected) {
-                            updateLog("FIREBASE: Data document not found. Assuming Arduino offline.");
-                        } else {
-                             updateLog("FIREBASE: Initial setup required. Document not created yet.");
-                        }
+                        if (isConnected) { updateLog("FIREBASE: Data document not found. Assuming Arduino offline."); } 
+                        else { updateLog("FIREBASE: Initial setup required. Document not created yet."); }
+
                         isConnected = false;
                         appStatusData.state = 'DEFAULT';
                         btStatusText.textContent = 'Arduino Offline';
@@ -883,7 +1032,6 @@
                         appConnectBtn.textContent = 'ম্যানুয়াল সংযোগের চেষ্টা করুন';
                         appConnectBtn.disabled = false;
                         
-                        // Start simulation if disconnected to show expected behavior
                         startSimulation(); 
                     }
                     updateAppUI();
@@ -896,6 +1044,18 @@
                     updateAppUI();
                     startSimulation(); 
                 });
+            };
+            
+            // Function to show command feedback on the button
+            const showCommandFeedback = (cmd, message) => {
+                const feedbackEl = document.querySelector(`.command-feedback[data-label-for="${cmd}"]`);
+                if (feedbackEl) {
+                    feedbackEl.textContent = message;
+                    feedbackEl.style.opacity = '1';
+                    setTimeout(() => {
+                        feedbackEl.style.opacity = '0';
+                    }, 2000);
+                }
             };
 
             const sendRemoteCommand = async (command, value = null) => {
@@ -914,7 +1074,7 @@
                 try {
                     await window.setDoc(controlRef, payload);
                     updateLog(`COMMAND: Sent command "${command}" to Arduino.`);
-                    showModal("কমান্ড পাঠানো হয়েছে!", `Arduino এখন আপনার পাঠানো কমান্ড: "${command}" গ্রহণ করার জন্য প্রস্তুত।`, "রিমোট কন্ট্রোল");
+                    showCommandFeedback(command, "Sent!");
                 } catch (error) {
                     console.error("Error sending command:", error);
                     updateLog(`ERROR: কমান্ড পাঠাতে ব্যর্থ: ${error.message}`);
@@ -923,28 +1083,35 @@
             };
 
             // --- Simulation Logic (Fallback for Disconnected/Dev Mode) ---
-             const startSimulation = () => {
-                if (intervalId) return; // Already running
+            const distractionReasons = ['মোবাইল', 'শব্দ', 'আসন ত্যাগ', 'নড়াচড়া'];
+            const startSimulation = () => {
+                if (intervalId) return; 
                 appStatusData.state = 'STOPPED';
                 updateLog("Starting Data Simulation (Fallback).");
                 
                 intervalId = setInterval(() => {
-                    // Simple state machine simulation
                     if (appStatusData.state === 'STOPPED' || appStatusData.state === 'IDLE' || appStatusData.state === 'DEFAULT') {
                         appStatusData.state = 'STUDYING';
-                        updateLog("SIMULATION: Status changed to STUDYING.");
                     }
                     
                     if (appStatusData.state === 'STUDYING') {
                         appStatusData.minutesToday += 1;
                         appStatusData.points += 5;
                         
-                        // Simulate a distraction every 15 minutes
-                        if (appStatusData.minutesToday % 15 === 0 && appStatusData.minutesToday > 0) {
+                        if (appStatusData.minutesToday % 5 === 0 && appStatusData.minutesToday > 0) {
+                            const reason = distractionReasons[Math.floor(Math.random() * distractionReasons.length)];
+                            appStatusData.distractionHistory.push({ reason, timestamp: Date.now() });
+                            
                             appStatusData.state = 'DISTRACTED';
-                            updateLog("SIMULATION ALERT: Distraction detected! State changed to DISTRACTED.");
+                            updateLog(`SIMULATION ALERT: Distraction (${reason}) detected! State changed to DISTRACTED.`);
+                            
+                            // Keep only the last 10 history entries for performance
+                            if (appStatusData.distractionHistory.length > 10) {
+                                appStatusData.distractionHistory.shift(); 
+                            }
+                            
                             setTimeout(() => {
-                                appStatusData.state = 'STUDYING'; // Revert back to studying
+                                appStatusData.state = 'STUDYING';
                                 updateLog("SIMULATION: Refocused. State changed back to STUDYING.");
                                 updateAppUI();
                             }, 5000);
@@ -971,7 +1138,6 @@
             appConnectBtn.addEventListener('click', () => {
                 if (!isConnected) {
                     showModal("ম্যানুয়াল সংযোগ", "এই বাটনটি সাধারণত ব্লুটুথ সংযোগের জন্য ব্যবহৃত হয়। Firebase সক্রিয় থাকায়, এটি স্বয়ংক্রিয়ভাবে ডেটার জন্য অপেক্ষা করবে।", "", () => {
-                        // User clicked 'নিশ্চিত করুন' - attempt listener re-start
                         startFirebaseListener();
                     });
                 }
@@ -982,7 +1148,7 @@
                 btn.addEventListener('click', (e) => {
                     const cmd = e.currentTarget.dataset.cmd;
                     
-                    if (!isConnected && !intervalId) { // Check if not connected AND not simulating
+                    if (!isConnected && !intervalId) { 
                         showModal("সংযোগ ত্রুটি", "Guardian App বর্তমানে Arduino-এর সাথে সংযুক্ত নয়। কোনো কমান্ড পাঠানো সম্ভব না।", "রিমোট কন্ট্রোল");
                         return;
                     }
@@ -1006,29 +1172,18 @@
 
 
             // --- Unified Tab and CTA Logic ---
-            const tabHome = document.getElementById('tab-home');
-            const tabReport = document.getElementById('tab-report');
-            const tabApp = document.getElementById('tab-app');
-            
-            const ctaReport = document.getElementById('cta-report');
-            const ctaApp = document.getElementById('cta-app');
-            const logoHomeBtn = document.getElementById('logo-home-btn');
-
             const viewContents = document.querySelectorAll('.view-content');
             const navButtons = document.querySelectorAll('.tab-button');
 
 
             const switchView = (targetViewId) => {
-                // 1. Hide all views
                 viewContents.forEach(view => view.classList.add('hidden'));
 
-                // 2. Show the target view
                 const targetView = document.getElementById(targetViewId);
                 if (targetView) {
                     targetView.classList.remove('hidden');
                 }
 
-                // 3. Update active tab styling
                 navButtons.forEach(btn => {
                     const isActive = btn.dataset.target === targetViewId;
                     btn.classList.toggle('bg-[#588157]', isActive);
@@ -1037,15 +1192,8 @@
                     btn.classList.toggle('text-[#344e41]', !isActive);
                 });
                 
-                // 4. Handle Report Sub-nav visibility
-                 const reportNav = document.getElementById('report-nav');
-                 if (reportNav) {
-                    reportNav.style.display = targetViewId === 'report-view' ? 'flex' : 'none';
-                 }
-
-                // 5. Scroll to top (if not landing page)
                 if (targetViewId !== 'landing-view') {
-                    targetView.scrollIntoView({ behavior: 'smooth' });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                     if (targetViewId === 'app-view') {
                         updateAppUI(); 
                     }
@@ -1054,15 +1202,13 @@
                 }
             };
             
-            // Event listeners for tabs
-            tabHome.addEventListener('click', () => switchView('landing-view'));
-            tabReport.addEventListener('click', () => switchView('report-view'));
-            tabApp.addEventListener('click', () => switchView('app-view'));
-            
-            // Event listeners for CTA buttons
-            ctaReport.addEventListener('click', () => switchView('report-view'));
-            ctaApp.addEventListener('click', () => switchView('app-view'));
-            logoHomeBtn.addEventListener('click', () => switchView('landing-view'));
+            // Event listeners for tabs and CTA buttons
+            document.getElementById('tab-home').addEventListener('click', () => switchView('landing-view'));
+            document.getElementById('tab-report').addEventListener('click', () => switchView('report-view'));
+            document.getElementById('tab-app').addEventListener('click', () => switchView('app-view'));
+            document.getElementById('cta-report').addEventListener('click', () => switchView('report-view'));
+            document.getElementById('cta-app').addEventListener('click', () => switchView('app-view'));
+            document.getElementById('logo-home-btn').addEventListener('click', () => switchView('landing-view'));
             
             // Initial view setup: Show Landing Page
             switchView('landing-view');
@@ -1070,4 +1216,3 @@
     </script>
 </body>
 </html>
-
