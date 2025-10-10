@@ -3,157 +3,382 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSFMA ইন্টারফেস (প্রবেশদ্বার) - Smart Study Focus Assistant</title>
+    <title>Smart Study Focus Assistant - SSFMA</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for graph rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <!-- Lucide icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Custom Styles for the Calming Green Theme -->
+    <!-- Custom Styles (Calming Green Theme with Neon Effects) -->
     <style>
-        /* Base Colors */
+        /* Base Colors (Matching the "Halka Green" theme) */
         :root {
-            --calming-green: #8FBC8F; /* Soft, light green */
-            --dark-accent: #1C3F60;   /* Deep Blue for contrast */
-            --focus-green: #38A169;   /* Secondary focus color */
+            --calming-green: #E8F5E9; /* Very light, almost minty green background */
+            --primary-blue: #1C3F60;   /* Deep Blue for main elements (text/headers) */
+            --focus-green: #4CAF50;    /* Vibrant Green for accents/focus */
+            --neon-glow-color: #A5D6A7; /* Light Green for Neon Glow */
         }
         body {
             font-family: 'Hind Siliguri', sans-serif;
-            background-color: var(--calming-green);
-            color: var(--dark-accent);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
+            background-color: var(--calming-green); 
+            color: var(--primary-blue);
         }
 
-        /* Container Card Style */
-        .main-card {
-            background-color: white;
-            padding: 3rem 2rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            max-width: 800px;
-            width: 100%;
-            text-align: center;
+        /* Neon Glow Effect for Buttons (Green) */
+        .neon-button {
+            transition: all 0.3s ease-in-out;
+            border: 2px solid var(--focus-green);
+            background-color: var(--focus-green);
+        }
+        .neon-button:hover {
+            box-shadow: 0 0 5px var(--neon-glow-color), 0 0 15px var(--neon-glow-color);
+            transform: scale(1.03);
+        }
+        
+        /* Neon Glow for Active Chart Buttons */
+        .chart-btn.active-focus {
+            background-color: var(--focus-green) !important;
+            color: white !important;
+            box-shadow: 0 0 5px var(--neon-glow-color), 0 0 10px var(--neon-glow-color);
+            border: 1px solid var(--focus-green);
+        }
+        .chart-btn.active-distraction {
+            background-color: #E53E3E !important; /* Red */
+            color: white !important;
+            box-shadow: 0 0 5px #FBB6CE, 0 0 10px #FBB6CE;
+            border: 1px solid #E53E3E;
         }
 
-        /* Heading Style */
-        h1 {
-            font-size: 2.5rem;
+        /* Styled Heading - Left Border Accent */
+        .styled-heading {
+            border-left: 5px solid var(--focus-green);
+            padding-left: 1rem;
             font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--dark-accent);
-        }
-
-        /* Button Styles */
-        .action-button {
-            padding: 1rem 2rem;
-            border-radius: 0.75rem;
-            font-size: 1.125rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .action-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 10px -2px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Header (Navigation) */
-        .header-nav {
-            background-color: white;
-            padding: 1rem;
-            border-radius: 0.75rem;
-            width: 100%;
-            max-width: 1200px;
+            font-size: 2rem;
+            color: var(--primary-blue);
             margin-bottom: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
-        .nav-link {
-            color: var(--dark-accent);
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-        }
-        .nav-link:hover {
-            background-color: #e2e8f0;
+
+        /* Footer Style */
+        .footer-dev-text {
+            font-family: 'Inter', sans-serif;
+            font-style: italic;
+            color: #718096; /* Gray text */
         }
     </style>
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iIzhkY2FjYSIgc3Ryb2tlPSIjNTc1ZTYwIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2ZyUzRQ==">
 </head>
 
-<body>
-    <!-- Navigation Bar - Simplified for Home Screen -->
-    <header class="header-nav">
-        <div class="flex items-center space-x-3">
-            <img src="https://placehold.co/40x40/1C3F60/FFFFFF?text=S" alt="SSFMA Logo" class="h-10 w-10 rounded-full">
-            <span class="text-xl font-extrabold text-[--dark-accent]">SSFMA ইন্টারফেস</span>
-            <span class="text-md font-medium text-[--focus-green] hidden sm:block">Smart Study Focus Assistant</span>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header / Navigation Bar -->
+    <header class="bg-white shadow-lg sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Logo Area -->
+            <div class="flex items-center space-x-3">
+                <img src="https://placehold.co/40x40/1C3F60/FFFFFF?text=S" alt="SSFMA Logo" class="h-10 w-10 rounded-full">
+                <span class="text-3xl font-extrabold text-[--primary-blue] tracking-tight">SSFMA</span>
+                <span class="text-xl font-medium text-[--focus-green] hidden sm:block">Assistant</span>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="space-x-4 flex">
+                <a href="#dashboard" class="text-gray-600 hover:text-[--focus-green] font-medium transition duration-300 flex items-center"><i data-lucide="layout-dashboard" class="w-5 h-5 mr-1"></i>ড্যাশবোর্ড</a>
+                <a href="#reports" class="text-gray-600 hover:text-[--focus-green] font-medium transition duration-300 flex items-center"><i data-lucide="bar-chart-3" class="w-5 h-5 mr-1"></i>বিশ্লেষণ</a>
+                <a href="#guardian" class="text-gray-600 hover:text-[--focus-green] font-medium transition duration-300 flex items-center"><i data-lucide="shield-check" class="w-5 h-5 mr-1"></i>গার্ডিয়ান</a>
+            </nav>
+
+            <!-- Action Button -->
+            <button class="neon-button bg-[--focus-green] text-white px-5 py-2 rounded-xl font-bold">লগইন</button>
         </div>
-        <nav class="space-x-4 flex">
-            <a href="#" class="nav-link flex items-center bg-gray-100"><i data-lucide="home" class="w-4 h-4 mr-1"></i>হোম</a>
-            <a href="#" class="nav-link flex items-center"><i data-lucide="log-in" class="w-4 h-4 mr-1"></i>লগইন</a>
-        </nav>
     </header>
 
-    <!-- Main Landing Card -->
-    <div class="main-card">
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
         
-        <!-- Target Icon / Logo Placeholder -->
-        <div class="mb-6 mx-auto w-24 h-24 bg-red-100 rounded-full flex items-center justify-center border-4 border-red-500 shadow-xl">
-             <!-- Simplified SVG Target Icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-target"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-        </div>
-
-        <h1>Smart Study Focus Assistant (SSFMA)</h1>
-        
-        <!-- Main Description -->
-        <p class="text-lg mb-6 text-gray-700 max-w-lg mx-auto leading-relaxed">
-            Arduino-ভিত্তিক এই উদ্ভাবনী সিস্টেমটি আপনাকে মনোযোগ সহকারে এবং সঠিক লক্ষ্য নির্ধারণ করে পড়াশোনা করতে সাহায্য করবে।
-        </p>
-
-        <!-- Core Features/Slogan -->
-        <p class="text-md mb-8 font-semibold text-gray-600">
-            সিস্টেমের মূল ভিত্তি: **ডিস্ট্র্যাকশন সনাক্তকরণ**, **অটো মোটিভেশন** ও **রিয়েলটাইম মনিটরিং**।
-        </p>
-
-        <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+        <!-- Dashboard Section -->
+        <section id="dashboard">
+            <h2 class="styled-heading">ড্যাশবোর্ড: স্মার্ট ফোকাস</h2>
             
-            <!-- Link to Dashboard/Reports Page -->
-            <button onclick="window.location.href='#dashboard';" class="action-button bg-[--focus-green] text-white hover:bg-[#2F855A]">
-                <i data-lucide="bar-chart-3" class="w-5 h-5 mr-2"></i>
-                লাইভ রিপোর্ট ড্যাশবোর্ড দেখুন
-            </button>
-            
-            <!-- Link to Guardian/App Start Page (This is where the user starts a session) -->
-            <button onclick="window.location.href='#guardian';" class="action-button bg-indigo-600 text-white hover:bg-indigo-700">
-                <i data-lucide="shield-check" class="w-5 h-5 mr-2"></i>
-                গার্ডিয়ান অ্যাপে প্রবেশ করুন
-            </button>
-        </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Focus Timer Card -->
+                <div class="bg-white p-6 rounded-xl shadow-xl border-t-4 border-[--primary-blue] transition duration-300 hover:shadow-2xl">
+                    <i data-lucide="timer" class="w-8 h-8 text-[--primary-blue] mb-3"></i>
+                    <p class="text-sm font-medium text-gray-500">চলমান সেশন</p>
+                    <p id="focus-timer" class="text-5xl font-extrabold text-[--focus-green] mb-4">25:00</p>
+                    <button id="start-focus" class="neon-button w-full text-white px-4 py-3 rounded-xl font-bold shadow-md">ফোকাস শুরু করুন</button>
+                </div>
+                
+                <!-- Distraction Score Card -->
+                <div class="bg-white p-6 rounded-xl shadow-xl border-t-4 border-red-500 transition duration-300 hover:shadow-2xl">
+                    <i data-lucide="bell-off" class="w-8 h-8 text-red-500 mb-3"></i>
+                    <p class="text-sm font-medium text-gray-500">আজকের ডিস্ট্র্যাকশন</p>
+                    <p id="distraction-count" class="text-5xl font-extrabold text-red-500 mb-4">4 বার</p>
+                    <button class="bg-red-500 neon-button w-full text-white px-4 py-3 rounded-xl font-bold shadow-md hover:shadow-red-300/80">ডিস্ট্র্যাকশন দেখুন</button>
+                </div>
+                
+                <!-- Weekly Progress Card -->
+                <div class="bg-white p-6 rounded-xl shadow-xl border-t-4 border-yellow-500 transition duration-300 hover:shadow-2xl">
+                    <i data-lucide="trending-up" class="w-8 h-8 text-yellow-500 mb-3"></i>
+                    <p class="text-sm font-medium text-gray-500">সাপ্তাহিক অগ্রগতি</p>
+                    <p class="text-5xl font-extrabold text-yellow-500 mb-4">৯২%</p>
+                    <button class="bg-yellow-500 neon-button w-full text-white px-4 py-3 rounded-xl font-bold shadow-md hover:shadow-yellow-300/80">সম্পূর্ণ রিপোর্ট দেখুন</button>
+                </div>
+            </div>
+        </section>
 
-    </div>
-    
-    <!-- Footer/Developer Info -->
-    <footer class="mt-8 text-sm text-[--dark-accent]">
-        <p class="text-center font-medium">Developed by - Azmain Muttaqi Nishan</p>
+        <!-- Performance Analysis Section -->
+        <section id="reports">
+            <h2 class="styled-heading">পারফরম্যান্স বিশ্লেষণ</h2>
+            <div class="bg-white p-6 rounded-xl shadow-xl">
+                
+                <!-- Button Group for Analysis View -->
+                <div class="flex space-x-4 mb-6">
+                    <button id="view-focus" class="chart-btn active-focus px-6 py-2 rounded-full font-bold">ফোকাস সময়</button>
+                    <button id="view-distraction" class="chart-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-bold">ডিস্ট্র্যাকশন প্যাটার্ন</button>
+                </div>
+
+                <!-- Chart Container -->
+                <div class="relative h-80">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guardian App Section with Bluetooth Connect Option -->
+        <section id="guardian">
+            <h2 class="styled-heading">গার্ডিয়ান অ্যাপ: মনিটরিং ও হার্ডওয়্যার সংযোগ</h2>
+            <div class="bg-white p-8 rounded-xl shadow-xl border-l-8 border-[--focus-green]">
+                <p class="text-lg mb-4 font-semibold text-[--primary-blue]">হার্ডওয়্যার অ্যাসিস্ট্যান্ট ডিভাইসটি সংযুক্ত করুন:</p>
+                
+                <!-- Bluetooth Connect Button -->
+                <button id="connect-bluetooth" class="neon-button bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold shadow-xl flex items-center text-lg hover:shadow-indigo-300/80">
+                    <i data-lucide="bluetooth" class="w-6 h-6 mr-3"></i>
+                    ব্লুটুথ ডিভাইস খুঁজুন ও কানেক্ট করুন
+                </button>
+                <p id="bluetooth-status" class="mt-3 text-sm font-medium text-gray-500">বর্তমান অবস্থা: সংযোগ বিচ্ছিন্ন</p>
+
+                <!-- গুরুত্বপূর্ণ বার্তা -->
+                <div id="bluetooth-warning" class="mt-4 p-3 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 rounded-lg">
+                    <p class="font-semibold flex items-center"><i data-lucide="info" class="w-4 h-4 mr-2"></i>গুরুত্বপূর্ণ:</p>
+                    <p class="text-sm mt-1">এই প্রিভিউ-তে ব্লুটুথ সংযোগ কাজ করবে না। এটি শুধুমাত্র HTTPS প্রোটোকলের মাধ্যমে কাজ করে।</p>
+                </div>
+                
+                <div class="mt-8 pt-4 border-t border-gray-200">
+                    <h3 class="text-xl font-semibold text-[--primary-blue] mb-3">অভিভাবক পোর্টাল</h3>
+                    <p class="text-gray-600">অভিভাবক পোর্টালের মাধ্যমে আপনার সন্তানের পড়াশোনার অগ্রগতি এবং ফোকাস প্যাটার্ন ট্র্যাক করুন।</p>
+                    <button class="neon-button bg-[--focus-green] text-white px-5 py-2 rounded-xl font-semibold shadow-md mt-4">গার্ডিয়ান পোর্টালে প্রবেশ করুন</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <!-- Developed By Line (Italic Font) -->
+            <p class="footer-dev-text text-sm mb-2">Developed by - Azmain Muttaqi Nishan</p>
+            
+            <!-- Project Slogan Line -->
+            <p class="text-xs text-gray-500">Smart Study Focus Assistant | Turn Focus Into Success | সর্বস্বত্ব সংরক্ষিত © ২০২৫।</p>
+        </div>
     </footer>
 
-    <!-- JavaScript to initialize icons (Chart.js not needed here) -->
+    <!-- JavaScript for Chart, Timer, and Bluetooth Logic -->
     <script>
+        // Initialize Lucide icons
         lucide.createIcons();
+
+        // --- Performance Chart Logic ---
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        
+        // Data for Focus Time (Focus Green Color - #4CAF50)
+        const focusData = {
+            labels: ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি'],
+            datasets: [{
+                label: 'প্রতিদিনের ফোকাস (মিনিট)',
+                data: [120, 150, 90, 180, 140, 210, 100],
+                borderColor: '#4CAF50', /* Focus Green */
+                backgroundColor: 'rgba(76, 175, 80, 0.3)', /* Lighter fill */
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#4CAF50'
+            }]
+        };
+
+        // Data for Distraction Pattern (Red Color - #E53E3E)
+        const distractionData = {
+            labels: ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি'],
+            datasets: [{
+                label: 'প্রতিদিনের ডিস্ট্র্যাকশন (বার)',
+                data: [5, 3, 7, 2, 4, 1, 6],
+                borderColor: '#E53E3E', /* Red-600 */
+                backgroundColor: 'rgba(229, 62, 62, 0.3)', 
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#E53E3E'
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: focusData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                }
+            }
+        };
+
+        const performanceChart = new Chart(ctx, config);
+
+        // Function to update chart data and button state
+        function updateChart(dataType) {
+            const focusBtn = document.getElementById('view-focus');
+            const distractionBtn = document.getElementById('view-distraction');
+
+            // Reset inactive button styles
+            focusBtn.classList.remove('active-focus');
+            distractionBtn.classList.remove('active-distraction');
+            focusBtn.classList.add('bg-gray-200', 'text-gray-700');
+            distractionBtn.classList.add('bg-gray-200', 'text-gray-700');
+
+
+            if (dataType === 'focus') {
+                performanceChart.data = focusData;
+                focusBtn.classList.remove('bg-gray-200', 'text-gray-700');
+                focusBtn.classList.add('active-focus');
+            } else { // 'distraction'
+                performanceChart.data = distractionData;
+                distractionBtn.classList.remove('bg-gray-200', 'text-gray-700');
+                distractionBtn.classList.add('active-distraction');
+            }
+            
+            performanceChart.update();
+        }
+
+        // Event listeners for buttons
+        document.getElementById('view-focus').addEventListener('click', () => updateChart('focus'));
+        document.getElementById('view-distraction').addEventListener('click', () => updateChart('distraction'));
+        
+        // Ensure initial state is correct (Focus is active by default)
+        updateChart('focus');
+
+
+        // --- Simple Focus Timer (Placeholder) ---
+        let isFocusing = false;
+        let timeInSeconds = 25 * 60;
+        let timerInterval;
+        const startBtn = document.getElementById('start-focus');
+        const timerDisplay = document.getElementById('focus-timer');
+        
+        function updateTimerDisplay() {
+            const minutes = String(Math.floor(timeInSeconds / 60)).padStart(2, '0');
+            const seconds = String(timeInSeconds % 60).padStart(2, '0');
+            timerDisplay.textContent = `${minutes}:${seconds}`;
+        }
+
+        startBtn.addEventListener('click', () => {
+            if (isFocusing) {
+                // Stop the timer
+                clearInterval(timerInterval);
+                isFocusing = false;
+                startBtn.textContent = 'ফোকাস শুরু করুন';
+                startBtn.classList.remove('bg-red-600', 'hover:shadow-red-300/80', 'border-red-500');
+                startBtn.classList.add('bg-[--focus-green]', 'border-[--focus-green]');
+                timerDisplay.classList.remove('text-red-500');
+                timerDisplay.classList.add('text-[--focus-green]');
+            } else {
+                // Start the timer
+                isFocusing = true;
+                startBtn.textContent = 'সেশন বন্ধ করুন';
+                startBtn.classList.remove('bg-[--focus-green]', 'border-[--focus-green]');
+                startBtn.classList.add('bg-red-600', 'hover:shadow-red-300/80', 'border-red-500');
+                timerDisplay.classList.remove('text-[--focus-green]');
+                timerDisplay.classList.add('text-red-500');
+                
+                // Reset time to 25 minutes
+                timeInSeconds = 25 * 60; 
+                updateTimerDisplay();
+
+                timerInterval = setInterval(() => {
+                    timeInSeconds--;
+                    updateTimerDisplay();
+                    if (timeInSeconds <= 0) {
+                        clearInterval(timerInterval);
+                        isFocusing = false;
+                        startBtn.textContent = 'ফোকাস সেশন সমাপ্ত';
+                        startBtn.classList.remove('bg-red-600', 'hover:shadow-red-300/80', 'border-red-500');
+                        startBtn.classList.add('bg-green-600', 'border-green-600');
+                        timerDisplay.textContent = '00:00';
+                        timerDisplay.classList.remove('text-red-500');
+                        timerDisplay.classList.add('text-green-600');
+                    }
+                }, 1000);
+            }
+        });
+        
+        // --- Bluetooth Connection Logic for Guardian App (Simplified for Sandbox) ---
+        const connectButton = document.getElementById('connect-bluetooth');
+        const bluetoothStatus = document.getElementById('bluetooth-status');
+        
+        connectButton.addEventListener('click', async () => {
+            if (!navigator.bluetooth) {
+                bluetoothStatus.textContent = "বর্তমান অবস্থা: আপনার ব্রাউজারে ব্লুটুথ API সাপোর্ট করে না।";
+                bluetoothStatus.classList.remove('text-green-500', 'text-yellow-600');
+                bluetoothStatus.classList.add('text-red-500');
+                return;
+            }
+
+            bluetoothStatus.textContent = "বর্তমান অবস্থা: ডিভাইসের জন্য সার্চ করা হচ্ছে (ব্রাউজার প্রম্পট)...";
+            bluetoothStatus.classList.remove('text-green-500', 'text-red-500');
+            bluetoothStatus.classList.add('text-yellow-600');
+
+            try {
+                // Request Bluetooth device
+                const device = await navigator.bluetooth.requestDevice({
+                    // Filters should match your Arduino device name
+                    filters: [{ namePrefix: 'SSFMA' }], 
+                    // Optional services if you know the GATT service UUID
+                    optionalServices: ['0000ffe0-0000-1000-8000-00805f9b34fb'] 
+                });
+
+                bluetoothStatus.textContent = `বর্তমান অবস্থা: "${device.name}" এর সাথে সংযোগ স্থাপনের চেষ্টা চলছে...`;
+
+                // Simulate connection failure due to sandbox limitations
+                setTimeout(() => {
+                    bluetoothStatus.textContent = `বর্তমান অবস্থা: সংযোগ ব্যর্থ। এই এনভায়রনমেন্টে সম্পূর্ণ সংযোগ সম্ভব নয়।`;
+                    bluetoothStatus.classList.remove('text-yellow-600');
+                    bluetoothStatus.classList.add('text-red-500');
+                }, 2000); 
+
+            } catch (error) {
+                console.error('Bluetooth Connection Error:', error);
+                if (error.name === 'NotFoundError') {
+                    bluetoothStatus.textContent = "বর্তমান অবস্থা: কোনো ডিভাইস খুঁজে পাওয়া যায়নি বা আপনি বাতিল করেছেন।";
+                } else {
+                    bluetoothStatus.textContent = "বর্তমান অবস্থা: সংযোগ ব্যর্থ। (নিরাপত্তা ত্রুটি)";
+                }
+                bluetoothStatus.classList.remove('text-yellow-600', 'text-green-500');
+                bluetoothStatus.classList.add('text-red-500');
+            }
+        });
     </script>
 </body>
 </html>
