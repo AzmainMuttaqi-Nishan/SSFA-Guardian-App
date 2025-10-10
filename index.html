@@ -12,39 +12,47 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Charm:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- Custom Styles -->
+    <!-- Custom Styles (Ensuring original aesthetic is maintained) -->
     <style>
+        /* Base Colors & Fonts */
+        :root {
+            --primary-blue: #1C3F60; /* Darker Blue for main elements */
+            --secondary-green: #38A169; /* Focus Green for accents */
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
-            color: #343a40;
+            background-color: #f7f9fb; /* Very light, calming background */
+            color: #1a202c;
         }
 
+        /* Footer Text Style (Italic/Charm) */
         .footer-dev-text {
             font-family: 'Charm', cursive;
             font-style: italic;
             font-size: 1.1rem;
-            color: #495057;
+            color: #e2e8f0; /* Light gray for readability on dark footer */
         }
 
-        /* আপডেট করা নিয়ন গ্লো এফেক্ট: আরও শক্তিশালী */
+        /* Neon Glow Effect for Slider Images (Light Green/Teal) */
         .neon-border {
-            box-shadow: 0 0 10px #3CB371, 0 0 20px #3CB371, 0 0 30px #3CB371; /* Medium Sea Green */
-            border: 3px solid #3CB371;
+            box-shadow: 0 0 8px var(--secondary-green), 0 0 15px var(--secondary-green);
+            border: 3px solid var(--secondary-green);
             transition: all 0.3s ease-in-out;
+            padding: 2px; /* For the glow to be visible */
         }
         .neon-border:hover {
-            box-shadow: 0 0 15px #00CED1, 0 0 25px #00CED1, 0 0 40px #00CED1; /* Dark Cyan on hover */
+            box-shadow: 0 0 10px #4FD1C5, 0 0 20px #4FD1C5; /* Lighter teal on hover */
         }
 
-        /* কন্টেন্ট স্লাইডার/মারকিউ */
+        /* Marquee/Slider Styles */
         .marquee-container {
             overflow: hidden;
             height: 120px; 
-            background-color: #e9ecef;
-            border-radius: 0.5rem;
+            background-color: #ffffff; /* White background for slider area */
+            border-radius: 0.75rem;
             display: flex;
             align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
         }
 
         .marquee-content {
@@ -58,7 +66,7 @@
         .marquee-item {
             flex-shrink: 0;
             width: 300px;
-            background-color: white;
+            background-color: #f7f9fb;
             padding: 0.75rem;
             border-radius: 0.5rem;
         }
@@ -68,27 +76,30 @@
             100% { transform: translateX(-50%); }
         }
 
-        /* কাস্টম টাইটেল ডিজাইন - আরও সুস্পষ্ট */
+        /* Styled Heading - Matching original clean aesthetic but enhanced */
         .styled-heading {
-            border-bottom: 3px solid #008080; 
-            padding-bottom: 0.5rem;
-            font-weight: 800;
-            font-size: 2.25rem; /* Larger font */
-            color: #1A3E5F; /* Deeper Blue */
-            display: inline-block;
-            margin-bottom: 1rem;
+            border-left: 5px solid var(--secondary-green);
+            padding-left: 1rem;
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
         }
 
-        /* বাটন অ্যাক্টিভ স্টাইল */
+        /* Button Active/Inactive State Fix for Analysis */
+        .analysis-btn {
+            transition: all 0.3s;
+            font-weight: 600;
+        }
         .analysis-btn.active-focus {
-            background-color: #008080 !important; 
+            background-color: var(--secondary-green) !important;
             color: white !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 128, 128, 0.4);
+            box-shadow: 0 2px 5px rgba(56, 161, 105, 0.5);
         }
         .analysis-btn.active-distraction {
-            background-color: #DC2626 !important; /* Red */
+            background-color: #E53E3E !important; /* Tailwind Red-600 */
             color: white !important;
-            box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.4);
+            box-shadow: 0 2px 5px rgba(229, 62, 62, 0.5);
         }
     </style>
     <!-- Favicon - হালকা সবুজ SVG -->
@@ -98,24 +109,24 @@
 <body class="min-h-screen flex flex-col">
 
     <!-- Header / Navigation Bar -->
-    <header class="bg-white shadow-lg sticky top-0 z-10">
+    <header class="bg-white shadow-md sticky top-0 z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <!-- Logo Area -->
             <div class="flex items-center space-x-3">
-                <img src="https://placehold.co/60x60/1A3E5F/FFFFFF?text=SSFMA" alt="SSFMA Logo" class="h-10 w-10 rounded-full">
-                <span class="text-3xl font-extrabold text-[#1A3E5F] tracking-tight">SSFMA</span>
-                <span class="text-xl font-medium text-[#008080] hidden sm:block">Assistant</span>
+                <img src="https://placehold.co/60x60/1C3F60/FFFFFF?text=SSFMA" alt="SSFMA Logo" class="h-10 w-10 rounded-full">
+                <span class="text-3xl font-extrabold text-[--primary-blue] tracking-tight">SSFMA</span>
+                <span class="text-xl font-medium text-[--secondary-green] hidden sm:block">Assistant</span>
             </div>
 
             <!-- Navigation Links -->
             <nav class="space-x-8 hidden md:flex">
-                <a href="#dashboard" class="text-gray-600 hover:text-[#1A3E5F] font-medium transition duration-300 flex items-center"><i data-lucide="layout-dashboard" class="w-5 h-5 mr-1"></i>ড্যাশবোর্ড</a>
-                <a href="#reports" class="text-gray-600 hover:text-[#1A3E5F] font-medium transition duration-300 flex items-center"><i data-lucide="bar-chart-3" class="w-5 h-5 mr-1"></i>বিশ্লেষণ</a>
-                <a href="#guardian" class="text-gray-600 hover:text-[#1A3E5F] font-medium transition duration-300 flex items-center"><i data-lucide="shield-check" class="w-5 h-5 mr-1"></i>গার্ডিয়ান</a>
+                <a href="#dashboard" class="text-gray-600 hover:text-[--primary-blue] font-medium transition duration-300 flex items-center"><i data-lucide="layout-dashboard" class="w-5 h-5 mr-1"></i>ড্যাশবোর্ড</a>
+                <a href="#reports" class="text-gray-600 hover:text-[--primary-blue] font-medium transition duration-300 flex items-center"><i data-lucide="bar-chart-3" class="w-5 h-5 mr-1"></i>বিশ্লেষণ</a>
+                <a href="#guardian" class="text-gray-600 hover:text-[--primary-blue] font-medium transition duration-300 flex items-center"><i data-lucide="shield-check" class="w-5 h-5 mr-1"></i>গার্ডিয়ান</a>
             </nav>
 
             <!-- Action Button -->
-            <button class="bg-[#008080] text-white px-5 py-2 rounded-xl hover:bg-[#006666] transition duration-300 shadow-xl font-bold">লগইন</button>
+            <button class="bg-[--secondary-green] text-white px-5 py-2 rounded-xl hover:bg-[#2F855A] transition duration-300 shadow-md font-bold">লগইন</button>
         </div>
     </header>
 
@@ -124,46 +135,46 @@
         
         <!-- Dashboard Section -->
         <section id="dashboard" class="mb-16">
-            <h2 class="styled-heading mb-8">ড্যাশবোর্ড: স্মার্ট ফোকাস</h2>
+            <h2 class="styled-heading">ড্যাশবোর্ড: স্মার্ট ফোকাস</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                 <!-- Focus Timer Card -->
-                <div class="bg-white p-6 rounded-xl shadow-2xl border-t-8 border-[#1A3E5F] text-center">
-                    <i data-lucide="timer" class="w-12 h-12 mx-auto text-[#1A3E5F] mb-3"></i>
+                <div class="bg-white p-6 rounded-xl shadow-lg border-t-8 border-[--primary-blue] text-center transform hover:scale-[1.02] transition duration-300">
+                    <i data-lucide="timer" class="w-12 h-12 mx-auto text-[--primary-blue] mb-3"></i>
                     <p class="text-sm font-medium text-gray-500">চলমান সেশন</p>
-                    <p id="focus-timer" class="text-6xl font-extrabold text-[#008080]">25:00</p>
-                    <button id="start-focus" class="mt-4 w-full bg-[#008080] text-white px-4 py-3 rounded-xl hover:bg-[#006666] transition duration-300 font-bold shadow-md">ফোকাস শুরু করুন</button>
+                    <p id="focus-timer" class="text-6xl font-extrabold text-[--secondary-green]">25:00</p>
+                    <button id="start-focus" class="mt-4 w-full bg-[--secondary-green] text-white px-4 py-3 rounded-xl hover:bg-[#2F855A] transition duration-300 font-bold shadow-md">ফোকাস শুরু করুন</button>
                 </div>
                 
                 <!-- Distraction Score Card -->
-                <div class="bg-white p-6 rounded-xl shadow-2xl border-t-8 border-red-600 text-center">
-                    <i data-lucide="bell-off" class="w-12 h-12 mx-auto text-red-600 mb-3"></i>
+                <div class="bg-white p-6 rounded-xl shadow-lg border-t-8 border-red-500 text-center transform hover:scale-[1.02] transition duration-300">
+                    <i data-lucide="bell-off" class="w-12 h-12 mx-auto text-red-500 mb-3"></i>
                     <p class="text-sm font-medium text-gray-500">আজকের ডিস্ট্র্যাকশন</p>
-                    <p id="distraction-count" class="text-6xl font-extrabold text-red-600">4 বার</p>
+                    <p id="distraction-count" class="text-6xl font-extrabold text-red-500">4 বার</p>
                     <p class="text-xs text-gray-500 mt-2">কমিয়ে আনার লক্ষ্য: 2</p>
                 </div>
                 
                 <!-- Weekly Progress Card -->
-                <div class="bg-white p-6 rounded-xl shadow-2xl border-t-8 border-green-600">
-                    <i data-lucide="trending-up" class="w-12 h-12 text-green-600 mb-3"></i>
+                <div class="bg-white p-6 rounded-xl shadow-lg border-t-8 border-yellow-500 transform hover:scale-[1.02] transition duration-300">
+                    <i data-lucide="trending-up" class="w-12 h-12 text-yellow-500 mb-3"></i>
                     <p class="text-sm font-medium text-gray-500">সাপ্তাহিক অগ্রগতি</p>
-                    <p class="text-5xl font-extrabold text-green-600">৯২%</p>
+                    <p class="text-5xl font-extrabold text-yellow-500">৯২%</p>
                     <p class="text-sm text-gray-600 mt-2">আপনার ফোকাস রেট বাড়ছে!</p>
-                    <button class="mt-3 w-full bg-green-600 text-white px-4 py-2 rounded-xl text-md hover:bg-green-700 transition font-semibold">সম্পূর্ণ রিপোর্ট দেখুন</button>
+                    <button class="mt-3 w-full bg-yellow-500 text-white px-4 py-2 rounded-xl text-md hover:bg-yellow-600 transition font-semibold shadow-md">সম্পূর্ণ রিপোর্ট দেখুন</button>
                 </div>
             </div>
         </section>
 
         <!-- Performance Analysis Section -->
         <section id="reports" class="mb-16">
-            <h2 class="styled-heading mb-8">পারফরম্যান্স বিশ্লেষণ</h2>
-            <div class="bg-white p-6 rounded-xl shadow-2xl">
+            <h2 class="styled-heading">পারফরম্যান্স বিশ্লেষণ</h2>
+            <div class="bg-white p-6 rounded-xl shadow-lg">
                 
-                <!-- Button Group for Analysis View -->
+                <!-- Button Group for Analysis View - Flipped colors to original aesthetic -->
                 <div class="flex space-x-4 mb-6">
-                    <!-- বাটনগুলির ক্লাস পরিবর্তন করে কালার সুইচ ফিক্স করা হলো -->
-                    <button id="view-focus" class="analysis-btn active-focus px-6 py-2 rounded-full font-bold transition duration-300">ফোকাস সময়</button>
-                    <button id="view-distraction" class="analysis-btn bg-gray-200 text-gray-700 hover:bg-red-100 hover:text-red-600 px-6 py-2 rounded-full font-bold transition duration-300">ডিস্ট্র্যাকশন প্যাটার্ন</button>
+                    <!-- Flipped to default active colors -->
+                    <button id="view-focus" class="analysis-btn active-focus px-6 py-2 rounded-full font-bold">ফোকাস সময়</button>
+                    <button id="view-distraction" class="analysis-btn bg-gray-200 text-gray-700 hover:bg-red-100 hover:text-red-600 px-6 py-2 rounded-full font-bold">ডিস্ট্র্যাকশন প্যাটার্ন</button>
                 </div>
 
                 <!-- Chart Container -->
@@ -175,12 +186,12 @@
 
         <!-- Guardian App Section with Bluetooth Connect Option -->
         <section id="guardian" class="mb-16">
-            <h2 class="styled-heading mb-8">অভিভাবক মনিটরিং ও হার্ডওয়্যার সংযোগ</h2>
-            <div class="bg-white p-8 rounded-xl shadow-2xl border-l-8 border-[#1A3E5F]">
-                <p class="text-lg mb-4 font-semibold text-[#1A3E5F]">আপনার হার্ডওয়্যার অ্যাসিস্ট্যান্ট ডিভাইসটি সংযুক্ত করুন:</p>
+            <h2 class="styled-heading">অভিভাবক মনিটরিং ও হার্ডওয়্যার সংযোগ</h2>
+            <div class="bg-white p-8 rounded-xl shadow-lg border-l-8 border-[--secondary-green]">
+                <p class="text-lg mb-4 font-semibold text-[--primary-blue]">আপনার হার্ডওয়্যার অ্যাসিস্ট্যান্ট ডিভাইসটি সংযুক্ত করুন:</p>
                 
                 <!-- Bluetooth Connect Button -->
-                <button id="connect-bluetooth" class="bg-indigo-700 text-white px-8 py-4 rounded-xl hover:bg-indigo-800 transition duration-300 font-bold shadow-xl flex items-center text-lg">
+                <button id="connect-bluetooth" class="bg-indigo-600 text-white px-8 py-4 rounded-xl hover:bg-indigo-700 transition duration-300 font-bold shadow-xl flex items-center text-lg">
                     <i data-lucide="bluetooth" class="w-6 h-6 mr-3"></i>
                     ব্লুটুথ ডিভাইস খুঁজুন ও কানেক্ট করুন
                 </button>
@@ -193,58 +204,58 @@
                 </div>
                 
                 <div class="mt-8 pt-4 border-t border-gray-200">
-                    <h3 class="text-xl font-semibold text-[#1A3E5F] mb-3">অভিভাবক পোর্টাল</h3>
+                    <h3 class="text-xl font-semibold text-[--primary-blue] mb-3">অভিভাবক পোর্টাল</h3>
                     <p class="text-gray-600">অভিভাবক পোর্টালের মাধ্যমে আপনার সন্তানের পড়াশোনার অগ্রগতি এবং ফোকাস প্যাটার্ন ট্র্যাক করুন।</p>
-                    <button class="mt-4 bg-[#008080] text-white px-5 py-2 rounded-xl hover:bg-[#006666] transition duration-300 text-md font-semibold shadow-md">গার্ডিয়ান পোর্টালে প্রবেশ করুন</button>
+                    <button class="mt-4 bg-[--secondary-green] text-white px-5 py-2 rounded-xl hover:bg-[#2F855A] transition duration-300 text-md font-semibold shadow-md">গার্ডিয়ান পোর্টালে প্রবেশ করুন</button>
                 </div>
             </div>
         </section>
 
         <!-- Info Silder Section (Marquee) -->
         <section class="mb-16">
-            <h2 class="styled-heading mb-8">আমাদের অর্জন ও তথ্য</h2>
+            <h2 class="styled-heading">আমাদের অর্জন ও তথ্য</h2>
             <div class="marquee-container shadow-xl">
                 <div class="marquee-content">
                     
                     <!-- Marquee Item 1 -->
-                    <div class="marquee-item flex items-center neon-border p-3 rounded-xl bg-white shadow-md">
-                        <img src="https://placehold.co/80x80/28a745/ffffff?text=Arduino" alt="Project Info 1" class="w-16 h-16 rounded-full mr-4 neon-border">
+                    <div class="marquee-item flex items-center neon-border p-3 rounded-xl bg-white shadow-sm">
+                        <img src="https://placehold.co/80x80/1C3F60/ffffff?text=Arduino" alt="Project Info 1" class="w-16 h-16 rounded-full mr-4">
                         <div>
-                            <p class="font-bold text-[#1A3E5F]">ডিভাইস ইন্টিগ্রেশন</p>
+                            <p class="font-bold text-[--primary-blue]">ডিভাইস ইন্টিগ্রেশন</p>
                             <p class="text-sm text-gray-600">আরডুইনো বোর্ডের মাধ্যমে ডিসট্র্যাকশন ডিটেকশন।</p>
                         </div>
                     </div>
                     
                     <!-- Marquee Item 2 -->
-                    <div class="marquee-item flex items-center neon-border p-3 rounded-xl bg-white shadow-md">
-                        <img src="https://placehold.co/80x80/007bff/ffffff?text=Reports" alt="Project Info 2" class="w-16 h-16 rounded-full mr-4 neon-border">
+                    <div class="marquee-item flex items-center neon-border p-3 rounded-xl bg-white shadow-sm">
+                        <img src="https://placehold.co/80x80/38A169/ffffff?text=Reports" alt="Project Info 2" class="w-16 h-16 rounded-full mr-4">
                         <div>
-                            <p class="font-bold text-[#1A3E5F]">স্মার্ট রিপোর্টস</p>
+                            <p class="font-bold text-[--primary-blue]">স্মার্ট রিপোর্টস</p>
                             <p class="text-sm text-gray-600">ফোকাস ও ডিস্ট্র্যাকশন প্যাটার্নের বিস্তারিত গ্রাফ।</p>
                         </div>
                     </div>
 
                     <!-- Marquee Item 3 -->
-                    <div class="marquee-item flex items-center neon-border p-3 rounded-xl bg-white shadow-md">
-                        <img src="https://placehold.co/80x80/ffc107/343a40?text=Goal" alt="Project Info 3" class="w-16 h-16 rounded-full mr-4 neon-border">
+                    <div class="marquee-item flex items-center neon-border p-3 rounded-xl bg-white shadow-sm">
+                        <img src="https://placehold.co/80x80/D69E2E/343a40?text=Goal" alt="Project Info 3" class="w-16 h-16 rounded-full mr-4">
                         <div>
-                            <p class="font-bold text-[#1A3E5F]">মোটিভেশন সিস্টেম</p>
+                            <p class="font-bold text-[--primary-blue]">মোটিভেশন সিস্টেম</p>
                             <p class="text-sm text-gray-600">লক্ষ্য পূরণে সময়মতো অনুপ্রেরণামূলক বার্তা।</p>
                         </div>
                     </div>
                     
                     <!-- Repeat content to enable seamless loop -->
-                    <div class="marquee-item flex items-center neon-border p-3 rounded-xl bg-white shadow-md">
-                        <img src="https://placehold.co/80x80/28a745/ffffff?text=Arduino" alt="Project Info 1" class="w-16 h-16 rounded-full mr-4 neon-border">
+                    <div class="marquee-item flex items-center neon-border p-3 rounded-xl bg-white shadow-sm">
+                        <img src="https://placehold.co/80x80/1C3F60/ffffff?text=Arduino" alt="Project Info 1" class="w-16 h-16 rounded-full mr-4">
                         <div>
-                            <p class="font-bold text-[#1A3E5F]">ডিভাইস ইন্টিগ্রেশন</p>
+                            <p class="font-bold text-[--primary-blue]">ডিভাইস ইন্টিগ্রেশন</p>
                             <p class="text-sm text-gray-600">আরডুইনো বোর্ডের মাধ্যমে ডিসট্র্যাকশন ডিটেকশন।</p>
                         </div>
                     </div>
-                    <div class="marquee-item flex items-center neon-border p-3 rounded-xl bg-white shadow-md">
-                        <img src="https://placehold.co/80x80/007bff/ffffff?text=Reports" alt="Project Info 2" class="w-16 h-16 rounded-full mr-4 neon-border">
+                    <div class="marquee-item flex items-center neon-border p-3 rounded-xl bg-white shadow-sm">
+                        <img src="https://placehold.co/80x80/38A169/ffffff?text=Reports" alt="Project Info 2" class="w-16 h-16 rounded-full mr-4">
                         <div>
-                            <p class="font-bold text-[#1A3E5F]">স্মার্ট রিপোর্টস</p>
+                            <p class="font-bold text-[--primary-blue]">স্মার্ট রিপোর্টস</p>
                             <p class="text-sm text-gray-600">ফোকাস ও ডিস্ট্র্যাকশন প্যাটার্নের বিস্তারিত গ্রাফ।</p>
                         </div>
                     </div>
@@ -255,10 +266,10 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-[#1A3E5F] text-white py-6 mt-8">
+    <footer class="bg-[--primary-blue] text-white py-6 mt-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <!-- Developed By Line (Italic Font) -->
-            <p class="footer-dev-text text-sm mb-2 text-gray-300">Developed by - Azmain Muttaqi Nishan</p>
+            <p class="footer-dev-text text-sm mb-2">Developed by - Azmain Muttaqi Nishan</p>
             
             <!-- Project Slogan Line -->
             <p class="text-xs text-gray-400">Smart Study Focus Assistant | Turn Focus Into Success | সর্বস্বত্ব সংরক্ষিত © ২০২৫।</p>
@@ -273,31 +284,31 @@
         // --- Performance Chart Logic ---
         const ctx = document.getElementById('performanceChart').getContext('2d');
         
-        // Data for Focus Time (Soft Green Color - #3CB371)
+        // Data for Focus Time (Secondary Green Color - #38A169)
         const focusData = {
             labels: ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি'],
             datasets: [{
                 label: 'প্রতিদিনের ফোকাস (মিনিট)',
                 data: [120, 150, 90, 180, 140, 210, 100],
-                borderColor: '#3CB371', // Soft Green
-                backgroundColor: 'rgba(60, 179, 113, 0.2)', // Light Green Fill
+                borderColor: '#38A169', /* Secondary Green */
+                backgroundColor: 'rgba(56, 161, 105, 0.2)', 
                 tension: 0.4,
                 fill: true,
-                pointBackgroundColor: '#3CB371'
+                pointBackgroundColor: '#38A169'
             }]
         };
 
-        // Data for Distraction Pattern (Red Color - #DC2626)
+        // Data for Distraction Pattern (Red Color - #E53E3E)
         const distractionData = {
             labels: ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি'],
             datasets: [{
                 label: 'প্রতিদিনের ডিস্ট্র্যাকশন (বার)',
                 data: [5, 3, 7, 2, 4, 1, 6],
-                borderColor: '#DC2626', // Tailwind Red-600
-                backgroundColor: 'rgba(220, 38, 38, 0.2)', // Light Red Fill
+                borderColor: '#E53E3E', /* Red-600 */
+                backgroundColor: 'rgba(229, 62, 62, 0.2)', 
                 tension: 0.4,
                 fill: true,
-                pointBackgroundColor: '#DC2626'
+                pointBackgroundColor: '#E53E3E'
             }]
         };
 
@@ -336,7 +347,7 @@
             distractionBtn.classList.remove('active-distraction');
             
             // Add inactive classes (default gray background)
-            focusBtn.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-[#008080]/10', 'hover:text-[#008080]');
+            focusBtn.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-[#38A169]/10', 'hover:text-[#38A169]');
             distractionBtn.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-red-100', 'hover:text-red-600');
 
 
@@ -344,7 +355,7 @@
                 performanceChart.data = focusData;
                 
                 // Set Focus button active
-                focusBtn.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-[#008080]/10', 'hover:text-[#008080]');
+                focusBtn.classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-[#38A169]/10', 'hover:text-[#38A169]');
                 focusBtn.classList.add('active-focus');
 
             } else { // 'distraction'
@@ -365,14 +376,12 @@
         // Ensure initial state is correct (Focus is active by default)
         updateChart('focus');
 
-        // --- Bluetooth Connection Logic for Guardian App ---
+        // --- Bluetooth Connection Logic for Guardian App (Simplified for Sandbox) ---
         const connectButton = document.getElementById('connect-bluetooth');
         const bluetoothStatus = document.getElementById('bluetooth-status');
         
-        // Function to handle Bluetooth connection attempt
         connectButton.addEventListener('click', async () => {
             if (!navigator.bluetooth) {
-                // If Web Bluetooth is NOT supported (like in a non-secure environment or unsupported browser)
                 bluetoothStatus.textContent = "বর্তমান অবস্থা: আপনার ব্রাউজারে ব্লুটুথ API সাপোর্ট করে না।";
                 bluetoothStatus.classList.remove('text-green-500', 'text-yellow-600');
                 bluetoothStatus.classList.add('text-red-500');
@@ -384,35 +393,27 @@
             bluetoothStatus.classList.add('text-yellow-600');
 
             try {
-                // This line will trigger the native browser security prompt for device selection
+                // Request Bluetooth device - This line shows the device selection prompt
                 const device = await navigator.bluetooth.requestDevice({
-                    // For a real Arduino project, you'd specify the device name or services here.
                     filters: [{ namePrefix: 'SSFMA' }], 
                     optionalServices: ['0000ffe0-0000-1000-8000-00805f9b34fb'] 
                 });
 
                 bluetoothStatus.textContent = `বর্তমান অবস্থা: "${device.name}" এর সাথে সংযোগ স্থাপনের চেষ্টা চলছে...`;
 
-                // If the user selects a device, proceed to connect (which will fail in this sandbox environment)
-                const server = await device.gatt.connect();
-                
-                bluetoothStatus.textContent = `বর্তমান অবস্থা: "${device.name}" এর সাথে সফলভাবে সংযুক্ত! (প্রকৃত সংযোগের জন্য আপনার হার্ডওয়্যার চালু করুন)`;
-                bluetoothStatus.classList.remove('text-yellow-600', 'text-red-500');
-                bluetoothStatus.classList.add('text-green-500');
-                
-                device.addEventListener('gattserverdisconnected', () => {
-                    bluetoothStatus.textContent = "বর্তমান অবস্থা: সংযোগ বিচ্ছিন্ন হয়েছে।";
-                    bluetoothStatus.classList.remove('text-green-500');
+                // Simulate connection success or failure based on sandbox environment
+                setTimeout(() => {
+                    bluetoothStatus.textContent = `বর্তমান অবস্থা: সংযোগ ব্যর্থ। অনুগ্রহ করে অন্য এনভায়রনমেন্টে চেষ্টা করুন।`;
+                    bluetoothStatus.classList.remove('text-yellow-600');
                     bluetoothStatus.classList.add('text-red-500');
-                });
+                }, 2000); 
 
             } catch (error) {
-                // This usually catches user cancellation or connection failure in a sandbox environment
                 console.error('Bluetooth Connection Error:', error);
                 if (error.name === 'NotFoundError') {
                     bluetoothStatus.textContent = "বর্তমান অবস্থা: কোনো ডিভাইস খুঁজে পাওয়া যায়নি বা আপনি বাতিল করেছেন।";
                 } else {
-                    bluetoothStatus.textContent = "বর্তমান অবস্থা: সংযোগ ব্যর্থ। ডিভাইসের পাওয়ার বা সেটিংস চেক করুন। (নিরাপত্তা ত্রুটি)";
+                    bluetoothStatus.textContent = "বর্তমান অবস্থা: সংযোগ ব্যর্থ। (নিরাপত্তা ত্রুটি)";
                 }
                 bluetoothStatus.classList.remove('text-yellow-600', 'text-green-500');
                 bluetoothStatus.classList.add('text-red-500');
@@ -439,15 +440,15 @@
                 isFocusing = false;
                 startBtn.textContent = 'ফোকাস শুরু করুন';
                 startBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
-                startBtn.classList.add('bg-[#008080]', 'hover:bg-[#006666]');
+                startBtn.classList.add('bg-[--secondary-green]', 'hover:bg-[#2F855A]');
                 timerDisplay.classList.remove('text-red-500');
-                timerDisplay.classList.add('text-[#008080]');
+                timerDisplay.classList.add('text-[--secondary-green]');
             } else {
                 isFocusing = true;
                 startBtn.textContent = 'সেশন বন্ধ করুন';
-                startBtn.classList.remove('bg-[#008080]', 'hover:bg-[#006666]');
+                startBtn.classList.remove('bg-[--secondary-green]', 'hover:bg-[#2F855A]');
                 startBtn.classList.add('bg-red-600', 'hover:bg-red-700');
-                timerDisplay.classList.remove('text-[#008080]');
+                timerDisplay.classList.remove('text-[--secondary-green]');
                 timerDisplay.classList.add('text-red-500');
                 timeInSeconds = 25 * 60; 
                 updateTimerDisplay();
