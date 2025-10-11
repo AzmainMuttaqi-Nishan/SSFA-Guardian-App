@@ -9,9 +9,11 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <meta name="logo-file" content="logo.png">
-    <meta name="background-file" content="background.jpg"> 
-    <link id="dynamic-favicon" rel="icon" type="image/png" href="">
+    
+<meta name="logo-file" content="logo.png">
+    
+    
+<link id="dynamic-favicon" rel="icon" type="image/png" href="logo.png"> 
     <style>
         /* Base Colors (Matching the "Halka Green" theme) */
         :root {
@@ -26,28 +28,35 @@
             background-color: var(--calming-green); 
             color: var(--primary-blue);
             scroll-behavior: smooth;
-        }
-
-        /* --- Dynamic Background Image (CSS Pseudo-element) --- */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+            
+            /* --- ফিক্সড ব্যাকগ্রাউন্ড ইমেজ লোডিং (CSS) --- */
+            background-image: url('background.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            opacity: 0.4; /* কমিয়ে দেখুন যদি লেখা বুঝতে অসুবিধা হয় */
-            transition: opacity 0.5s ease-in-out;
-            background-image: linear-gradient(135deg, #E8F5E9 0%, #B9FBC0 50%, #E8F5E9 100%); /* Default gradient */
+            
+            /* ইমেজ লোড না হলে ডিফল্ট গ্রেডিয়েন্ট */
+            background-image: linear-gradient(135deg, #E8F5E9 0%, #B9FBC0 50%, #E8F5E9 100%), url('background.jpg');
+            background-blend-mode: multiply; /* যাতে টেক্সট পড়তে সুবিধা হয় */
+            opacity: 1; /* এখন সরাসরি body-তে opacity সেট করা হবে না, তবে section-এ করা হয়েছে */
         }
         
+        /* Home Section এর ব্যাকগ্রাউন্ড পরিবর্তন করা হলো যাতে ইমেজটি দেখা যায় */
+        #home {
+            background: linear-gradient(rgba(76, 175, 80, 0.4), rgba(76, 175, 80, 0.4)); /* Green Overlay */
+            background-color: transparent !important; /* যাতে body-র ইমেজ দেখা যায় */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-top: 6rem; /* Header এর জন্য স্পেস */
+            padding-bottom: 4rem;
+        }
+
         /* --- Glassmorphism Card Style (টেক্সট ভিজিবিিলিটি বাড়াতে color পরিবর্তন করা হলো) --- */
         .glass-card {
-            background: rgba(255, 255, 255, 0.2); /* Semi-transparent White */
+            background: rgba(255, 255, 255, 0.25); /* Semi-transparent White */
             backdrop-filter: blur(10px); /* Blur effect (The Glass) */
             -webkit-backdrop-filter: blur(10px);
             border-radius: 16px;
@@ -172,7 +181,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             
             <div class="flex items-center space-x-3">
-                <img id="logo-image" src="" alt="SSFMA Logo" class="h-10 w-10 object-contain rounded-lg" 
+                
+<img id="logo-image" src="logo.png" alt="SSFMA Logo" class="h-10 w-10 object-contain rounded-lg" 
                      onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iI2U4ZjVlOSIgc3Ryb2tlPSIjNGRhZjUwIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIyNSIgZmlsbD0iIzFjM2Y2MCIvPjxwYXRoIGQ9Ik00MCAzNUg2MEM2Mi43NiAzNSA2NSAzNy4yNCA2NSA0MFY0NUgzNVY1MEg2NVY2MEM2NSAzMi43NiA2Mi43NiA2NSA2MCA2NUg0MEMzNy4yNCA2NSAzNSA2Mi43NiAzNSA2MFY1NUg2NVY1MEgzNVY0MEMzNSAzNy4yNCAzNy4yNCAzNSA0MCAzNVoiIGZpbGw9ImZlZmZmZiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwgNSkiLz48L3N2ZyUzRQ=='"/> 
                 
                 <span class="text-3xl font-extrabold text-[--primary-blue] tracking-tight">SSFMA</span>
@@ -190,21 +200,22 @@
 
     <main class="flex-grow">
         
-        <section id="home" class="min-h-screen flex flex-col items-center justify-center pt-24 pb-16 px-4 bg-[--dark-green-bg]/70 text-white">
+        <section id="home" class="text-white">
             
             <div class="glass-card text-center max-w-4xl mx-auto mb-12 p-8 shadow-2xl">
-                <h1 class="text-4xl sm:text-6xl font-extrabold mb-4 leading-tight tracking-tighter text-white">
+                
+<h1 class="text-4xl sm:text-6xl font-extrabold mb-4 leading-tight tracking-tighter text-[--primary-blue]">
                     Smart Study Focus Assistant (SSFMA)
                 </h1>
                 <p class="text-lg sm:text-2xl font-medium mb-8 text-[--focus-green]" style="filter: drop-shadow(0 0 5px var(--focus-green));">
                     "Turn Focus Into Success"
                 </p>
-                <p class="text-base sm:text-lg mb-10 max-w-2xl mx-auto leading-relaxed text-gray-100">
+                <p class="text-base sm:text-lg mb-10 max-w-2xl mx-auto leading-relaxed text-gray-800">
                     Arduino-ভিত্তিক এই উদ্ভাবনী সিস্টেমটি আপনাকে মনোযোগ সহকারে এবং সঠিক লক্ষ্য নির্ধারণ করে পড়াশোনা করতে সাহায্য করবে। এটি **ডিস্ট্র্যাকশন সনাক্তকরণ**, **অটো মোটিভেশন** ও **রিয়েলটাইম মনিটরিং** এর মাধ্যমে ফোকাস বৃদ্ধি করে।
                 </p>
             </div>
 
-            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-8 mb-16 w-full max-w-lg">
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-8 mb-16 w-full max-w-lg mx-auto">
                 <a href="#dashboard" class="neon-button bg-white text-[--primary-blue] hover:bg-gray-100 px-8 py-4 rounded-xl font-extrabold text-lg flex items-center justify-center shadow-md hover:shadow-green-400/80">
                     <i data-lucide="layout-dashboard" class="w-6 h-6 mr-3"></i>
                     ড্যাশবোর্ড দেখুন
@@ -215,29 +226,32 @@
                 </a>
             </div>
 
-            <div class="w-full max-w-7xl mx-auto mb-16">
-                 <h3 class="text-3xl font-bold text-center mb-8 text-white border-b border-gray-100/50 pb-4">
+            <div class="w-full max-w-7xl mx-auto mb-16 px-4">
+                 <h3 class="text-3xl font-bold text-center mb-8 text-[--primary-blue] border-b border-gray-300 pb-4">
                     মূল ফিচারসমূহ
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="glass-card p-6 border-b-4 border-red-500"> <i data-lucide="eye-off" class="w-10 h-10 mx-auto text-red-500 mb-3"></i>
-                        <p class="text-xl font-extrabold text-[--primary-blue]">ডিস্ট্র্যাকশন সনাক্তকরণ</p>
+                    <div class="glass-card p-6 border-b-4 border-red-500 text-[--primary-blue] text-center transform hover:scale-[1.03] transition duration-300">
+                        <i data-lucide="eye-off" class="w-10 h-10 mx-auto text-red-500 mb-3"></i>
+                        <p class="text-xl font-extrabold">ডিস্ট্র্যাকশন সনাক্তকরণ</p>
                         <p class="text-sm text-gray-600 mt-1">ক্যামেরা ও সেন্সর দিয়ে মনোযোগের অভাব চিহ্নিত করা।</p>
                     </div>
-                    <div class="glass-card p-6 border-b-4 border-yellow-500"> <i data-lucide="zap" class="w-10 h-10 mx-auto text-yellow-500 mb-3"></i>
-                        <p class="text-xl font-extrabold text-[--primary-blue]">অটো মোটিভেশন সিস্টেম</p>
+                    <div class="glass-card p-6 border-b-4 border-yellow-500 text-[--primary-blue] text-center transform hover:scale-[1.03] transition duration-300">
+                        <i data-lucide="zap" class="w-10 h-10 mx-auto text-yellow-500 mb-3"></i>
+                        <p class="text-xl font-extrabold">অটো মোটিভেশন সিস্টেম</p>
                         <p class="text-sm text-gray-600 mt-1">ফোকাস ফিরিয়ে আনতে স্বয়ংক্রিয়ভাবে মোটিভেশনাল মেসেজ দেওয়া।</p>
                     </div>
-                    <div class="glass-card p-6 border-b-4 border-green-500"> <i data-lucide="activity" class="w-10 h-10 mx-auto text-green-500 mb-3"></i>
-                        <p class="text-xl font-extrabold text-[--primary-blue]">রিয়েলটাইম মনিটরিং</p>
+                    <div class="glass-card p-6 border-b-4 border-green-500 text-[--primary-blue] text-center transform hover:scale-[1.03] transition duration-300">
+                        <i data-lucide="activity" class="w-10 h-10 mx-auto text-green-500 mb-3"></i>
+                        <p class="text-xl font-extrabold">রিয়েলটাইম মনিটরিং</p>
                         <p class="text-sm text-gray-600 mt-1">গার্ডিয়ান অ্যাপের মাধ্যমে শিক্ষার্থীর লাইভ ডেটা পর্যবেক্ষণ।</p>
                     </div>
                 </div>
             </div>
 
 
-            <div class="w-full">
-                <h3 class="text-3xl font-bold text-center mb-6 text-white border-b border-gray-100/50 pb-4">
+            <div class="w-full px-4">
+                <h3 class="text-3xl font-bold text-center mb-6 text-[--primary-blue] border-b border-gray-300 pb-4">
                     প্রজেক্ট টিম
                 </h3>
                 <div class="team-slider-container">
@@ -418,14 +432,16 @@
         const initialFocusData = [120, 150, 90, 180, 140, 210, 100];
         const initialDistractionData = [5, 3, 7, 2, 4, 1, 6];
 
-        // --- Team Member Data (ছবি যুক্ত করার জন্য ফাইল নাম ব্যবহার করা হলো) ---
-        // *** এখানে আপনার মেম্বারদের ছবির নাম ও ফরম্যাট দিতে হবে ***
+        // --- Team Member Data (Fixed 404 Errors) ---
         const teamMembers = [
+            // আপনার ছবি
             { name: "নিশান", role: "প্রজেক্ট লিড, সফটওয়্যার ও ইউআই/ইউএক্স ডিজাইনার", image: "nishan.jpg" }, 
+            // আপনার সহকর্মীর ছবি
             { name: "রিয়াদ", role: "হার্ডওয়্যার ডিজাইনার", image: "riyad.jpg" },       
-            { name: "শাহরিয়ার", role: "সিস্টেম ডেভেলপার", image: "shahriar.jpg" },    
-            { name: "তানজিম", role: "ডেটা অ্যানালাইসিস", image: "tanjim.jpg" },      
-            { name: "একরামুল", role: "টেস্টিং ও কোয়ালিটি অ্যাসিওরেন্স", image: "ekramul.jpg" },
+            // বাকিদের জন্য প্লেসহোল্ডার (404 এরর এড়াতে)
+            { name: "শাহরিয়ার", role: "সিস্টেম ডেভেলপার", image: "https://placehold.co/100x100/8FBC8F/1C3F60?text=S" },    
+            { name: "তানজিম", role: "ডেটা অ্যানালাইসিস", image: "https://placehold.co/100x100/60A5FA/FFFFFF?text=T" },      
+            { name: "একরামুল", role: "টেস্টিং ও কোয়ালিটি অ্যাসিওরেন্স", image: "https://placehold.co/100x100/FCD34D/1C3F60?text=E" },
         ];
         const sliderTrack = document.getElementById('team-slider-track');
         
@@ -444,34 +460,6 @@
         // Duplicating members for seamless loop (critical for continuous scroll)
         const teamContent = teamMembers.map(createMemberCard).join('');
         sliderTrack.innerHTML = teamContent + teamContent; 
-
-
-        // *** ডাইনামিক লোগো, ফেভিকন এবং ব্যাকগ্রাউন্ড সেট করার নতুন ফাংশন ***
-        function initializeAssets() {
-            const logoFileMeta = document.querySelector('meta[name="logo-file"]');
-            const backgroundFileMeta = document.querySelector('meta[name="background-file"]');
-            const logoImage = document.getElementById('logo-image'); // Header এর লোগো
-
-            if (logoFileMeta && logoFileMeta.content) {
-                const logoFileName = logoFileMeta.content;
-                // ফেভিকন সেট করা
-                document.getElementById('dynamic-favicon').href = logoFileName;
-                // হেডার এর লোগো সেট করা
-                if (logoImage) {
-                    logoImage.src = logoFileName;
-                }
-            }
-
-            if (backgroundFileMeta && backgroundFileMeta.content) {
-                const backgroundFileName = backgroundFileMeta.content;
-                const bodyBefore = document.querySelector('body::before');
-                if (bodyBefore) {
-                    bodyBefore.style.backgroundImage = `url('${backgroundFileName}')`;
-                    bodyBefore.style.opacity = '0.4'; // ব্যাকগ্রাউন্ডের অস্পষ্টতা
-                }
-            }
-        }
-        // ***************************************************************
 
 
         // --- Realtime Clock and Data Update Functions ---
@@ -772,7 +760,6 @@
         
         // Initialize everything on load
         window.onload = function() {
-            initializeAssets(); 
             updateChart('focus'); 
         };
     </script>
