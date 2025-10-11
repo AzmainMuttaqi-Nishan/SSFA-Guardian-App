@@ -30,21 +30,19 @@
             scroll-behavior: smooth;
             
             /* --- ফিক্সড ব্যাকগ্রাউন্ড ইমেজ লোডিং (CSS) --- */
-            background-image: url('background.jpg');
+            background-image: linear-gradient(rgba(232, 245, 233, 0.7), rgba(185, 251, 192, 0.7)), url('background.jpg'); /* Overlay যোগ করা হয়েছে */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            
+            background-attachment: fixed; /* ব্যাকগ্রাউন্ড স্ক্রল করবে না */
             /* ইমেজ লোড না হলে ডিফল্ট গ্রেডিয়েন্ট */
-            background-image: linear-gradient(135deg, #E8F5E9 0%, #B9FBC0 50%, #E8F5E9 100%), url('background.jpg');
-            background-blend-mode: multiply; /* যাতে টেক্সট পড়তে সুবিধা হয় */
-            opacity: 1; /* এখন সরাসরি body-তে opacity সেট করা হবে না, তবে section-এ করা হয়েছে */
+            background-image: linear-gradient(135deg, rgba(232, 245, 233, 0.7) 0%, rgba(185, 251, 192, 0.7) 50%, rgba(232, 245, 233, 0.7) 100%), url('background.jpg'); 
+            background-blend-mode: multiply; 
         }
         
-        /* Home Section এর ব্যাকগ্রাউন্ড পরিবর্তন করা হলো যাতে ইমেজটি দেখা যায় */
+        /* Home Section এর ব্যাকগ্রাউন্ড পরিবর্তন করা হলো যাতে body-র ইমেজ দেখা যায় */
         #home {
-            background: linear-gradient(rgba(76, 175, 80, 0.4), rgba(76, 175, 80, 0.4)); /* Green Overlay */
-            background-color: transparent !important; /* যাতে body-র ইমেজ দেখা যায় */
+            background: transparent !important; /* Home section এর ব্যাকগ্রাউন্ড স্বচ্ছ করা হলো */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -52,16 +50,17 @@
             justify-content: center;
             padding-top: 6rem; /* Header এর জন্য স্পেস */
             padding-bottom: 4rem;
+            color: var(--primary-blue); /* Home section এর ভিতরের টেক্সটের ডিফল্ট কালার */
         }
 
-        /* --- Glassmorphism Card Style (টেক্সট ভিজিবিিলিটি বাড়াতে color পরিবর্তন করা হলো) --- */
+        /* --- Glassmorphism Card Style (টেক্সট ভিজিবিিলিটি বাড়াতে color এবং transparency পরিবর্তন করা হলো) --- */
         .glass-card {
-            background: rgba(255, 255, 255, 0.25); /* Semi-transparent White */
-            backdrop-filter: blur(10px); /* Blur effect (The Glass) */
+            background: rgba(255, 255, 255, 0.4); /* Slightly less transparent */
+            backdrop-filter: blur(10px); 
             -webkit-backdrop-filter: blur(10px);
             border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Subtle 3D shadow */
+            border: 1px solid rgba(255, 255, 255, 0.4); /* Slightly darker border */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); 
             transition: all 0.3s ease-in-out;
             color: var(--primary-blue); /* Default color for internal card text */
         }
@@ -449,7 +448,7 @@
         function createMemberCard(member) {
             // onerror ব্যবহার করা হলো যাতে ছবি না পেলে একটি ডিফল্ট আইকন দেখায়
             return `
-                <div class="member-card glass-card p-4 border-t-4 border-[--focus-green] text-center transform hover:scale-[1.05] transition duration-300">
+                <div class="member-card glass-card p-4 border-t-4 border-[--focus-green] text-center transform hover:scale-[1.03] transition duration-300">
                     <img src="${member.image}" onerror="this.onerror=null;this.src='https://placehold.co/100x100/94A3B8/FFFFFF?text=${member.name.charAt(0)}';" alt="${member.name}" class="h-24 w-24 rounded-full mx-auto mb-3 object-cover border-4 border-gray-200">
                     <p class="font-bold text-lg text-[--primary-blue] whitespace-normal">${member.name}</p>
                     <p class="text-sm text-gray-500 whitespace-normal">${member.role}</p>
