@@ -9,24 +9,26 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <link rel="icon" type="image/png" href="Gemini_Generated_Image_bckehnbckehnbcke.png"> 
+    <meta name="logo-file" content="Gemini_Generated_Image_bckehnbckehnbcke.png">
+    <meta name="background-file" content="Gemini_Generated_Image_ntop51ntop51ntop.png">
+    <link rel="icon" type="image/x-icon" id="favicon-link" href="">
 
     <style>
         /* Base Colors (Matching the "Halka Green" theme) */
         :root {
-            --calming-green: #E8F5E9; /* Very light, almost minty green background */
-            --dark-green-bg: #4CAF50; /* Primary Green for a strong base */
-            --primary-blue: #1C3F60;   /* Deep Blue for main elements (text/headers) */
-            --focus-green: #00FF7F;    /* Vibrant Neon Green for accents/focus */
-            --neon-glow-color: #7CFC00; /* Extra Light Green for Powerful Neon Glow */
+            --calming-green: #E8F5E9; 
+            --dark-green-bg: #4CAF50; 
+            --primary-blue: #1C3F60;   
+            --focus-green: #00FF7F;    
+            --neon-glow-color: #7CFC00; 
         }
         body {
             font-family: 'Hind Siliguri', sans-serif;
             color: var(--primary-blue);
             scroll-behavior: smooth;
             
-            /* --- ব্যাকগ্রাউন্ড ইমেজ যুক্ত করা হলো (PNG ফরম্যাট) --- */
-            background-image: url('Gemini_Generated_Image_ntop51ntop51ntop.png'); 
+            /* --- ডাইনামিক ব্যাকগ্রাউন্ড ইমেজ --- */
+            /* JavaScript এই অংশে 'background-image' সেট করবে */
             background-size: cover; 
             background-attachment: fixed; 
             background-position: center center;
@@ -136,15 +138,7 @@
             100% { box-shadow: 0 0 10px rgba(0, 255, 127, 0.9); }
         }
         
-        /* Home Section Background (Transparent enough to see the image) */
-        #home {
-            background-color: rgba(76, 175, 80, 0.4); /* --dark-green-bg এর 40% স্বচ্ছ */
-            padding-top: 6rem;
-            padding-bottom: 4rem;
-            min-height: 100vh;
-        }
     </style>
-    
 </head>
 
 <body>
@@ -154,9 +148,9 @@
             
             <div class="flex items-center space-x-3">
                 
-                <img src="Gemini_Generated_Image_bckehnbckehnbcke.png" alt="SSFMA Logo" class="h-10 w-10 object-contain rounded-lg"/> 
+                <img id="logo-image" src="" alt="SSFMA Logo" class="h-10 w-10 object-contain rounded-lg" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iI2U4ZjVlOSIgc3Ryb2tlPSIjNGRhZjUwIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIyNSIgZmlsbD0iIzFjM2Y2MCIvPjxwYXRoIGQ9Ik00MCAzNUg2MEM2Mi43NiAzNSA2NSAzNy4yNCA2NSA0MFY0NUgzNVY1MEg2NVY2MEM2NSAzMi43NiA2Mi43NiA2NSA2MCA2NUg0MEMzNy4yNCA2NSAzNSA2Mi43NiAzNSA2MFY1NUg2NVY1MEgzNVY0MEMzNSAzNy4yNCAzNy4yNCAzNSA0MCAzNVoiIGZpbGw9ImZlZmZmZiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwgNSkiLz48L3N2ZyUzRQ=='"/> 
                 
-                <span class="text-3xl font-extrabold text-[--primary-blue] tracking-tight">SSFMA</span> 
+                <span class="text-3xl font-extrabold text-[--primary-blue] tracking-tight">SSFMA</span>
                 <span class="text-xl font-medium text-[--focus-green] hidden sm:block">Smart Study Focus Assistant</span>
             </div>
 
@@ -171,12 +165,12 @@
 
     <main class="flex-grow">
         
-        <section id="home" class="min-h-screen flex flex-col items-center justify-center pt-24 pb-16 px-4 text-white"> 
+        <section id="home" class="min-h-screen flex flex-col items-center justify-center pt-24 pb-16 px-4 bg-[--dark-green-bg]/70 text-white">
             
             <div class="glass-card text-center max-w-4xl mx-auto mb-12 p-8 shadow-2xl">
                 <h1 class="text-4xl sm:text-6xl font-extrabold mb-4 leading-tight tracking-tighter text-[--primary-blue]">
-                    Smart Study Focus Assistant (SSFMA) 
-                    </h1>
+                    Smart Study Focus Assistant (SSFMA)
+                </h1>
                 <p class="text-lg sm:text-2xl font-medium mb-8 text-[--focus-green]" style="filter: drop-shadow(0 0 5px var(--focus-green));">
                     "Turn Focus Into Success"
                 </p>
@@ -184,7 +178,7 @@
                     Arduino-ভিত্তিক এই উদ্ভাবনী সিস্টেমটি আপনাকে মনোযোগ সহকারে এবং সঠিক লক্ষ্য নির্ধারণ করে পড়াশোনা করতে সাহায্য করবে। এটি **ডিস্ট্র্যাকশন সনাক্তকরণ**, **অটো মোটিভেশন** ও **রিয়েলটাইম মনিটরিং** এর মাধ্যমে ফোকাস বৃদ্ধি করে।
                 </p>
             </div>
-
+            
             <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-8 mb-16 w-full max-w-lg">
                 <a href="#dashboard" class="neon-button bg-white text-[--primary-blue] hover:bg-gray-100 px-8 py-4 rounded-xl font-extrabold text-lg flex items-center justify-center shadow-md hover:shadow-green-400/80">
                     <i data-lucide="layout-dashboard" class="w-6 h-6 mr-3"></i>
@@ -197,7 +191,7 @@
             </div>
 
             <div class="w-full max-w-7xl mx-auto mb-16">
-                 <h3 class="text-3xl font-bold text-center mb-8 text-white border-b border-gray-100/50 pb-4" style="text-shadow: 0 0 5px rgba(0,0,0,0.5);">
+                 <h3 class="text-3xl font-bold text-center mb-8 text-white border-b border-gray-100/50 pb-4">
                     মূল ফিচারসমূহ
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -221,7 +215,7 @@
 
 
             <div class="w-full">
-                <h3 class="text-3xl font-bold text-center mb-6 text-white border-b border-gray-100/50 pb-4" style="text-shadow: 0 0 5px rgba(0,0,0,0.5);">
+                <h3 class="text-3xl font-bold text-center mb-6 text-white border-b border-gray-100/50 pb-4">
                     প্রজেক্ট টিম
                 </h3>
                 <div class="team-slider-container">
@@ -392,6 +386,33 @@
     <script>
         // Initialize Lucide icons
         lucide.createIcons();
+
+        // ** ডাইনামিক ফাইল পাথ সেটআপ **
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoFile = document.querySelector('meta[name="logo-file"]').content;
+            const bgFile = document.querySelector('meta[name="background-file"]').content;
+
+            // 1. লোগো ইমেজ আপডেট (Header)
+            const logoImg = document.getElementById('logo-image');
+            if (logoImg) {
+                logoImg.src = logoFile;
+            }
+
+            // 2. ফেভিকন আপডেট (Favicon)
+            const faviconLink = document.getElementById('favicon-link');
+            if (faviconLink) {
+                faviconLink.href = logoFile;
+            }
+
+            // 3. ব্যাকগ্রাউন্ড ইমেজ আপডেট (Body CSS)
+            if (bgFile) {
+                document.body.style.backgroundImage = `url('${bgFile}')`;
+            } else {
+                 // যদি ব্যাকগ্রাউন্ড ফাইল না থাকে, তবে আগের স্টাইলটি ব্যবহার করবে।
+                 document.body.style.backgroundImage = 'linear-gradient(135deg, var(--calming-green) 0%, #B9FBC0 50%, var(--calming-green) 100%)';
+            }
+        });
+        // ** ডাইনামিক ফাইল পাথ সেটআপ শেষ **
 
         // --- Global State Variables (For Simulation) ---
         let totalSeconds = 0;
