@@ -9,6 +9,9 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    
+    <link rel="icon" type="image/png" href="Gemini_Generated_Image_bckehnbckehnbcke.png"> 
+
     <style>
         /* Base Colors (Matching the "Halka Green" theme) */
         :root {
@@ -23,23 +26,22 @@
             color: var(--primary-blue);
             scroll-behavior: smooth;
             
-            /* --- নতুন ব্যাকগ্রাউন্ড স্টাইল যুক্ত করা হলো (অপশন ৩ - টেক-নেচার মিক্স) --- */
-            /* ধরে নিচ্ছি আপলোড করা image-ntop51ntop51ntop.jpg ফাইলটির নাম 'background.jpg' হিসেবে ব্যবহার করা হয়েছে */
-            background-image: url('Gemini_Generated_Image_ntop51ntop51ntop.jpg');
-            background-size: cover; /* ছবিটি পুরো স্ক্রিন জুড়ে থাকবে */
-            background-attachment: fixed; /* স্ক্রল করলেও ছবিটি স্থির থাকবে */
+            /* --- ব্যাকগ্রাউন্ড ইমেজ যুক্ত করা হলো (PNG ফরম্যাট) --- */
+            background-image: url('Gemini_Generated_Image_ntop51ntop51ntop.png'); 
+            background-size: cover; 
+            background-attachment: fixed; 
             background-position: center center;
-            background-color: #f0f0f0; /* যদি ছবি লোড না হয় তবে হালকা রঙ থাকবে */
+            background-color: #f0f0f0; 
         }
 
         /* --- Glassmorphism Card Style --- */
         .glass-card {
-            background: rgba(255, 255, 255, 0.2); /* Semi-transparent White */
-            backdrop-filter: blur(10px); /* Blur effect (The Glass) */
+            background: rgba(255, 255, 255, 0.2); 
+            backdrop-filter: blur(10px); 
             -webkit-backdrop-filter: blur(10px);
             border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Subtle 3D shadow */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); 
             transition: all 0.3s ease-in-out;
             color: var(--primary-blue);
         }
@@ -52,7 +54,7 @@
         .neon-button {
             transition: all 0.3s ease-in-out;
             border: 2px solid var(--focus-green);
-            box-shadow: 0 0 3px var(--neon-glow-color); /* Subtle initial glow */
+            box-shadow: 0 0 3px var(--neon-glow-color); 
             cursor: pointer;
         }
         .neon-button:hover {
@@ -69,7 +71,7 @@
             border: 1px solid var(--focus-green);
         }
         .chart-btn.active-distraction {
-            background-color: #E53E3E !important; /* Red */
+            background-color: #E53E3E !important; 
             color: white !important;
             box-shadow: 0 0 5px #FBB6CE, 0 0 15px #FBB6CE;
             border: 1px solid #E53E3E;
@@ -99,7 +101,7 @@
             max-width: 1200px;
             margin: 0 auto;
             border-radius: 16px;
-            background: rgba(255, 255, 255, 0.1); /* Semi-transparent */
+            background: rgba(255, 255, 255, 0.1); 
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
@@ -131,13 +133,12 @@
         }
         
         @keyframes pulse-focus {
-            0% { box-shadow: 0 0 0 rgba(0, 255, 127, 0.7); } /* Neon Green Pulse */
+            0% { box-shadow: 0 0 0 rgba(0, 255, 127, 0.7); } 
             100% { box-shadow: 0 0 10px rgba(0, 255, 127, 0.9); }
         }
         
     </style>
     
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZyBmaWxsPSJub25lIiBzdHJva2U9Im5vbmUiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjRTlGNTU0Ii8+PC9nPgogICAgPGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDUiIGZpbGw9IiMwMDMyNTAiLz4KICAgIDxnIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI++CiAgICA8L2c++CgogICAgPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBGRjdGIiBzdHJva2Utd2lkdGg9IjgiIGQ9Ik01MCAxMGMtMTkuODggMC0zNi41MiAxMy4xNy0zOS45NiAzMS41NCIgc3R5bGU9ImZpbHRlcjogZHJvcC1zaGFkb3coMCAwIDVweCAjN0NGQzAwKTsiLz4KICAgIDxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwRkY3RiIgc3Ryb2tlLXdpZHRoPSI4IiBkPSJNNTkgODkuMTZBMzkuMTYgMzkuMTYgMCAwIDAgODkgNTYiIHN0eWxlPSJmaWx0ZXI6IGRyb3Atc2hhZG93KDAgMCA1cHggIzdDRkMwMCk7Ii8+CgogICAgPGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iMzUiIGZpbGw9IiMxQzNGNjAiLz4KICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjE4IiBmaWxsPSIjMDBGRjdGIiBzdHlsZT0iZmlsdGVyOiBkcm9wLXNoYWRvdygwIDAgNXB4ICM3Q0ZDMDApIi8+Cjwvc3ZnPg==">
 </head>
 
 <body>
@@ -146,19 +147,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             
             <div class="flex items-center space-x-3">
-                <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="45" stroke="var(--focus-green)" stroke-width="6" style="filter: drop-shadow(0 0 5px var(--focus-green));"/>
-                    <g fill="var(--primary-blue)">
-                        <path d="M50 15L45 25H55L50 15ZM50 85L55 75H45L50 85Z" />
-                        <rect x="25" y="48" width="50" height="4" rx="2"/>
-                        <circle cx="28" cy="50" r="3"/>
-                        <circle cx="72" cy="50" r="3"/>
-                        <path d="M35 30L40 40H60L65 30ZM35 70L40 60H60L65 70Z" />
-                    </g>
-                    <path d="M50 40C45 40 40 45 40 50V60H60V50C60 45 55 40 50 40Z" fill="var(--focus-green)" style="filter: drop-shadow(0 0 2px var(--focus-green));"/>
-                    <rect x="47" y="60" width="6" height="5" rx="1" fill="var(--focus-green)"/>
-                    <rect x="46" y="65" width="8" height="3" rx="1" fill="var(--primary-blue)"/>
-                </svg>
+                
+                <img src="Gemini_Generated_Image_bckehnbckehnbcke.png" alt="SSFA Logo" class="h-10 w-10 object-contain"/> 
                 
                 <span class="text-3xl font-extrabold text-[--primary-blue] tracking-tight">SSFA</span> 
                 <span class="text-xl font-medium text-[--focus-green] hidden sm:block">Smart Study Focus Assistant</span>
@@ -410,7 +400,7 @@
         const teamMembers = [
             { name: "নিশান", role: "প্রজেক্ট লিড, সফটওয়্যার ও ইউআই/ইউএক্স ডিজাইনার", image: "https://placehold.co/100x100/1C3F60/FFFFFF?text=N" },
             { name: "রিয়াদ", role: "হার্ডওয়্যার ডিজাইনার", image: "https://placehold.co/100x100/4CAF50/FFFFFF?text=R" },
-            { name: "শাহরিয়ার", role: "সিস্টেম ডেভেলপার", image: "https://placehold.co/100x100/8FBC8F/1C3F60?text=S" },
+            { name: "শাহরিয়ার", role: "সিস্টেম ডেভেলপার", image: "https://placehold.co/100x100/8FBC8F/1C3F60?text=S" },
             { name: "তানজিম", role: "ডেটা অ্যানালাইসিস", image: "https://placehold.co/100x100/60A5FA/FFFFFF?text=T" },
             { name: "একরামুল", role: "টেস্টিং ও কোয়ালিটি অ্যাসিওরেন্স", image: "https://placehold.co/100x100/FCD34D/1C3F60?text=E" },
         ];
