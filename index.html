@@ -28,7 +28,7 @@
             scroll-behavior: smooth;
         }
 
-        /* --- Dynamic Background Image (যদি আপনি CSS Gradient ব্যবহার না করে ইমেজ ব্যবহার করতে চান) --- */
+        /* --- Dynamic Background Image (CSS Pseudo-element) --- */
         body::before {
             content: '';
             position: fixed;
@@ -37,12 +37,12 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            /* background-image: linear-gradient(135deg, #E8F5E9 0%, #B9FBC0 50%, #E8F5E9 100%); */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            opacity: 1; /* কমিয়ে দেখুন যদি লেখা বুঝতে অসুবিধা হয় */
+            opacity: 0.4; /* কমিয়ে দেখুন যদি লেখা বুঝতে অসুবিধা হয় */
             transition: opacity 0.5s ease-in-out;
+            background-image: linear-gradient(135deg, #E8F5E9 0%, #B9FBC0 50%, #E8F5E9 100%); /* Default gradient */
         }
         
         /* --- Glassmorphism Card Style (টেক্সট ভিজিবিিলিটি বাড়াতে color পরিবর্তন করা হলো) --- */
@@ -54,7 +54,7 @@
             border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Subtle 3D shadow */
             transition: all 0.3s ease-in-out;
-            color: #2D3748; /* Dark Gray - **এটাই ডিফল্ট টেক্সট কালার, নিচে Home সেকশনে ফিক্স করা হয়েছে** */
+            color: var(--primary-blue); /* Default color for internal card text */
         }
         .glass-card:hover {
             box-shadow: 0 8px 60px rgba(0, 0, 0, 0.15);
@@ -172,6 +172,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             
             <div class="flex items-center space-x-3">
+                <img id="logo-image" src="" alt="SSFMA Logo" class="h-10 w-10 object-contain rounded-lg" 
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iI2U4ZjVlOSIgc3Ryb2tlPSIjNGRhZjUwIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIyNSIgZmlsbD0iIzFjM2Y2MCIvPjxwYXRoIGQ9Ik00MCAzNUg2MEM2Mi43NiAzNSA2NSAzNy4yNCA2NSA0MFY0NUgzNVY1MEg2NVY2MEM2NSAzMi43NiA2Mi43NiA2NSA2MCA2NUg0MEMzNy4yNCA2NSAzNSA2Mi43NiAzNSA2MFY1NUg2NVY1MEgzNVY0MEMzNSAzNy4yNCAzNy4yNCAzNSA0MCAzNVoiIGZpbGw9ImZlZmZmZiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwgNSkiLz48L3N2ZyUzRQ=='"/> 
+                
                 <span class="text-3xl font-extrabold text-[--primary-blue] tracking-tight">SSFMA</span>
                 <span class="text-xl font-medium text-[--focus-green] hidden sm:block">Smart Study Focus Assistant</span>
             </div>
@@ -217,19 +220,16 @@
                     মূল ফিচারসমূহ
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="glass-card p-6 border-b-4 border-red-500 text-[--primary-blue] text-center transform hover:scale-[1.03] transition duration-300">
-                        <i data-lucide="eye-off" class="w-10 h-10 mx-auto text-red-500 mb-3"></i>
-                        <p class="text-xl font-extrabold">ডিস্ট্র্যাকশন সনাক্তকরণ</p>
+                    <div class="glass-card p-6 border-b-4 border-red-500"> <i data-lucide="eye-off" class="w-10 h-10 mx-auto text-red-500 mb-3"></i>
+                        <p class="text-xl font-extrabold text-[--primary-blue]">ডিস্ট্র্যাকশন সনাক্তকরণ</p>
                         <p class="text-sm text-gray-600 mt-1">ক্যামেরা ও সেন্সর দিয়ে মনোযোগের অভাব চিহ্নিত করা।</p>
                     </div>
-                    <div class="glass-card p-6 border-b-4 border-yellow-500 text-[--primary-blue] text-center transform hover:scale-[1.03] transition duration-300">
-                        <i data-lucide="zap" class="w-10 h-10 mx-auto text-yellow-500 mb-3"></i>
-                        <p class="text-xl font-extrabold">অটো মোটিভেশন সিস্টেম</p>
+                    <div class="glass-card p-6 border-b-4 border-yellow-500"> <i data-lucide="zap" class="w-10 h-10 mx-auto text-yellow-500 mb-3"></i>
+                        <p class="text-xl font-extrabold text-[--primary-blue]">অটো মোটিভেশন সিস্টেম</p>
                         <p class="text-sm text-gray-600 mt-1">ফোকাস ফিরিয়ে আনতে স্বয়ংক্রিয়ভাবে মোটিভেশনাল মেসেজ দেওয়া।</p>
                     </div>
-                    <div class="glass-card p-6 border-b-4 border-green-500 text-[--primary-blue] text-center transform hover:scale-[1.03] transition duration-300">
-                        <i data-lucide="activity" class="w-10 h-10 mx-auto text-green-500 mb-3"></i>
-                        <p class="text-xl font-extrabold">রিয়েলটাইম মনিটরিং</p>
+                    <div class="glass-card p-6 border-b-4 border-green-500"> <i data-lucide="activity" class="w-10 h-10 mx-auto text-green-500 mb-3"></i>
+                        <p class="text-xl font-extrabold text-[--primary-blue]">রিয়েলটাইম মনিটরিং</p>
                         <p class="text-sm text-gray-600 mt-1">গার্ডিয়ান অ্যাপের মাধ্যমে শিক্ষার্থীর লাইভ ডেটা পর্যবেক্ষণ।</p>
                     </div>
                 </div>
@@ -419,6 +419,7 @@
         const initialDistractionData = [5, 3, 7, 2, 4, 1, 6];
 
         // --- Team Member Data (ছবি যুক্ত করার জন্য ফাইল নাম ব্যবহার করা হলো) ---
+        // *** এখানে আপনার মেম্বারদের ছবির নাম ও ফরম্যাট দিতে হবে ***
         const teamMembers = [
             { name: "নিশান", role: "প্রজেক্ট লিড, সফটওয়্যার ও ইউআই/ইউএক্স ডিজাইনার", image: "nishan.jpg" }, 
             { name: "রিয়াদ", role: "হার্ডওয়্যার ডিজাইনার", image: "riyad.jpg" },       
@@ -445,21 +446,27 @@
         sliderTrack.innerHTML = teamContent + teamContent; 
 
 
-        // *** ডাইনামিক ফেভিকন এবং ব্যাকগ্রাউন্ড সেট করার নতুন ফাংশন ***
+        // *** ডাইনামিক লোগো, ফেভিকন এবং ব্যাকগ্রাউন্ড সেট করার নতুন ফাংশন ***
         function initializeAssets() {
             const logoFileMeta = document.querySelector('meta[name="logo-file"]');
             const backgroundFileMeta = document.querySelector('meta[name="background-file"]');
+            const logoImage = document.getElementById('logo-image'); // Header এর লোগো
 
             if (logoFileMeta && logoFileMeta.content) {
+                const logoFileName = logoFileMeta.content;
                 // ফেভিকন সেট করা
-                document.getElementById('dynamic-favicon').href = logoFileMeta.content;
+                document.getElementById('dynamic-favicon').href = logoFileName;
+                // হেডার এর লোগো সেট করা
+                if (logoImage) {
+                    logoImage.src = logoFileName;
+                }
             }
 
             if (backgroundFileMeta && backgroundFileMeta.content) {
-                // ব্যাকগ্রাউন্ড ইমেজ সেট করা
+                const backgroundFileName = backgroundFileMeta.content;
                 const bodyBefore = document.querySelector('body::before');
                 if (bodyBefore) {
-                    bodyBefore.style.backgroundImage = `url('${backgroundFileMeta.content}')`;
+                    bodyBefore.style.backgroundImage = `url('${backgroundFileName}')`;
                     bodyBefore.style.opacity = '0.4'; // ব্যাকগ্রাউন্ডের অস্পষ্টতা
                 }
             }
