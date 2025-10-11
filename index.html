@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Study Focus Assistant - SSFMA</title>
+    <title>Smart Study Focus Assistant - SSFA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -20,11 +20,16 @@
         }
         body {
             font-family: 'Hind Siliguri', sans-serif;
-            background-color: var(--calming-green); 
             color: var(--primary-blue);
             scroll-behavior: smooth;
-            /* Added Abstract Background Gradient */
-            background-image: linear-gradient(135deg, #E8F5E9 0%, #B9FBC0 50%, #E8F5E9 100%);
+            
+            /* --- নতুন ব্যাকগ্রাউন্ড স্টাইল যুক্ত করা হলো (অপশন ৩ - টেক-নেচার মিক্স) --- */
+            /* ধরে নিচ্ছি আপলোড করা image-ntop51ntop51ntop.jpg ফাইলটির নাম 'background.jpg' হিসেবে ব্যবহার করা হয়েছে */
+            background-image: url('Gemini_Generated_Image_ntop51ntop51ntop.jpg');
+            background-size: cover; /* ছবিটি পুরো স্ক্রিন জুড়ে থাকবে */
+            background-attachment: fixed; /* স্ক্রল করলেও ছবিটি স্থির থাকবে */
+            background-position: center center;
+            background-color: #f0f0f0; /* যদি ছবি লোড না হয় তবে হালকা রঙ থাকবে */
         }
 
         /* --- Glassmorphism Card Style --- */
@@ -131,7 +136,8 @@
         }
         
     </style>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iI2U4ZjVlOSIgc3Ryb2tlPSIjNGRhZjUwIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2ZyUzRQ==">
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48ZyBmaWxsPSJub25lIiBzdHJva2U9Im5vbmUiPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjRTlGNTU0Ii8+PC9nPgogICAgPGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDUiIGZpbGw9IiMwMDMyNTAiLz4KICAgIDxnIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI++CiAgICA8L2c++CgogICAgPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBGRjdGIiBzdHJva2Utd2lkdGg9IjgiIGQ9Ik01MCAxMGMtMTkuODggMC0zNi41MiAxMy4xNy0zOS45NiAzMS41NCIgc3R5bGU9ImZpbHRlcjogZHJvcC1zaGFkb3coMCAwIDVweCAjN0NGQzAwKTsiLz4KICAgIDxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwRkY3RiIgc3Ryb2tlLXdpZHRoPSI4IiBkPSJNNTkgODkuMTZBMzkuMTYgMzkuMTYgMCAwIDAgODkgNTYiIHN0eWxlPSJmaWx0ZXI6IGRyb3Atc2hhZG93KDAgMCA1cHggIzdDRkMwMCk7Ii8+CgogICAgPGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iMzUiIGZpbGw9IiMxQzNGNjAiLz4KICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjE4IiBmaWxsPSIjMDBGRjdGIiBzdHlsZT0iZmlsdGVyOiBkcm9wLXNoYWRvdygwIDAgNXB4ICM3Q0ZDMDApIi8+Cjwvc3ZnPg==">
 </head>
 
 <body>
@@ -142,11 +148,19 @@
             <div class="flex items-center space-x-3">
                 <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="50" cy="50" r="45" stroke="var(--focus-green)" stroke-width="6" style="filter: drop-shadow(0 0 5px var(--focus-green));"/>
-                    <circle cx="50" cy="50" r="25" fill="#1C3F60"/>
-                    <path d="M40 35H60C62.76 35 65 37.24 65 40V45H35V50H65V60C65 62.76 62.76 65 60 65H40C37.24 65 35 62.76 35 60V55H65V50H35V40C35 37.24 37.24 35 40 35Z" fill="white" transform="translate(0, 5)"/>
+                    <g fill="var(--primary-blue)">
+                        <path d="M50 15L45 25H55L50 15ZM50 85L55 75H45L50 85Z" />
+                        <rect x="25" y="48" width="50" height="4" rx="2"/>
+                        <circle cx="28" cy="50" r="3"/>
+                        <circle cx="72" cy="50" r="3"/>
+                        <path d="M35 30L40 40H60L65 30ZM35 70L40 60H60L65 70Z" />
+                    </g>
+                    <path d="M50 40C45 40 40 45 40 50V60H60V50C60 45 55 40 50 40Z" fill="var(--focus-green)" style="filter: drop-shadow(0 0 2px var(--focus-green));"/>
+                    <rect x="47" y="60" width="6" height="5" rx="1" fill="var(--focus-green)"/>
+                    <rect x="46" y="65" width="8" height="3" rx="1" fill="var(--primary-blue)"/>
                 </svg>
                 
-                <span class="text-3xl font-extrabold text-[--primary-blue] tracking-tight">SSFMA</span>
+                <span class="text-3xl font-extrabold text-[--primary-blue] tracking-tight">SSFA</span> 
                 <span class="text-xl font-medium text-[--focus-green] hidden sm:block">Smart Study Focus Assistant</span>
             </div>
 
@@ -161,12 +175,12 @@
 
     <main class="flex-grow">
         
-        <section id="home" class="min-h-screen flex flex-col items-center justify-center pt-24 pb-16 px-4 bg-[--dark-green-bg]/70 text-white">
+        <section id="home" class="min-h-screen flex flex-col items-center justify-center pt-24 pb-16 px-4 text-white"> 
             
             <div class="glass-card text-center max-w-4xl mx-auto mb-12 p-8 shadow-2xl">
                 <h1 class="text-4xl sm:text-6xl font-extrabold mb-4 leading-tight tracking-tighter text-[--primary-blue]">
-                    Smart Study Focus Assistant (SSFMA)
-                </h1>
+                    Smart Study Focus Assistant (SSFA) 
+                    </h1>
                 <p class="text-lg sm:text-2xl font-medium mb-8 text-[--focus-green]" style="filter: drop-shadow(0 0 5px var(--focus-green));">
                     "Turn Focus Into Success"
                 </p>
@@ -187,7 +201,7 @@
             </div>
 
             <div class="w-full max-w-7xl mx-auto mb-16">
-                 <h3 class="text-3xl font-bold text-center mb-8 text-white border-b border-gray-100/50 pb-4">
+                 <h3 class="text-3xl font-bold text-center mb-8 text-white border-b border-gray-100/50 pb-4" style="text-shadow: 0 0 5px rgba(0,0,0,0.5);">
                     মূল ফিচারসমূহ
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -211,7 +225,7 @@
 
 
             <div class="w-full">
-                <h3 class="text-3xl font-bold text-center mb-6 text-white border-b border-gray-100/50 pb-4">
+                <h3 class="text-3xl font-bold text-center mb-6 text-white border-b border-gray-100/50 pb-4" style="text-shadow: 0 0 5px rgba(0,0,0,0.5);">
                     প্রজেক্ট টিম
                 </h3>
                 <div class="team-slider-container">
@@ -396,7 +410,7 @@
         const teamMembers = [
             { name: "নিশান", role: "প্রজেক্ট লিড, সফটওয়্যার ও ইউআই/ইউএক্স ডিজাইনার", image: "https://placehold.co/100x100/1C3F60/FFFFFF?text=N" },
             { name: "রিয়াদ", role: "হার্ডওয়্যার ডিজাইনার", image: "https://placehold.co/100x100/4CAF50/FFFFFF?text=R" },
-            { name: "শাহরিয়ার", role: "সিস্টেম ডেভেলপার", image: "https://placehold.co/100x100/8FBC8F/1C3F60?text=S" },
+            { name: "শাহরিয়ার", role: "সিস্টেম ডেভেলপার", image: "https://placehold.co/100x100/8FBC8F/1C3F60?text=S" },
             { name: "তানজিম", role: "ডেটা অ্যানালাইসিস", image: "https://placehold.co/100x100/60A5FA/FFFFFF?text=T" },
             { name: "একরামুল", role: "টেস্টিং ও কোয়ালিটি অ্যাসিওরেন্স", image: "https://placehold.co/100x100/FCD34D/1C3F60?text=E" },
         ];
@@ -720,8 +734,3 @@
     </script>
 </body>
 </html>
-```eof
-
-এই কোডটি এখন আপনার প্রজেক্টের **সর্বশেষ এবং সবচেয়ে স্টাইলিশ** সংস্করণ। আপনি **Glassmorphism** ডিজাইনের সাথে আপনার টিম মেম্বারদের রোল এবং সকল ফাংশনালিটি দেখতে পাবেন।
-
-কোডটি নিয়ে কাজ করা শুরু করার আগে আর কোনো প্রশ্ন আছে কি?
