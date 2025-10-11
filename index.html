@@ -30,39 +30,38 @@
             scroll-behavior: smooth;
             
             /* --- ফিক্সড ব্যাকগ্রাউন্ড ইমেজ লোডিং (CSS) --- */
-            background-image: linear-gradient(rgba(232, 245, 233, 0.7), rgba(185, 251, 192, 0.7)), url('background.jpg'); /* Overlay যোগ করা হয়েছে */
+            /* Overlay opacity কমিয়ে দেওয়া হলো যাতে ব্যাকগ্রাউন্ড ইমেজ আরও স্পষ্ট দেখা যায় */
+            background-image: linear-gradient(rgba(232, 245, 233, 0.4), rgba(185, 251, 192, 0.4)), url('background.jpg'); 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed; /* ব্যাকগ্রাউন্ড স্ক্রল করবে না */
-            /* ইমেজ লোড না হলে ডিফল্ট গ্রেডিয়েন্ট */
-            background-image: linear-gradient(135deg, rgba(232, 245, 233, 0.7) 0%, rgba(185, 251, 192, 0.7) 50%, rgba(232, 245, 233, 0.7) 100%), url('background.jpg'); 
+            background-attachment: fixed; 
             background-blend-mode: multiply; 
         }
         
         /* Home Section এর ব্যাকগ্রাউন্ড পরিবর্তন করা হলো যাতে body-র ইমেজ দেখা যায় */
         #home {
-            background: transparent !important; /* Home section এর ব্যাকগ্রাউন্ড স্বচ্ছ করা হলো */
+            background: transparent !important; 
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding-top: 6rem; /* Header এর জন্য স্পেস */
+            padding-top: 6rem; 
             padding-bottom: 4rem;
-            color: var(--primary-blue); /* Home section এর ভিতরের টেক্সটের ডিফল্ট কালার */
+            color: white; /* Home section এর ভিতরের টেক্সটের ডিফল্ট কালার সাদা করা হলো */
         }
 
-        /* --- Glassmorphism Card Style (টেক্সট ভিজিবিিলিটি বাড়াতে color এবং transparency পরিবর্তন করা হলো) --- */
+        /* --- Glassmorphism Card Style (ট্রান্সপারেন্সি আবার বাড়ানো হলো, টেক্সট সাদা হবে) --- */
         .glass-card {
-            background: rgba(255, 255, 255, 0.4); /* Slightly less transparent */
+            background: rgba(255, 255, 255, 0.25); /* Transparency আবার বাড়ানো হলো */
             backdrop-filter: blur(10px); 
             -webkit-backdrop-filter: blur(10px);
             border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.4); /* Slightly darker border */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Border হালকা করা হলো */
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); 
             transition: all 0.3s ease-in-out;
-            color: var(--primary-blue); /* Default color for internal card text */
+            color: white; /* Default color for internal card text সাদা করা হলো */
         }
         .glass-card:hover {
             box-shadow: 0 8px 60px rgba(0, 0, 0, 0.15);
@@ -73,11 +72,10 @@
         .neon-button {
             transition: all 0.3s ease-in-out;
             border: 2px solid var(--focus-green);
-            box-shadow: 0 0 3px var(--neon-glow-color); /* Subtle initial glow */
+            box-shadow: 0 0 3px var(--neon-glow-color); 
             cursor: pointer;
         }
         .neon-button:hover {
-            /* Increased Glow Power */
             box-shadow: 0 0 10px var(--neon-glow-color), 0 0 30px var(--neon-glow-color);
             transform: scale(1.03);
         }
@@ -85,12 +83,12 @@
         /* Neon Glow for Active Chart Buttons */
         .chart-btn.active-focus {
             background-color: var(--focus-green) !important;
-            color: var(--primary-blue) !important;
+            color: white !important; /* Active focus button এর টেক্সট সাদা করা হলো */
             box-shadow: 0 0 5px var(--neon-glow-color), 0 0 15px var(--neon-glow-color);
             border: 1px solid var(--focus-green);
         }
         .chart-btn.active-distraction {
-            background-color: #E53E3E !important; /* Red */
+            background-color: #E53E3E !important; 
             color: white !important;
             box-shadow: 0 0 5px #FBB6CE, 0 0 15px #FBB6CE;
             border: 1px solid #E53E3E;
@@ -102,7 +100,7 @@
             padding-left: 1rem;
             font-weight: 700;
             font-size: 2rem;
-            color: var(--primary-blue);
+            color: white; /* Heading এর কালার সাদা করা হলো */
             margin-bottom: 1.5rem;
         }
         @media (max-width: 640px) {
@@ -120,7 +118,7 @@
             max-width: 1200px;
             margin: 0 auto;
             border-radius: 16px;
-            background: rgba(255, 255, 255, 0.1); /* Semi-transparent */
+            background: rgba(255, 255, 255, 0.1); 
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
@@ -133,6 +131,10 @@
             width: 220px; 
             display: inline-block;
             margin-right: 30px;
+            color: white; /* Team member card এর টেক্সট সাদা করা হলো */
+        }
+        .member-card p.text-gray-500 {
+            color: rgba(255, 255, 255, 0.8); /* Description text color for better visibility */
         }
         
         @keyframes slide-members {
@@ -149,10 +151,11 @@
             text-align: center;
             border: 3px solid transparent;
             animation: pulse-focus 2s infinite alternate;
+            color: white; /* Live Status Box এর টেক্সট সাদা করা হলো */
         }
         
         @keyframes pulse-focus {
-            0% { box-shadow: 0 0 0 rgba(0, 255, 127, 0.7); } /* Neon Green Pulse */
+            0% { box-shadow: 0 0 0 rgba(0, 255, 127, 0.7); } 
             100% { box-shadow: 0 0 10px rgba(0, 255, 127, 0.9); }
         }
         
@@ -170,6 +173,24 @@
         }
         input:checked + .slider .slider-before {
             transform: translateX(20px);
+        }
+
+        /* Specific text color for clarity on glass-cards */
+        .text-gray-700 {
+            color: white; /* General gray-700 কে সাদা করা হলো */
+        }
+        .text-gray-600 {
+            color: rgba(255, 255, 255, 0.8); /* General gray-600 কে হালকা সাদা করা হলো */
+        }
+        .border-gray-300 {
+            border-color: rgba(255, 255, 255, 0.4); /* বর্ডার হালকা করা হলো */
+        }
+        input.bg-white\/50 {
+            background-color: rgba(255, 255, 255, 0.2); /* Input background আরও স্বচ্ছ করা হলো */
+            color: white;
+        }
+        input.bg-white\/50::placeholder {
+            color: rgba(255, 255, 255, 0.7);
         }
     </style>
 </head>
@@ -193,7 +214,7 @@
                 <a href="#dashboard" class="nav-link text-gray-800 hover:text-[--focus-green] font-bold transition duration-300 flex items-center text-sm sm:text-base"><i data-lucide="layout-dashboard" class="w-4 h-4 sm:w-5 sm:h-5 mr-1"></i>ড্যাশবোর্ড</a>
                 <a href="#guardian" class="nav-link text-gray-800 hover:text-[--focus-green] font-bold transition duration-300 flex items-center text-sm sm:text-base"><i data-lucide="shield-check" class="w-4 h-4 sm:w-5 sm:h-5 mr-1"></i>গার্ডিয়ান অ্যাপ</a>
             </nav>
-            <button class="neon-button bg-[--focus-green] text-[--primary-blue] px-3 sm:px-5 py-2 rounded-xl font-bold text-sm sm:text-base hover:shadow-green-400/80">লগইন</button>
+            <button class="neon-button bg-[--focus-green] text-white px-3 sm:px-5 py-2 rounded-xl font-bold text-sm sm:text-base hover:shadow-green-400/80">লগইন</button>
         </div>
     </header>
 
@@ -203,13 +224,13 @@
             
             <div class="glass-card text-center max-w-4xl mx-auto mb-12 p-8 shadow-2xl">
                 
-<h1 class="text-4xl sm:text-6xl font-extrabold mb-4 leading-tight tracking-tighter text-[--primary-blue]">
+<h1 class="text-4xl sm:text-6xl font-extrabold mb-4 leading-tight tracking-tighter text-white">
                     Smart Study Focus Assistant (SSFMA)
                 </h1>
                 <p class="text-lg sm:text-2xl font-medium mb-8 text-[--focus-green]" style="filter: drop-shadow(0 0 5px var(--focus-green));">
                     "Turn Focus Into Success"
                 </p>
-                <p class="text-base sm:text-lg mb-10 max-w-2xl mx-auto leading-relaxed text-gray-800">
+                <p class="text-base sm:text-lg mb-10 max-w-2xl mx-auto leading-relaxed text-gray-100">
                     Arduino-ভিত্তিক এই উদ্ভাবনী সিস্টেমটি আপনাকে মনোযোগ সহকারে এবং সঠিক লক্ষ্য নির্ধারণ করে পড়াশোনা করতে সাহায্য করবে। এটি **ডিস্ট্র্যাকশন সনাক্তকরণ**, **অটো মোটিভেশন** ও **রিয়েলটাইম মনিটরিং** এর মাধ্যমে ফোকাস বৃদ্ধি করে।
                 </p>
             </div>
@@ -226,31 +247,31 @@
             </div>
 
             <div class="w-full max-w-7xl mx-auto mb-16 px-4">
-                 <h3 class="text-3xl font-bold text-center mb-8 text-[--primary-blue] border-b border-gray-300 pb-4">
+                 <h3 class="text-3xl font-bold text-center mb-8 text-white border-b border-gray-300 pb-4">
                     মূল ফিচারসমূহ
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="glass-card p-6 border-b-4 border-red-500 text-[--primary-blue] text-center transform hover:scale-[1.03] transition duration-300">
+                    <div class="glass-card p-6 border-b-4 border-red-500 text-white text-center transform hover:scale-[1.03] transition duration-300">
                         <i data-lucide="eye-off" class="w-10 h-10 mx-auto text-red-500 mb-3"></i>
                         <p class="text-xl font-extrabold">ডিস্ট্র্যাকশন সনাক্তকরণ</p>
-                        <p class="text-sm text-gray-600 mt-1">ক্যামেরা ও সেন্সর দিয়ে মনোযোগের অভাব চিহ্নিত করা।</p>
+                        <p class="text-sm text-gray-100 mt-1">ক্যামেরা ও সেন্সর দিয়ে মনোযোগের অভাব চিহ্নিত করা।</p>
                     </div>
-                    <div class="glass-card p-6 border-b-4 border-yellow-500 text-[--primary-blue] text-center transform hover:scale-[1.03] transition duration-300">
+                    <div class="glass-card p-6 border-b-4 border-yellow-500 text-white text-center transform hover:scale-[1.03] transition duration-300">
                         <i data-lucide="zap" class="w-10 h-10 mx-auto text-yellow-500 mb-3"></i>
                         <p class="text-xl font-extrabold">অটো মোটিভেশন সিস্টেম</p>
-                        <p class="text-sm text-gray-600 mt-1">ফোকাস ফিরিয়ে আনতে স্বয়ংক্রিয়ভাবে মোটিভেশনাল মেসেজ দেওয়া।</p>
+                        <p class="text-sm text-gray-100 mt-1">ফোকাস ফিরিয়ে আনতে স্বয়ংক্রিয়ভাবে মোটিভেশনাল মেসেজ দেওয়া।</p>
                     </div>
-                    <div class="glass-card p-6 border-b-4 border-green-500 text-[--primary-blue] text-center transform hover:scale-[1.03] transition duration-300">
+                    <div class="glass-card p-6 border-b-4 border-green-500 text-white text-center transform hover:scale-[1.03] transition duration-300">
                         <i data-lucide="activity" class="w-10 h-10 mx-auto text-green-500 mb-3"></i>
                         <p class="text-xl font-extrabold">রিয়েলটাইম মনিটরিং</p>
-                        <p class="text-sm text-gray-600 mt-1">গার্ডিয়ান অ্যাপের মাধ্যমে শিক্ষার্থীর লাইভ ডেটা পর্যবেক্ষণ।</p>
+                        <p class="text-sm text-gray-100 mt-1">গার্ডিয়ান অ্যাপের মাধ্যমে শিক্ষার্থীর লাইভ ডেটা পর্যবেক্ষণ।</p>
                     </div>
                 </div>
             </div>
 
 
             <div class="w-full px-4">
-                <h3 class="text-3xl font-bold text-center mb-6 text-[--primary-blue] border-b border-gray-300 pb-4">
+                <h3 class="text-3xl font-bold text-center mb-6 text-white border-b border-gray-300 pb-4">
                     প্রজেক্ট টিম
                 </h3>
                 <div class="team-slider-container">
@@ -268,25 +289,25 @@
                 
                 <div class="glass-card p-4 border-b-4 border-red-500">
                     <i data-lucide="clock" class="w-6 h-6 text-red-500 mb-1"></i>
-                    <p class="text-xs font-medium text-gray-700">আজকের স্টাডি টাইম</p>
+                    <p class="text-xs font-medium text-gray-100">আজকের স্টাডি টাইম</p>
                     <p id="study-time-counter" class="text-lg sm:text-2xl font-extrabold text-red-500 mt-1">০ঘ ০মি ০সে</p>
                 </div>
                 
                 <div class="glass-card p-4 border-b-4 border-[--focus-green]">
                     <i data-lucide="star" class="w-6 h-6 text-[--focus-green] mb-1"></i>
-                    <p class="text-xs font-medium text-gray-700">ফোকাস স্কোর</p>
+                    <p class="text-xs font-medium text-gray-100">ফোকাস স্কোর</p>
                     <p id="focus-score" class="text-lg sm:text-2xl font-extrabold text-[--focus-green] mt-1">১২৫ / ১৫০</p>
                 </div>
                 
                 <div class="glass-card p-4 border-b-4 border-orange-500">
                     <i data-lucide="alert-triangle" class="w-6 h-6 text-orange-500 mb-1"></i>
-                    <p class="text-xs font-medium text-gray-700">মোট ডিস্ট্র্যাকশন</p>
+                    <p class="text-xs font-medium text-gray-100">মোট ডিস্ট্র্যাকশন</p>
                     <p id="distraction-count" class="text-lg sm:text-2xl font-extrabold text-orange-500 mt-1">৩ বার</p>
                 </div>
                 
                 <div class="glass-card p-4 border-b-4 border-indigo-500">
                     <i data-lucide="target" class="w-6 h-6 text-indigo-500 mb-1"></i>
-                    <p class="text-xs font-medium text-gray-700">লক্ষ্য অর্জন</p>
+                    <p class="text-xs font-medium text-gray-100">লক্ষ্য অর্জন</p>
                     <p id="goal-completion" class="text-lg sm:text-2xl font-extrabold text-indigo-500 mt-1">৭০%</p>
                 </div>
 
@@ -297,10 +318,10 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                 <div class="glass-card p-6 md:col-span-2">
-                    <h3 class="text-xl font-bold text-[--primary-blue] mb-4">ফোকাস স্কোর অগ্রগতি</h3>
+                    <h3 class="text-xl font-bold text-white mb-4">ফোকাস স্কোর অগ্রগতি</h3>
                     <div class="flex items-center space-x-4 mb-4">
                         <span id="focus-progress-percent" class="text-3xl font-extrabold text-[--focus-green]">৮৩%</span>
-                        <p class="text-gray-700">আপনার আজকের ফোকাস লক্ষ্য (<span id="focus-goal-value">১৫০</span> পয়েন্ট) এর দিকে এগিয়ে যান।</p>
+                        <p class="text-gray-100">আপনার আজকের ফোকাস লক্ষ্য (<span id="focus-goal-value">১৫০</span> পয়েন্ট) এর দিকে এগিয়ে যান।</p>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-4">
                         <div id="focus-progress-bar" class="bg-[--focus-green] h-4 rounded-full transition-all duration-700" style="width: 83%"></div>
@@ -308,8 +329,8 @@
                 </div>
 
                 <div class="glass-card p-6">
-                    <h3 class="text-xl font-bold text-[--primary-blue] mb-4">স্টাডি লক্ষ্য নির্ধারণ</h3>
-                    <input type="number" id="goal-input" value="150" placeholder="লক্ষ্য মিনিট (যেমন: 150)" class="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:ring-[--focus-green] focus:border-[--focus-green] bg-white/50">
+                    <h3 class="text-xl font-bold text-white mb-4">স্টাডি লক্ষ্য নির্ধারণ</h3>
+                    <input type="number" id="goal-input" value="150" placeholder="লক্ষ্য মিনিট (যেমন: 150)" class="w-full p-2 border border-gray-300 rounded-lg mb-3 focus:ring-[--focus-green] focus:border-[--focus-green] bg-white/20 text-white placeholder-gray-300">
                     <button id="set-goal-btn" class="neon-button bg-indigo-600 text-white w-full py-2 rounded-xl font-bold hover:shadow-indigo-400/80">লক্ষ্য সেট করুন</button>
                 </div>
             </div>
@@ -320,8 +341,8 @@
                 
                 <div class="flex space-x-4 mb-6 overflow-x-auto">
                     <button id="view-focus" class="chart-btn active-focus px-6 py-2 rounded-full font-bold transition duration-300 neon-button whitespace-nowrap">ফোকাস সময়</button>
-                    <button id="view-distraction" class="chart-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-bold transition duration-300 neon-button whitespace-nowrap">ডিস্ট্র্যাকশন প্যাটার্ন</button>
-                    <button id="view-weekly-goals" class="chart-btn bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-bold transition duration-300 neon-button whitespace-nowrap">সাপ্তাহিক লক্ষ্য</button>
+                    <button id="view-distraction" class="chart-btn bg-gray-200 text-gray-100 px-6 py-2 rounded-full font-bold transition duration-300 neon-button whitespace-nowrap">ডিস্ট্র্যাকশন প্যাটার্ন</button>
+                    <button id="view-weekly-goals" class="chart-btn bg-gray-200 text-gray-100 px-6 py-2 rounded-full font-bold transition duration-300 neon-button whitespace-nowrap">সাপ্তাহিক লক্ষ্য</button>
                 </div>
 
                 <div class="relative h-96">
@@ -337,11 +358,11 @@
             <div class="glass-card p-8 border-l-8 border-[--primary-blue]">
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="glass-card p-4 bg-white/40 rounded-lg">
-                        <h3 class="text-xl font-bold text-[--primary-blue] mb-2 border-b pb-1">ডিভাইস সংযোগ</h3>
+                    <div class="glass-card p-4 bg-white/20 rounded-lg">
+                        <h3 class="text-xl font-bold text-white mb-2 border-b pb-1">ডিভাইস সংযোগ</h3>
                         <div class="flex items-start justify-between">
                             <div>
-                                <p class="text-sm font-medium text-gray-700">ব্লুটুথ স্ট্যাটাস</p>
+                                <p class="text-sm font-medium text-gray-100">ব্লুটুথ স্ট্যাটাস</p>
                                 <p id="bluetooth-status" class="text-xl font-extrabold text-red-500 mt-1 flex items-center">
                                     <span class="h-3 w-3 bg-red-500 rounded-full mr-2"></span> সংযোগ বিচ্ছিন্ন
                                 </p>
@@ -352,16 +373,16 @@
                         </div>
                     </div>
 
-                    <div class="glass-card p-4 bg-white/40 rounded-lg">
-                        <h3 class="text-xl font-bold text-[--primary-blue] mb-2 border-b pb-1">ডিভাইস লাইভ টাইম</h3>
-                         <p class="text-sm font-medium text-gray-700">সময় চালু হওয়ার পর থেকে</p>
+                    <div class="glass-card p-4 bg-white/20 rounded-lg">
+                        <h3 class="text-xl font-bold text-white mb-2 border-b pb-1">ডিভাইস লাইভ টাইম</h3>
+                         <p class="text-sm font-medium text-gray-100">সময় চালু হওয়ার পর থেকে</p>
                         <p id="guardian-live-time" class="text-xl font-extrabold text-[--focus-green] mt-1">০ঘ ০মি ০সে</p>
                     </div>
 
-                    <div class="glass-card p-4 bg-white/40 rounded-lg flex items-center justify-between">
+                    <div class="glass-card p-4 bg-white/20 rounded-lg flex items-center justify-between">
                         <div>
-                            <h3 class="text-xl font-bold text-[--primary-blue] mb-2 border-b pb-1">অটো মোড</h3>
-                            <p class="text-sm text-gray-700">স্বয়ংক্রিয়ভাবে ডিস্ট্র্যাকশন হ্যান্ডেল করবে।</p>
+                            <h3 class="text-xl font-bold text-white mb-2 border-b pb-1">অটো মোড</h3>
+                            <p class="text-sm text-gray-100">স্বয়ংক্রিয়ভাবে ডিস্ট্র্যাকশন হ্যান্ডেল করবে।</p>
                         </div>
                         <label class="toggle-switch relative inline-block w-12 h-6">
                             <input type="checkbox" id="auto-mode-toggle" class="opacity-0 w-0 h-0">
@@ -373,7 +394,7 @@
                 </div>
 
 
-                <h3 class="text-2xl font-bold text-[--primary-blue] mb-4 border-b pb-2 mt-8">রিমোট কমান্ড ও সেফটি</h3>
+                <h3 class="text-2xl font-bold text-white mb-4 border-b pb-2 mt-8">রিমোট কমান্ড ও সেফটি</h3>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <button class="neon-button bg-red-500 text-white p-4 rounded-xl flex flex-col items-center hover:shadow-red-400/80" onclick="sendGuardianCommand('MUTE')">
@@ -395,9 +416,9 @@
                 </div>
                 
                 <div class="mt-8">
-                    <h3 class="text-2xl font-bold text-[--primary-blue] mb-4 border-b pb-2">গার্ডিয়ান অ্যাক্টিভিটি লগ</h3>
-                    <div id="activity-log" class="glass-card p-4 shadow-inner h-48 overflow-y-auto text-sm text-gray-700">
-                        <p class="mb-1 text-xs text-gray-600">2025-10-11 00:00: সিস্টেম ইনিশিয়ালাইজড।</p>
+                    <h3 class="text-2xl font-bold text-white mb-4 border-b pb-2">গার্ডিয়ান অ্যাক্টিভিটি লগ</h3>
+                    <div id="activity-log" class="glass-card p-4 shadow-inner h-48 overflow-y-auto text-sm text-gray-100">
+                        <p class="mb-1 text-xs text-gray-100">2025-10-11 00:00: সিস্টেম ইনিশিয়ালাইজড।</p>
                     </div>
                 </div>
 
@@ -413,8 +434,8 @@
 
     <footer class="glass-card border-t border-gray-200 py-6 mt-12 rounded-none">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p class="text-sm text-gray-700">Smart Study Focus Assistant | Turn Focus Into Success | সর্বস্বত্ব সংরক্ষিত © ২০২৫।</p>
-            <p class="text-xs text-gray-500 mt-1">Developed by - Nishan and Team</p>
+            <p class="text-sm text-gray-100">Smart Study Focus Assistant | Turn Focus Into Success | সর্বস্বত্ব সংরক্ষিত © ২০২৫।</p>
+            <p class="text-xs text-gray-100 mt-1">Developed by - Nishan and Team</p>
         </div>
     </footer>
 
@@ -438,9 +459,9 @@
             // আপনার সহকর্মীর ছবি
             { name: "রিয়াদ", role: "হার্ডওয়্যার ডিজাইনার", image: "riyad.jpg" },       
             // বাকিদের জন্য প্লেসহোল্ডার (404 এরর এড়াতে)
-            { name: "শাহরিয়ার", role: "সিস্টেম ডেভেলপার", image: "https://placehold.co/100x100/8FBC8F/1C3F60?text=S" },    
+            { name: "শাহরিয়ার", role: "সিস্টেম ডেভেলপার", image: "https://placehold.co/100x100/8FBC8F/FFFFFF?text=S" },    
             { name: "তানজিম", role: "ডেটা অ্যানালাইসিস", image: "https://placehold.co/100x100/60A5FA/FFFFFF?text=T" },      
-            { name: "একরামুল", role: "টেস্টিং ও কোয়ালিটি অ্যাসিওরেন্স", image: "https://placehold.co/100x100/FCD34D/1C3F60?text=E" },
+            { name: "একরামুল", role: "টেস্টিং ও কোয়ালিটি অ্যাসিওরেন্স", image: "https://placehold.co/100x100/FCD34D/FFFFFF?text=E" },
         ];
         const sliderTrack = document.getElementById('team-slider-track');
         
@@ -450,8 +471,8 @@
             return `
                 <div class="member-card glass-card p-4 border-t-4 border-[--focus-green] text-center transform hover:scale-[1.03] transition duration-300">
                     <img src="${member.image}" onerror="this.onerror=null;this.src='https://placehold.co/100x100/94A3B8/FFFFFF?text=${member.name.charAt(0)}';" alt="${member.name}" class="h-24 w-24 rounded-full mx-auto mb-3 object-cover border-4 border-gray-200">
-                    <p class="font-bold text-lg text-[--primary-blue] whitespace-normal">${member.name}</p>
-                    <p class="text-sm text-gray-500 whitespace-normal">${member.role}</p>
+                    <p class="font-bold text-lg text-white whitespace-normal">${member.name}</p>
+                    <p class="text-sm text-gray-100 whitespace-normal">${member.role}</p>
                 </div>
             `;
         }
@@ -585,7 +606,7 @@
 
             // Add to log
             const newLog = document.createElement('p');
-            newLog.className = 'mb-1 text-xs text-gray-600';
+            newLog.className = 'mb-1 text-xs text-gray-100';
             newLog.innerHTML = `${timeString}: ${logMessage}`;
             logElement.prepend(newLog); // Add to top of the log
             logElement.scrollTop = 0; // Scroll to top
@@ -616,7 +637,7 @@
             datasets: [{
                 label: 'প্রতিদিনের ফোকাস (মিনিট)',
                 data: initialFocusData,
-                borderColor: '#00FF7F', /* Neon Green */
+                borderColor: '#00FF7F', 
                 backgroundColor: 'rgba(0, 255, 127, 0.4)', 
                 tension: 0.4,
                 fill: true,
@@ -667,23 +688,23 @@
                             title: {
                                 display: true,
                                 text: data === weeklyGoalsData ? 'হার (%)' : (data === distractionData ? 'ডিস্ট্র্যাকশন সংখ্যা' : 'সময় (মিনিট)'),
-                                color: 'var(--primary-blue)'
+                                color: 'white' /* চার্ট Y-অক্সিস টাইটেল সাদা করা হলো */
                             },
-                            ticks: { color: 'var(--primary-blue)' }
+                            ticks: { color: 'white' } /* চার্ট Y-অক্সিস টিক্স সাদা করা হলো */
                         },
                         x: {
                             title: {
                                 display: true,
                                 text: 'সময়কাল',
-                                color: 'var(--primary-blue)'
+                                color: 'white' /* চার্ট X-অক্সিস টাইটেল সাদা করা হলো */
                             },
-                             ticks: { color: 'var(--primary-blue)' }
+                             ticks: { color: 'white' } /* চার্ট X-অক্সিস টিক্স সাদা করা হলো */
                         }
                     },
                     plugins: {
                         legend: {
                             position: 'top',
-                            labels: { color: 'var(--primary-blue)' }
+                            labels: { color: 'white' } /* লেজেন্ড টেক্সট সাদা করা হলো */
                         },
                         tooltip: {
                             mode: 'index',
@@ -700,7 +721,7 @@
             btns.forEach(id => {
                 const btn = document.getElementById(id);
                 btn.classList.remove('active-focus', 'active-distraction');
-                btn.classList.add('bg-gray-200', 'text-gray-700');
+                btn.classList.add('bg-gray-200', 'text-gray-100'); // inactive buttons also white text
             });
 
             let dataToLoad;
@@ -717,7 +738,7 @@
                 activeClass = 'active-focus';
             }
             
-            document.getElementById(`view-${dataType}`).classList.remove('bg-gray-200', 'text-gray-700');
+            document.getElementById(`view-${dataType}`).classList.remove('bg-gray-200', 'text-gray-100');
             document.getElementById(`view-${dataType}`).classList.add(activeClass);
             initializeChart(dataToLoad);
         }
