@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Study Focus Assistant - SSFMA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Smart Study Focus Assistant - SSFA</title> <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -30,7 +29,6 @@
             scroll-behavior: smooth;
             
             /* --- ফিক্সড ব্যাকগ্রাউন্ড ইমেজ লোডিং (CSS) --- */
-            /* Overlay opacity কমিয়ে দেওয়া হলো যাতে ব্যাকগ্রাউন্ড ইমেজ আরও স্পষ্ট দেখা যায় */
             background-image: linear-gradient(rgba(232, 245, 233, 0.4), rgba(185, 251, 192, 0.4)), url('background.jpg'); 
             background-size: cover;
             background-position: center;
@@ -114,7 +112,7 @@
             overflow: hidden;
             white-space: nowrap;
             padding: 20px 0;
-            width: 90%;
+            width: 95%; /* প্রস্থ কিছুটা বাড়ানো হলো */
             max-width: 1200px;
             margin: 0 auto;
             border-radius: 16px;
@@ -125,12 +123,12 @@
         }
         .team-slide {
             display: inline-block;
-            animation: slide-members 20s linear infinite;
+            animation: slide-members 25s linear infinite; /* Animation speed কিছুটা বাড়ানো হলো */
         }
         .member-card {
-            width: 220px; 
+            width: 200px; /* মেম্বার কার্ডের প্রস্থ কিছুটা কমানো হলো */
             display: inline-block;
-            margin-right: 30px;
+            margin-right: 25px; /* মার্জিন কিছুটা কমানো হলো */
             color: white; /* Team member card এর টেক্সট সাদা করা হলো */
         }
         .member-card p.text-gray-500 {
@@ -192,6 +190,56 @@
         input.bg-white\/50::placeholder {
             color: rgba(255, 255, 255, 0.7);
         }
+
+        /* Header Navigation - Mobile Friendly Buttons */
+        @media (max-width: 640px) {
+            header .flex.justify-between.items-center {
+                flex-wrap: wrap; 
+                justify-content: center; 
+                gap: 0.5rem; 
+            }
+            header nav {
+                flex-basis: 100%; 
+                justify-content: center; 
+                gap: 0.5rem; 
+                margin-top: 0.5rem;
+            }
+            header nav a,
+            header button.neon-button {
+                padding: 0.4rem 0.8rem; 
+                font-size: 0.875rem; 
+                border-radius: 9999px; 
+                background: rgba(255, 255, 255, 0.2); 
+                color: white; 
+                border: 1px solid rgba(255, 255, 255, 0.3); 
+            }
+            header nav a i {
+                display: none; 
+            }
+            header nav a:hover {
+                background: rgba(255, 255, 255, 0.3);
+            }
+            header button.neon-button {
+                background: var(--focus-green); 
+                color: var(--primary-blue); 
+                border: 1px solid var(--focus-green);
+            }
+            /* লোগো এবং টাইটেল মোবাইল ভিউতে ছোট করা */
+            header .flex.items-center.space-x-3 {
+                flex-basis: 100%;
+                justify-content: center;
+            }
+            header .flex.items-center.space-x-3 .h-10.w-10 {
+                height: 8px; /* লোগোর উচ্চতা কমানো হলো */
+                width: 8px; /* লোগোর প্রস্থ কমানো হলো */
+            }
+            header .text-3xl {
+                font-size: 1.5rem; /* SSFA টেক্সট ছোট করা হলো */
+            }
+            header .text-xl.hidden.sm:block {
+                display: none; /* "Smart Study Focus Assistant" টেক্সট হাইড করা হলো */
+            }
+        }
     </style>
 </head>
 
@@ -202,19 +250,18 @@
             
             <div class="flex items-center space-x-3">
                 
-<img id="logo-image" src="logo.png" alt="SSFMA Logo" class="h-10 w-10 object-contain rounded-lg" 
+<img id="logo-image" src="logo.png" alt="SSFA Logo" class="h-10 w-10 object-contain rounded-lg" 
                      onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iI2U4ZjVlOSIgc3Ryb2tlPSIjNGRhZjUwIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIyNSIgZmlsbD0iIzFjM2Y2MCIvPjxwYXRoIGQ9Ik00MCAzNUg2MEM2Mi43NiAzNSA2NSAzNy4yNCA2NSA0MFY0NUgzNVY1MEg2NVY2MEM2NSAzMi43NiA2Mi43NiA2NSA2MCA2NUg0MEMzNy4yNCA2NSAzNSA2Mi43NiAzNSA2MFY1NUg2NVY1MEgzNVY0MEMzNSAzNy4yNCAzNy4yNCAzNSA0MCAzNVoiIGZpbGw9ImZlZmZmZiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwgNSkiLz48L3N2ZyUzRQ=='"/> 
                 
-                <span class="text-3xl font-extrabold text-[--primary-blue] tracking-tight">SSFMA</span>
-                <span class="text-xl font-medium text-[--focus-green] hidden sm:block">Smart Study Focus Assistant</span>
+                <span class="text-3xl font-extrabold text-[--primary-blue] tracking-tight">SSFA</span> <span class="text-xl font-medium text-[--focus-green] hidden sm:block">Smart Study Focus Assistant</span>
             </div>
 
-            <nav class="space-x-2 sm:space-x-4 flex">
-                <a href="#home" class="nav-link text-gray-800 hover:text-[--focus-green] font-bold transition duration-300 flex items-center text-sm sm:text-base"><i data-lucide="home" class="w-4 h-4 sm:w-5 sm:h-5 mr-1"></i>হোম</a>
-                <a href="#dashboard" class="nav-link text-gray-800 hover:text-[--focus-green] font-bold transition duration-300 flex items-center text-sm sm:text-base"><i data-lucide="layout-dashboard" class="w-4 h-4 sm:w-5 sm:h-5 mr-1"></i>ড্যাশবোর্ড</a>
-                <a href="#guardian" class="nav-link text-gray-800 hover:text-[--focus-green] font-bold transition duration-300 flex items-center text-sm sm:text-base"><i data-lucide="shield-check" class="w-4 h-4 sm:w-5 sm:h-5 mr-1"></i>গার্ডিয়ান অ্যাপ</a>
+            <nav class="space-x-2 sm:space-x-4 flex flex-wrap justify-center sm:justify-end gap-1 sm:gap-4">
+                <a href="#home" class="nav-link text-white hover:text-[--focus-green] font-bold transition duration-300 flex items-center text-sm sm:text-base rounded-full sm:rounded-none px-3 py-1 sm:px-0 sm:py-0 bg-white/20 sm:bg-transparent border border-white/30 sm:border-none"><i data-lucide="home" class="w-4 h-4 sm:w-5 sm:h-5 mr-1 hidden sm:inline-block"></i>হোম</a>
+                <a href="#dashboard" class="nav-link text-white hover:text-[--focus-green] font-bold transition duration-300 flex items-center text-sm sm:text-base rounded-full sm:rounded-none px-3 py-1 sm:px-0 sm:py-0 bg-white/20 sm:bg-transparent border border-white/30 sm:border-none"><i data-lucide="layout-dashboard" class="w-4 h-4 sm:w-5 sm:h-5 mr-1 hidden sm:inline-block"></i>ড্যাশবোর্ড</a>
+                <a href="#guardian" class="nav-link text-white hover:text-[--focus-green] font-bold transition duration-300 flex items-center text-sm sm:text-base rounded-full sm:rounded-none px-3 py-1 sm:px-0 sm:py-0 bg-white/20 sm:bg-transparent border border-white/30 sm:border-none"><i data-lucide="shield-check" class="w-4 h-4 sm:w-5 sm:h-5 mr-1 hidden sm:inline-block"></i>গার্ডিয়ান অ্যাপ</a>
             </nav>
-            <button class="neon-button bg-[--focus-green] text-white px-3 sm:px-5 py-2 rounded-xl font-bold text-sm sm:text-base hover:shadow-green-400/80">লগইন</button>
+            <button class="neon-button bg-[--focus-green] text-[--primary-blue] px-3 sm:px-5 py-2 rounded-xl font-bold text-sm sm:text-base hover:shadow-green-400/80 mt-2 sm:mt-0">লগইন</button>
         </div>
     </header>
 
@@ -225,12 +272,11 @@
             <div class="glass-card text-center max-w-4xl mx-auto mb-12 p-8 shadow-2xl">
                 
 <h1 class="text-4xl sm:text-6xl font-extrabold mb-4 leading-tight tracking-tighter text-white">
-                    Smart Study Focus Assistant (SSFMA)
-                </h1>
+                    Smart Study Focus Assistant (SSFA) </h1>
                 <p class="text-lg sm:text-2xl font-medium mb-8 text-[--focus-green]" style="filter: drop-shadow(0 0 5px var(--focus-green));">
                     "Turn Focus Into Success"
                 </p>
-                <p class="text-base sm:text-lg mb-10 max-w-2xl mx-auto leading-relaxed text-gray-100">
+                <p class="text-sm sm:text-lg mb-10 max-w-xl mx-auto leading-relaxed text-gray-100">
                     Arduino-ভিত্তিক এই উদ্ভাবনী সিস্টেমটি আপনাকে মনোযোগ সহকারে এবং সঠিক লক্ষ্য নির্ধারণ করে পড়াশোনা করতে সাহায্য করবে। এটি **ডিস্ট্র্যাকশন সনাক্তকরণ**, **অটো মোটিভেশন** ও **রিয়েলটাইম মনিটরিং** এর মাধ্যমে ফোকাস বৃদ্ধি করে।
                 </p>
             </div>
@@ -345,7 +391,7 @@
                     <button id="view-weekly-goals" class="chart-btn bg-gray-200 text-gray-100 px-6 py-2 rounded-full font-bold transition duration-300 neon-button whitespace-nowrap">সাপ্তাহিক লক্ষ্য</button>
                 </div>
 
-                <div class="relative h-96">
+                <div class="relative h-64 sm:h-80 md:h-96"> 
                     <canvas id="performanceChart"></canvas>
                 </div>
             </div>
@@ -458,10 +504,13 @@
             { name: "নিশান", role: "প্রজেক্ট লিড, সফটওয়্যার ও ইউআই/ইউএক্স ডিজাইনার", image: "nishan.jpg" }, 
             // আপনার সহকর্মীর ছবি
             { name: "রিয়াদ", role: "হার্ডওয়্যার ডিজাইনার", image: "riyad.jpg" },       
+            // আপনার বন্ধুদের ছবি এখানে যোগ করুন
+            // { name: "বন্ধুর নাম", role: "পদবি", image: "friend-image.jpg" }, 
+            // { name: "আরেক বন্ধুর নাম", role: "পদবি", image: "another-friend-image.png" }, 
             // বাকিদের জন্য প্লেসহোল্ডার (404 এরর এড়াতে)
-            { name: "শাহরিয়ার", role: "সিস্টেম ডেভেলপার", image: "https://placehold.co/100x100/8FBC8F/FFFFFF?text=S" },    
-            { name: "তানজিম", role: "ডেটা অ্যানালাইসিস", image: "https://placehold.co/100x100/60A5FA/FFFFFF?text=T" },      
-            { name: "একরামুল", role: "টেস্টিং ও কোয়ালিটি অ্যাসিওরেন্স", image: "https://placehold.co/100x100/FCD34D/FFFFFF?text=E" },
+            { name: "শাহরিয়ার", role: "টেস্টিং ও কোয়ালিটি অ্যাসিওরেন্স", image: "shahriar.jpg" },    
+            { name: "তানজিম", role: "ডেটা অ্যানালাইসিস", image: "tanjim.jpg" },      
+            { name: "ইকরামুল", role: "সিস্টেম ডেভেলপার", image: "ekramul.jpg" },
         ];
         const sliderTrack = document.getElementById('team-slider-track');
         
@@ -688,23 +737,23 @@
                             title: {
                                 display: true,
                                 text: data === weeklyGoalsData ? 'হার (%)' : (data === distractionData ? 'ডিস্ট্র্যাকশন সংখ্যা' : 'সময় (মিনিট)'),
-                                color: 'white' /* চার্ট Y-অক্সিস টাইটেল সাদা করা হলো */
+                                color: 'white' 
                             },
-                            ticks: { color: 'white' } /* চার্ট Y-অক্সিস টিক্স সাদা করা হলো */
+                            ticks: { color: 'white' } 
                         },
                         x: {
                             title: {
                                 display: true,
                                 text: 'সময়কাল',
-                                color: 'white' /* চার্ট X-অক্সিস টাইটেল সাদা করা হলো */
+                                color: 'white' 
                             },
-                             ticks: { color: 'white' } /* চার্ট X-অক্সিস টিক্স সাদা করা হলো */
+                             ticks: { color: 'white' } 
                         }
                     },
                     plugins: {
                         legend: {
                             position: 'top',
-                            labels: { color: 'white' } /* লেজেন্ড টেক্সট সাদা করা হলো */
+                            labels: { color: 'white' } 
                         },
                         tooltip: {
                             mode: 'index',
