@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Study Focus Assistant - SSFA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Smart Study Focus Assistant - SSFA</title> <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -192,38 +191,18 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
-        /* --- মোবাইল হেডার এবং প্রজেক্ট সামারি উন্নতি --- */
+        /* Header Navigation - Mobile Friendly Buttons */
         @media (max-width: 640px) {
-            /* হেডার কন্টেইনার */
             header .flex.justify-between.items-center {
                 flex-wrap: wrap; 
                 justify-content: center; 
                 gap: 0.5rem; 
-                padding-top: 0.5rem; /* হেডারকে আরও ছোট করতে */
-                padding-bottom: 0.5rem;
             }
-            /* লোগো এবং SSFA টেক্সট */
-            header .flex.items-center.space-x-3 {
-                flex-basis: 100%;
-                justify-content: center;
-                margin-bottom: 0.5rem; /* নেভিগেশনের উপরে একটু ফাঁকা */
-            }
-            header .flex.items-center.space-x-3 svg {
-                height: 30px; /* লোগোর উচ্চতা কমানো */
-                width: 30px; /* লোগোর প্রস্থ কমানো */
-            }
-            header .text-3xl {
-                font-size: 1.75rem; /* SSFA টেক্সট ছোট করা হলো */
-            }
-            header .text-xl.hidden.sm:block {
-                display: none; /* "Smart Study Focus Assistant" টেক্সট হাইড করা হলো */
-            }
-
-            /* নেভিগেশন বাটন */
             header nav {
                 flex-basis: 100%; 
                 justify-content: center; 
                 gap: 0.5rem; 
+                margin-top: 0.5rem;
             }
             header nav a,
             header button.neon-button {
@@ -235,7 +214,7 @@
                 border: 1px solid rgba(255, 255, 255, 0.3); 
             }
             header nav a i {
-                display: none; /* আইকন হাইড */
+                display: none; 
             }
             header nav a:hover {
                 background: rgba(255, 255, 255, 0.3);
@@ -244,23 +223,21 @@
                 background: var(--focus-green); 
                 color: var(--primary-blue); 
                 border: 1px solid var(--focus-green);
-                margin-top: 0.5rem; /* লগইন বাটনের উপরে মার্জিন */
             }
-            
-            /* প্রজেক্ট সামারি বক্স (হোম সেকশন) ছোট করা */
-            #home .glass-card {
-                padding: 1.5rem; /* প্যাডিং কমানো */
-                margin-bottom: 2rem; /* মার্জিন কমানো */
-                max-width: 95%; /* প্রস্থ কিছুটা কমানো */
+            /* লোগো এবং টাইটেল মোবাইল ভিউতে ছোট করা */
+            header .flex.items-center.space-x-3 {
+                flex-basis: 100%;
+                justify-content: center;
             }
-            #home .glass-card h1 {
-                font-size: 2.5rem; /* টাইটেল ছোট করা */
+            header .flex.items-center.space-x-3 .h-10.w-10 {
+                height: 8px; /* লোগোর উচ্চতা কমানো হলো */
+                width: 8px; /* লোগোর প্রস্থ কমানো হলো */
             }
-            #home .glass-card p:first-of-type { /* "Turn Focus Into Success" */
-                font-size: 1.25rem; /* সাব-টাইটেল ছোট করা */
+            header .text-3xl {
+                font-size: 1.5rem; /* SSFA টেক্সট ছোট করা হলো */
             }
-            #home .glass-card p:last-of-type { /* বর্ণনা */
-                font-size: 0.9rem; /* বর্ণনার ফন্ট সাইজ ছোট করা */
+            header .text-xl.hidden.sm:block {
+                display: none; /* "Smart Study Focus Assistant" টেক্সট হাইড করা হলো */
             }
         }
     </style>
@@ -273,11 +250,8 @@
             
             <div class="flex items-center space-x-3">
                 
-<svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 sm:h-10 sm:w-10 object-contain rounded-lg">
-                    <circle cx="50" cy="50" r="45" stroke="var(--focus-green)" stroke-width="6" style="filter: drop-shadow(0 0 5px var(--focus-green));"/>
-                    <circle cx="50" cy="50" r="25" fill="#1C3F60"/>
-                    <path d="M40 35H60C62.76 35 65 37.24 65 40V45H35V50H65V60C65 62.76 62.76 65 60 65H40C37.24 65 35 62.76 35 60V55H65V50H35V40C35 37.24 37.24 35 40 35Z" fill="white" transform="translate(0, 5)"/>
-                </svg>
+<img id="logo-image" src="logo.png" alt="SSFA Logo" class="h-10 w-10 object-contain rounded-lg" 
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iI2U4ZjVlOSIgc3Ryb2tlPSIjNGRhZjUwIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIyNSIgZmlsbD0iIzFjM2Y2MCIvPjxwYXRoIGQ9Ik00MCAzNUg2MEM2Mi43NiAzNSA2NSAzNy4yNCA2NSA0MFY0NUgzNVY1MEg2NVY2MEM2NSAzMi43NiA2Mi43NiA2NSA2MCA2NUg0MEMzNy4yNCA2NSAzNSA2Mi43NiAzNSA2MFY1NUg2NVY1MEgzNVY0MEMzNSAzNy4yNCAzNy4yNCAzNSA0MCAzNVoiIGZpbGw9ImZlZmZmZiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwgNSkiLz48L3N2ZyUzRQ=='"/> 
                 
                 <span class="text-3xl font-extrabold text-[--primary-blue] tracking-tight">SSFA</span> <span class="text-xl font-medium text-[--focus-green] hidden sm:block">Smart Study Focus Assistant</span>
             </div>
@@ -523,17 +497,18 @@
         const maxScore = 150;
         const initialFocusData = [120, 150, 90, 180, 140, 210, 100];
         const initialDistractionData = [5, 3, 7, 2, 4, 1, 6];
-        const initialWeeklyGoalsData = [65, 80, 70, 95]; // New data for weekly goals as requested
-
 
         // --- Team Member Data (Fixed 404 Errors) ---
         const teamMembers = [
             // আপনার ছবি
             { name: "নিশান", role: "প্রজেক্ট লিড, সফটওয়্যার ও ইউআই/ইউএক্স ডিজাইনার", image: "nishan.jpg" }, 
             // আপনার সহকর্মীর ছবি
-            { name: "রিয়াদ", role: "হার্ডওয়্যার ডিজাইনার", image: "riyad.jpg" },       
+            { name: "রিয়াদ", role: "হার্ডওয়্যার ডিজাইনার", image: "riyad.jpg" },       
             // আপনার বন্ধুদের ছবি এখানে যোগ করুন
-            { name: "শাহরিয়ার", role: "টেস্টিং ও কোয়ালিটি অ্যাসিওরেন্স", image: "shahriar.jpg" },    
+            // { name: "বন্ধুর নাম", role: "পদবি", image: "friend-image.jpg" }, 
+            // { name: "আরেক বন্ধুর নাম", role: "পদবি", image: "another-friend-image.png" }, 
+            // বাকিদের জন্য প্লেসহোল্ডার (404 এরর এড়াতে)
+            { name: "শাহরিয়ার", role: "টেস্টিং ও কোয়ালিটি অ্যাসিওরেন্স", image: "shahriar.jpg" },    
             { name: "তানজিম", role: "ডেটা অ্যানালাইসিস", image: "tanjim.jpg" },      
             { name: "ইকরামুল", role: "সিস্টেম ডেভেলপার", image: "ekramul.jpg" },
         ];
@@ -647,88 +622,36 @@
         });
 
         // --- Guardian Command Sender & Log ---
-        let bluetoothCharacteristic; // Global variable to store the Bluetooth characteristic
-
-        async function sendDataToArduino(data) {
-            if (bluetoothCharacteristic) {
-                try {
-                    const encoder = new TextEncoder();
-                    await bluetoothCharacteristic.writeValue(encoder.encode(data));
-                    console.log(`Sent to Arduino: ${data}`);
-                    return true;
-                } catch (error) {
-                    console.error('Error sending data to Arduino:', error);
-                    return false;
-                }
-            } else {
-                console.warn('Bluetooth device not connected.');
-                return false;
-            }
-        }
-
-        // Function to simulate receiving data (for now)
-        function receiveDataFromArduino(data) {
-            console.log(`Received from Arduino: ${data}`);
-            // Here you would parse the data and update UI elements
-            const logElement = document.getElementById('activity-log');
-            const now = new Date();
-            const timeString = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-            const newLog = document.createElement('p');
-            newLog.className = 'mb-1 text-xs text-gray-100';
-            newLog.innerHTML = `${timeString}: Arduino: ${data}`;
-            logElement.prepend(newLog);
-            logElement.scrollTop = 0;
-        }
-
-        async function sendGuardianCommand(command, silent = false) {
+        function sendGuardianCommand(command, silent = false) {
             const logElement = document.getElementById('activity-log');
             const now = new Date();
             const timeString = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
             
             let logMessage = '';
             let commandText = '';
-            let arduinoCommand = ''; // Command to actually send to Arduino
 
             switch(command) {
                 case 'MUTE':
                     logMessage = 'শব্দ বন্ধ কমান্ড পাঠানো হয়েছে।';
                     commandText = 'MUTE (শব্দ বন্ধ) কমান্ড পাঠানো হয়েছে।';
-                    arduinoCommand = 'MUTE';
                     break;
                 case 'MOTIVATE':
                     logMessage = 'মোটিভেশনাল মেসেজ কমান্ড পাঠানো হয়েছে।';
                     commandText = 'MOTIVATE (মোটিভেশন) কমান্ড পাঠানো হয়েছে।';
-                    arduinoCommand = 'MOTIVATE';
                     break;
                 case 'LOCK':
                     logMessage = 'ডিস্ট্র্যাকশন লক রিকোয়েস্ট পাঠানো হয়েছে।';
                     commandText = 'LOCK (ডিস্ট্র্যাকশন লক) কমান্ড পাঠানো হয়েছে।';
-                    arduinoCommand = 'LOCK';
                     break;
                 case 'REBOOT':
                     logMessage = 'সিস্টেম রিবুট কমান্ড পাঠানো হয়েছে।';
                     commandText = 'REBOOT (রিবুট) কমান্ড পাঠানো হয়েছে।';
-                    arduinoCommand = 'REBOOT';
                     break;
                 default:
                     logMessage = command;
                     commandText = command;
-                    arduinoCommand = command; // For custom messages like "NEW GOAL"
                     break;
             }
-
-            // Attempt to send to Arduino if connected
-            if (bluetoothCharacteristic) {
-                const success = await sendDataToArduino(arduinoCommand);
-                if (!success) {
-                    logMessage += ' (Arduino-তে পাঠাতে ব্যর্থ)';
-                    commandText += ' (Arduino-তে পাঠাতে ব্যর্থ)';
-                }
-            } else {
-                logMessage += ' (Arduino সংযোগ বিচ্ছিন্ন)';
-                commandText += ' (Arduino সংযোগ বিচ্ছিন্ন)';
-            }
-
 
             // Add to log
             const newLog = document.createElement('p');
@@ -753,7 +676,6 @@
             }
         }
 
-
         // --- Chart Logic ---
         const ctx = document.getElementById('performanceChart').getContext('2d');
         let performanceChart; 
@@ -773,33 +695,29 @@
             }]
         };
 
-        // Data for Distraction Pattern (Now as a line graph)
+        // Data for Distraction Pattern 
         const distractionData = {
             labels: ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি'],
             datasets: [{
                 label: 'প্রতিদিনের ডিস্ট্র্যাকশন (বার)',
                 data: initialDistractionData,
-                borderColor: '#E53E3E', /* Red */
-                backgroundColor: 'rgba(229, 62, 62, 0.4)', /* Red */
+                borderColor: '#E53E3E', 
+                backgroundColor: 'rgba(229, 62, 62, 0.4)', 
                 tension: 0.4,
                 fill: true,
                 pointBackgroundColor: '#E53E3E',
-                type: 'line' /* Changed to line graph */
+                type: 'bar' 
             }]
         };
 
-        // Data for Weekly Goals (Now as a line graph)
+        // Data for Weekly Goals
          const weeklyGoalsData = {
             labels: ['সপ্তাহ ১', 'সপ্তাহ ২', 'সপ্তাহ ৩', 'সপ্তাহ ৪'],
             datasets: [{
                 label: 'লক্ষ্য পূরণের হার (%)',
-                data: initialWeeklyGoalsData,
-                borderColor: '#60A5FA', /* Blue */
-                backgroundColor: 'rgba(96, 165, 250, 0.4)', /* Blue */
-                tension: 0.4,
-                fill: true,
-                pointBackgroundColor: '#60A5FA',
-                type: 'line' /* Changed to line graph */
+                data: [65, 80, 70, 95],
+                backgroundColor: ['#00FF7F', '#1C3F60', '#60A5FA', '#B9FBC0'],
+                type: 'bar'
             }]
         };
 
@@ -880,64 +798,24 @@
         document.getElementById('view-weekly-goals').addEventListener('click', () => updateChart('weekly-goals'));
         
         
-        // --- Web Bluetooth Connection Logic for Guardian App (Experimental) ---
+        // --- Bluetooth Connection Logic for Guardian App (Simulated) ---
         const connectButton = document.getElementById('connect-bluetooth');
         const bluetoothStatus = document.getElementById('bluetooth-status');
-        const SERVICE_UUID = "YOUR_ARDUINO_SERVICE_UUID"; // Replace with your Arduino's BLE Service UUID
-        const CHARACTERISTIC_UUID = "YOUR_ARDUINO_CHARACTERISTIC_UUID"; // Replace with your Arduino's BLE Characteristic UUID
-
+        
         connectButton.addEventListener('click', async () => {
-            if (!navigator.bluetooth) {
-                alert("দুঃখিত, আপনার ব্রাউজার Web Bluetooth সমর্থন করে না। ক্রোম ব্রাউজার ব্যবহার করার চেষ্টা করুন।");
-                return;
-            }
-
+             // Simulate loading state
             bluetoothStatus.innerHTML = '<span class="h-3 w-3 bg-yellow-500 rounded-full mr-2 animate-pulse"></span> সংযোগের চেষ্টা চলছে...';
-            bluetoothStatus.classList.remove('text-red-500', 'text-[--focus-green]');
+            bluetoothStatus.classList.remove('text-red-500', 'text-green-500');
             bluetoothStatus.classList.add('text-yellow-600');
+            
+            await new Promise(r => setTimeout(r, 2000));
 
-            try {
-                // 1. Scan for devices
-                const device = await navigator.bluetooth.requestDevice({
-                    filters: [{ services: [SERVICE_UUID] }], // Or { namePrefix: 'ArduinoBLE' }
-                    optionalServices: [SERVICE_UUID] // Required for accessing specific services
-                });
-
-                // 2. Connect to device
-                const server = await device.gatt.connect();
-                console.log('Connected to device:', device.name);
-                sendGuardianCommand(`ডিভাইস ${device.name} এর সাথে সংযোগ স্থাপন সফল।`, true);
-
-
-                // 3. Get primary service
-                const service = await server.getPrimaryService(SERVICE_UUID);
-
-                // 4. Get characteristic
-                bluetoothCharacteristic = await service.getCharacteristic(CHARACTERISTIC_UUID);
-                
-                // 5. Start listening for notifications from Arduino (if Arduino sends data)
-                await bluetoothCharacteristic.startNotifications();
-                bluetoothCharacteristic.addEventListener('characteristicvaluechanged', (event) => {
-                    const value = event.target.value; // DataView object
-                    const decoder = new TextDecoder('utf-8');
-                    const receivedString = decoder.decode(value);
-                    receiveDataFromArduino(receivedString);
-                });
-
-
-                bluetoothStatus.innerHTML = '<span class="h-3 w-3 bg-[--focus-green] rounded-full mr-2"></span> সংযোগ সফল';
-                bluetoothStatus.classList.remove('text-yellow-600', 'text-red-500');
-                bluetoothStatus.classList.add('text-[--focus-green]');
-
-            } catch (error) {
-                console.error('Bluetooth সংযোগে ত্রুটি:', error);
-                bluetoothStatus.innerHTML = '<span class="h-3 w-3 bg-red-500 rounded-full mr-2"></span> সংযোগ ব্যর্থ';
-                bluetoothStatus.classList.remove('text-yellow-600', 'text-[--focus-green]');
-                bluetoothStatus.classList.add('text-red-500');
-                sendGuardianCommand(`ব্লুটুথ সংযোগ ব্যর্থ: ${error.message}`, true);
-            }
+            // Simulate successful connection
+            bluetoothStatus.innerHTML = '<span class="h-3 w-3 bg-[--focus-green] rounded-full mr-2"></span> সংযোগ সফল';
+            bluetoothStatus.classList.remove('text-yellow-600', 'text-red-500');
+            bluetoothStatus.classList.add('text-[--focus-green]');
+            sendGuardianCommand('ডিভাইসের সাথে সংযোগ স্থাপন সফল।', true);
         });
-
 
         // --- Smooth Scroll Navigation ---
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
